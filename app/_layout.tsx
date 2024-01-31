@@ -5,8 +5,16 @@ import { View, Text } from 'react-native';
 export default function RootLayout() {
   return (
     <Stack>
-        <Stack.Screen name='index' options={{headerShown: false}} />
-        <Stack.Screen name='places/[id]' options={{headerShown: false}}/>
+        <Stack.Screen name='index' options={{headerShown: false, headerTitle: ''}} />
+        <Stack.Screen 
+            name='places/[id]' 
+            options={{
+                    headerShown: true,
+                    headerTitle: '',
+                    headerStyle: {
+                        backgroundColor: 'transparent',
+                    }
+                    }}/>
     </Stack>
   );
 }
