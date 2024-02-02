@@ -16,7 +16,14 @@ import Animated, {
 } from "react-native-reanimated";
 import { Stack } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
-import { Carousel, View, AnimatedImage, Chip, Card } from "react-native-ui-lib";
+import {
+  Carousel,
+  View,
+  AnimatedImage,
+  Image,
+  Chip,
+  Card,
+} from "react-native-ui-lib";
 import MapBlock from "../(components)/Map";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, {
@@ -29,6 +36,7 @@ const timeIcon = require("../../assets/clock.png");
 const linkIcon = require("../../assets/link.png");
 const coffeePhoto = require("../../assets/coffee_cup.png");
 const dogPhoto = require("../../assets/random_img.jpeg");
+const qr = require("../../assets/qr.png");
 
 const { width, height } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -49,17 +57,16 @@ export default function PlacePage() {
 
   const handleCloseModalRef = useCallback(() => {
     checkInModalRef.current?.dismiss();
-    handlePresentModalPress()
+    handlePresentModalPress();
   }, []);
 
   const handlePresentModalPress = useCallback(() => {
     BottomSheetModalRef.current?.present();
   }, []);
-  
 
   // variables
   const snapPoints = useMemo(() => [height - 100, "50%"], []);
-  const modalSnapPoints = useMemo(() => ["25%"], []);
+  const modalSnapPoints = useMemo(() => ["55%"], []);
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -361,18 +368,22 @@ export default function PlacePage() {
           index={0}
           snapPoints={modalSnapPoints}
           detached={true}
-          bottomInset={height / 2}
+          bottomInset={height/3}
           style={[styles.sheetContainer, styles.shadow]}
         >
-          <Text>Awesome 🎉</Text>
-          <View style={{ marginTop: "auto" }}>
-            <Pressable
-              style={styles.modalButton}
-              onPress={handleCloseModalRef}
-            >
-              <Text style={styles.text}>Close</Text>
-            </Pressable>
-          </View>
+            <Image
+              style={{ height: 280, width: 280 }}
+              source={qr}
+              // loader={<ActivityIndicator />}
+            />
+            <View style={{ marginTop: "auto" }}>
+              <Pressable
+                style={styles.modalButton}
+                onPress={handleCloseModalRef}
+              >
+                <Text style={styles.text}>Close</Text>
+              </Pressable>
+            </View>
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
@@ -388,7 +399,7 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     backgroundColor: "black",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   content: {
     marginTop: 25,
@@ -412,6 +423,7 @@ const styles = StyleSheet.create({
   modalButton: {
     alignItems: "center",
     justifyContent: "center",
+    padding: 8,
     elevation: 3,
     backgroundColor: "black",
   },
@@ -425,8 +437,9 @@ const styles = StyleSheet.create({
   sheetContainer: {
     display: "flex",
     justifyContent: "center",
-    padding: 16,
-    marginHorizontal: 24,
+    alignItems: "center",
+    paddingBottom: 16,
+    marginHorizontal: 16,
   },
   shadow: {
     shadowColor: "#000",
