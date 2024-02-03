@@ -30,11 +30,12 @@ import BottomSheet, {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import Product from "../(components)/Product";
 
 const mapIcon = require("../../assets/map.png");
 const timeIcon = require("../../assets/clock.png");
 const linkIcon = require("../../assets/link.png");
-const coffeePhoto = require("../../assets/coffee_cup.png");
+
 const dogPhoto = require("../../assets/random_img.jpeg");
 const qr = require("../../assets/qr.png");
 
@@ -51,7 +52,8 @@ export default function PlacePage() {
   const BottomSheetModalRef = useRef<BottomSheetModal>(null);
   const checkInModalRef = useRef<BottomSheetModal>(null);
 
-  const handleOpenModalRef = useCallback(() => {
+  const handleOpenModalRef = useCallback((id) => {
+    console.log(id)
     checkInModalRef.current?.present();
   }, []);
 
@@ -331,35 +333,8 @@ export default function PlacePage() {
               },
             ]}
           >
-            {[2, 3, 4, 5, 6].map((item) => (
-              <Pressable onPress={handleOpenModalRef}>
-                <Card row>
-                  <Card.Section
-                    imageSource={coffeePhoto}
-                    imageStyle={{
-                      marginVertical: 16,
-                      marginLeft: 16,
-                      width: 48,
-                      height: 48,
-                    }}
-                  />
-                  <Card.Section
-                    content={[
-                      {
-                        text: `Cappuccino ${item}`,
-                        text80: true,
-                        $textDefault: true,
-                      },
-                      {
-                        text: `medium size, 0.${item}l`,
-                        text90: true,
-                        $textDisabled: true,
-                      },
-                    ]}
-                    style={{ padding: 20, flex: 1 }}
-                  />
-                </Card>
-              </Pressable>
+            {["cappuccino", "latte", "water", "espresso", "flat white"].map((item, index) => (
+              <Product name={item} description={"Lorem ipsum dolor sit amet"} actionFn={() => handleOpenModalRef(index)} key={index}/>
             ))}
           </View>
         </BottomSheetModal>
