@@ -24,13 +24,13 @@ import {
   Chip,
   Card,
 } from "react-native-ui-lib";
-import MapBlock from "../(components)/Map";
+import MapBlock from "../../src/components/Map";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import Product from "../(components)/Product";
+import Product from "../../src/components/Product";
 
 const mapIcon = require("../../assets/map.png");
 const timeIcon = require("../../assets/clock.png");
@@ -53,7 +53,7 @@ export default function PlacePage() {
   const checkInModalRef = useRef<BottomSheetModal>(null);
 
   const handleOpenModalRef = useCallback((id) => {
-    console.log(id)
+    console.log(id);
     checkInModalRef.current?.present();
   }, []);
 
@@ -321,7 +321,7 @@ export default function PlacePage() {
           index={1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          style={styles.shadow}
+          // style={styles.shadow}
         >
           <View
             style={[
@@ -333,9 +333,16 @@ export default function PlacePage() {
               },
             ]}
           >
-            {["cappuccino", "latte", "water", "espresso", "flat white"].map((item, index) => (
-              <Product name={item} description={"Lorem ipsum dolor sit amet"} actionFn={() => handleOpenModalRef(index)} key={index}/>
-            ))}
+            {["cappuccino", "latte", "water", "espresso", "flat white"].map(
+              (item, index) => (
+                <Product
+                  name={item}
+                  description={"Lorem ipsum dolor sit amet"}
+                  actionFn={() => handleOpenModalRef(index)}
+                  key={index}
+                />
+              )
+            )}
           </View>
         </BottomSheetModal>
         <BottomSheetModal
@@ -343,22 +350,15 @@ export default function PlacePage() {
           index={0}
           snapPoints={modalSnapPoints}
           detached={true}
-          bottomInset={height/3}
+          bottomInset={height / 3}
           style={[styles.sheetContainer, styles.shadow]}
         >
-            <Image
-              style={{ height: 280, width: 280 }}
-              source={qr}
-              // loader={<ActivityIndicator />}
-            />
-            <View style={{ marginTop: "auto" }}>
-              <Pressable
-                style={styles.modalButton}
-                onPress={handleCloseModalRef}
-              >
-                <Text style={styles.text}>Close</Text>
-              </Pressable>
-            </View>
+          <Image style={{ height: 280, width: 280 }} source={qr} />
+          <View style={{ marginTop: "auto" }}>
+            <Pressable style={styles.modalButton} onPress={handleCloseModalRef}>
+              <Text style={styles.text}>Close</Text>
+            </Pressable>
+          </View>
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

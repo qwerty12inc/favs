@@ -1,34 +1,14 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { View, Text } from "react-native";
+import { Provider, useSelector } from "react-redux";
+import { IStateInterface, store } from "../src/store/store";
+import Navigator from "./(navigator)/Navigator";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{ headerShown: false, headerTitle: "" }}
-      />
-      <Stack.Screen
-        name="places/[id]"
-        options={{
-          headerShown: true,
-          headerTitle: "",
-          headerStyle: {
-            backgroundColor: "transparent",
-          },
-        }}
-      />
-      <Stack.Screen
-        name="profile/index"
-        options={{
-          headerShown: true,
-          headerTitle: "",
-          headerStyle: {
-            backgroundColor: "transparent",
-          },
-        }}
-      />
-    </Stack>
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
   );
 }

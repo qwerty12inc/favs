@@ -36,63 +36,6 @@ type TSettingsProps = {
   last?: boolean;
 };
 
-function SettingsItem(props: TSettingsProps) {
-  return (
-    <Link href={props.link} style={SettingsItemStyles.container}>
-      <View style={SettingsItemStyles.block}>
-        <View style={SettingsItemStyles.icon}>
-          <Image style={SettingsItemStyles.icon} source={props.icon} />
-        </View>
-        <View
-          style={[
-            SettingsItemStyles.text,
-            props.last && SettingsItemStyles.lastText,
-          ]}
-        >
-          <Text style={{ fontSize: 18 }}>{props.name}</Text>
-        </View>
-      </View>
-    </Link>
-  );
-}
-
-const SettingsItemStyles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    gap: 0,
-    // alignItems: "center",
-    // paddingTop: 8,
-    // borderWidth: 1,
-    // borderColor: "red",
-  },
-  block: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    paddingVertical: 2,
-  },
-  icon: {
-    width: 24,
-    height: 24,
-    marginRight: 8,
-  },
-  text: {
-    borderBottomWidth: 1,
-    borderBottomColor: "white",
-    paddingTop: 8,
-    paddingBottom: 16,
-    flexGrow: 1,
-  },
-  lastText: {
-    borderBottomWidth: 0,
-    paddingTop: 12,
-    paddingBottom: 8,
-  },
-});
-
 export default function Profile() {
   return (
     <SafeAreaView style={styles.container}>
@@ -116,21 +59,6 @@ export default function Profile() {
             Name Surname
           </Text>
           <Text>example@example.com</Text>
-        </View>
-        <View>
-          <View style={styles.list}>
-            {SETTINGS_OPTIONS.map((option, index) => {
-              return (
-                <SettingsItem
-                  key={index}
-                  name={option.name}
-                  link={option.link}
-                  icon={option.icon}
-                  last={index === SETTINGS_OPTIONS.length - 1}
-                />
-              );
-            })}
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
