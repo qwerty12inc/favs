@@ -18,6 +18,10 @@ import BottomSheet, {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import PlaceItem from "../src/components/PlacesList/PlaceItem";
+import PlaceList, {
+  PLACES_LIST_MOCK,
+} from "../src/components/PlacesList/PlaceList";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,10 +34,6 @@ export default function Layout() {
     (state: IStateInterface) => state.cities.current
   );
   const snapPoints = useMemo(() => [100, height - 195], []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
 
   const BottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -56,22 +56,7 @@ export default function Layout() {
               />
             </Link>
           </View>
-          <View
-            style={{
-              paddingHorizontal: 16,
-              zIndex: 20,
-              backgroundColor: "white",
-              paddingBottom: 16,
-              shadowColor: "#888888",
-              shadowOffset: {
-                width: 0,
-                height: 24,
-              },
-              shadowOpacity: 0.1,
-              shadowRadius: 10.0,
-              elevation: 10,
-            }}
-          >
+          <View style={styles.searchBar_shadow}>
             <View style={{ paddingVertical: 0 }}>
               <TextInput
                 // value={text}
@@ -80,21 +65,12 @@ export default function Layout() {
                 onChange={(e) => {
                   console.log(e.nativeEvent.text);
                 }}
-                style={{
-                  backgroundColor: "rgba(118, 118, 128, 0.12)",
-                  paddingVertical: 12,
-                  paddingHorizontal: 16,
-                  fontSize: 17,
-                  lineHeight: 22,
-                  marginVertical: 20,
-
-                  borderRadius: 10,
-                }}
+                style={styles.input}
               />
               <SegmentedControl
                 values={["Coffee", "Drink", "Eat"]}
                 selectedIndex={0}
-                style={{ paddingVertical: 16 }}
+                style={{ paddingVertical: 20 }}
                 // onChange={(event) => {
                 //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
                 // }}
@@ -109,7 +85,6 @@ export default function Layout() {
             ref={BottomSheetModalRef}
             index={0}
             snapPoints={snapPoints}
-            onChange={handleSheetChanges}
           >
             <View
               style={{
@@ -118,21 +93,11 @@ export default function Layout() {
                 paddingHorizontal: 16,
               }}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  // marginBottom: 24,
-                  fontWeight: "500",
-                  fontSize: 18,
-                  marginTop: 14,
-                  marginBottom: 14,
-                }}
-              >
-                24 places
+              <Text style={styles.placesCount}>
+                {PLACES_LIST_MOCK.length} places on map
               </Text>
-              <Link href={"/places/1"}>Go to place #1</Link>
-              <Link href={"/places/2"}>Go to place #2</Link>
             </View>
+            <PlaceList />
           </BottomSheet>
         </SafeAreaView>
       </BottomSheetModalProvider>
@@ -163,6 +128,16 @@ const styles = StyleSheet.create({
   userAvatar: {
     marginLeft: "auto",
   },
+  input: {
+    backgroundColor: "rgba(118, 118, 128, 0.12)",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 17,
+    lineHeight: 22,
+    marginVertical: 20,
+
+    borderRadius: 10,
+  },
   padding: {
     marginTop: 100,
   },
@@ -176,5 +151,27 @@ const styles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 24,
     zIndex: 10,
+  },
+  searchBar_shadow: {
+    paddingHorizontal: 16,
+    zIndex: 20,
+    backgroundColor: "white",
+    paddingBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 24,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10.0,
+    elevation: 10,
+  },
+  placesCount: {
+    textAlign: "center",
+    // marginBottom: 24,
+    fontWeight: "500",
+    fontSize: 18,
+    marginTop: 14,
+    marginBottom: 14,
   },
 });

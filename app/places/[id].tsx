@@ -152,7 +152,7 @@ export default function PlacePage() {
                     marginBottom: 8,
                   }}
                 >
-                  Place name
+                  Place name {id}
                 </Text>
                 <View
                   style={{
@@ -321,7 +321,7 @@ export default function PlacePage() {
           index={1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          // style={styles.shadow}
+          style={styles.shadow}
         >
           <View
             style={[

@@ -55,6 +55,17 @@ export default function Navigator() {
           headerBackVisible: false,
         }}
       />
+      <Stack.Screen
+        name="test/index"
+        options={{
+          headerShown: true,
+          headerTitle: "test",
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
+          headerBackVisible: false,
+        }}
+      />
     </Stack>
   );
 }

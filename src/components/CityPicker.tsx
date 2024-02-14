@@ -39,6 +39,7 @@ const CityPicker: React.FC = () => {
           containerStyle: { margin: 60, padding: 100, height: 200 },
           animationType: "slide",
         }}
+        style={{ fontSize: 24, fontWeight: "600", textTransform: "uppercase" }}
       >
         {CITY_PICKER_OPTIONS.map((option) => (
           <Picker.Item
