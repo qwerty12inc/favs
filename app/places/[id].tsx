@@ -26,15 +26,14 @@ import {
 } from "react-native-ui-lib";
 import MapBlock from "../../src/components/Map";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, {
+import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import Product from "../../src/components/Product";
-
-const mapIcon = require("../../assets/map.png");
-const timeIcon = require("../../assets/clock.png");
-const linkIcon = require("../../assets/link.png");
+import ContactsList from "../../src/components/ContactsList/ContactsList";
+import OpeningHours from "../../src/components/OpeningHours/OpeningHours";
+import AddressBlock from "../../src/components/AddressBlock/AddressBlock";
 
 const dogPhoto = require("../../assets/random_img.jpeg");
 const qr = require("../../assets/qr.png");
@@ -144,16 +143,7 @@ export default function PlacePage() {
               }}
             >
               <View style={styles.content}>
-                <Text
-                  style={{
-                    fontSize: 32,
-                    fontWeight: "bold",
-                    textAlign: "left",
-                    marginBottom: 8,
-                  }}
-                >
-                  Place name {id}
-                </Text>
+                <Text style={styles.title}>Place name {id}</Text>
                 <View
                   style={{
                     width: 100,
@@ -165,13 +155,7 @@ export default function PlacePage() {
                     dismissContainerStyle={{ width: 10 }}
                   />
                 </View>
-                <Text
-                  style={{
-                    marginTop: 16,
-                    fontSize: 14,
-                    color: "#aaabab",
-                  }}
-                >
+                <Text style={styles.description}>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -188,109 +172,17 @@ export default function PlacePage() {
                     marginTop: 24,
                   }}
                 >
-                  <Card row>
-                    <Card.Section
-                      imageSource={mapIcon}
-                      imageStyle={{
-                        width: 24,
-                        height: 24,
-                        marginLeft: 20,
-                        marginVertical: 25,
-                      }}
-                    />
-                    <Card.Section
-                      content={[
-                        {
-                          text: "Berlin, Fasanenstrasse 40",
-                          text80: true,
-                          $textDefault: true,
-                        },
-                        {
-                          text: "wix.to/A465c",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                      ]}
-                      style={{ padding: 20, flex: 1 }}
-                    />
-                  </Card>
-                  <Card row>
-                    <Card.Section
-                      imageSource={timeIcon}
-                      imageStyle={{
-                        width: 24,
-                        height: 24,
-                        marginLeft: 20,
-                        marginVertical: 25,
-                      }}
-                    />
-                    <Card.Section
-                      content={[
-                        {
-                          text: "Wednesday 11:30 AM–11 PM",
-                          text90: true,
-                          $textDisabled: false,
-                        },
-                        {
-                          text: "Thursday 11:30 AM–11 PM",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                        {
-                          text: "Friday 11:30 AM–11 PM",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                        {
-                          text: "Sunday 11:30 AM–11 PM",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                        {
-                          text: "Monday 11:30 AM–11 PM",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                        {
-                          text: "Tuesday 11:30 AM–11 PM",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                      ]}
-                      style={{ padding: 20, flex: 1 }}
-                    />
-                  </Card>
-                  <Card row>
-                    <Card.Section
-                      imageSource={linkIcon}
-                      imageStyle={{
-                        width: 24,
-                        height: 24,
-                        marginLeft: 20,
-                        marginVertical: 25,
-                      }}
-                    />
-                    <Card.Section
-                      content={[
-                        {
-                          text: "burgermeister.com",
-                          text90: true,
-                          $textDisabled: false,
-                        },
-                        {
-                          text: "@meisterburger",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                        {
-                          text: "+49 179 5154938",
-                          text90: true,
-                          $textDisabled: true,
-                        },
-                      ]}
-                      style={{ padding: 20, flex: 1 }}
-                    />
-                  </Card>
+                  <Text style={styles.subtitle}>Address</Text>
+                  <AddressBlock />
+                  <Text style={styles.subtitle}>Opening hours</Text>
+                  <OpeningHours />
+                  <Text style={styles.subtitle}>Contacts</Text>
+                  <ContactsList
+                    contacts={{
+                      instagram: "grusha229",
+                      website: "google.com",
+                    }}
+                  />
                 </View>
               </View>
               <View
@@ -310,7 +202,7 @@ export default function PlacePage() {
                   style={styles.button}
                   onPress={handlePresentModalPress}
                 >
-                  <Text style={styles.text}>Check in</Text>
+                  <Text style={styles.button__text}>Check in</Text>
                 </Pressable>
               </View>
             </View>
@@ -370,7 +262,7 @@ export default function PlacePage() {
   }
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     display: "flex",
     backgroundColor: "black",
@@ -402,7 +294,25 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "black",
   },
-  text: {
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginTop: 16,
+    marginBottom: 4,
+  },
+  description: {
+    marginTop: 16,
+    fontSize: 14,
+    color: "#aaabab",
+  },
+  button__text: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: "bold",

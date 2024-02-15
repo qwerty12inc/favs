@@ -45,6 +45,16 @@ export default function Navigator() {
         }}
       />
       <Stack.Screen
+        name="profile/settings/index"
+        options={{
+          headerShown: true,
+          headerTitle: "Settings",
+          headerStyle: {
+            backgroundColor: "transparent",
+          },
+        }}
+      />
+      <Stack.Screen
         name="login/index"
         options={{
           headerShown: true,
