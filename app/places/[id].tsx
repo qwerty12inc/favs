@@ -34,6 +34,7 @@ import Product from "../../src/components/Product";
 import ContactsList from "../../src/components/ContactsList/ContactsList";
 import OpeningHours from "../../src/components/OpeningHours/OpeningHours";
 import AddressBlock from "../../src/components/AddressBlock/AddressBlock";
+import { globalStyles, globalTokens } from "../../src/styles";
 
 const dogPhoto = require("../../assets/random_img.jpeg");
 const qr = require("../../assets/qr.png");
@@ -143,7 +144,7 @@ export default function PlacePage() {
               }}
             >
               <View style={styles.content}>
-                <Text style={styles.title}>Place name {id}</Text>
+                <Text style={globalStyles.title}>Place name {id}</Text>
                 <View
                   style={{
                     width: 100,
@@ -172,11 +173,11 @@ export default function PlacePage() {
                     marginTop: 24,
                   }}
                 >
-                  <Text style={styles.subtitle}>Address</Text>
+                  <Text style={globalStyles.subtitle}>Address</Text>
                   <AddressBlock />
-                  <Text style={styles.subtitle}>Opening hours</Text>
+                  <Text style={globalStyles.subtitle}>Opening hours</Text>
                   <OpeningHours />
-                  <Text style={styles.subtitle}>Contacts</Text>
+                  <Text style={globalStyles.subtitle}>Contacts</Text>
                   <ContactsList
                     contacts={{
                       instagram: "grusha229",
@@ -248,24 +249,19 @@ export default function PlacePage() {
           <Image style={{ height: 280, width: 280 }} source={qr} />
           <View style={{ marginTop: "auto" }}>
             <Pressable style={styles.modalButton} onPress={handleCloseModalRef}>
-              <Text style={styles.text}>Close</Text>
+              <Text style={styles.button__text}>Close</Text>
             </Pressable>
           </View>
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
-  {
-    // <View style={styles.placeContent}>
-    //   <Text>Place page! {id}</Text>
-    // </View>
-  }
 }
 
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: "black",
+    backgroundColor: globalTokens.colors.black,
     justifyContent: "center",
   },
   content: {
@@ -285,39 +281,26 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 0,
     elevation: 3,
-    backgroundColor: "black",
+    backgroundColor: globalTokens.colors.black,
   },
   modalButton: {
     alignItems: "center",
     justifyContent: "center",
     padding: 8,
     elevation: 3,
-    backgroundColor: "black",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    textAlign: "left",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "left",
-    marginTop: 16,
-    marginBottom: 4,
+    backgroundColor: globalTokens.colors.black,
   },
   description: {
     marginTop: 16,
     fontSize: 14,
-    color: "#aaabab",
+    color: globalTokens.colors.darkGrey,
   },
   button__text: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
-    color: "white",
+    color: globalTokens.colors.white,
   },
   sheetContainer: {
     display: "flex",
@@ -327,7 +310,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   shadow: {
-    shadowColor: "#000",
+    shadowColor: globalTokens.colors.black,
     shadowOffset: {
       width: 0,
       height: 12,

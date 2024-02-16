@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, View, Text, Image } from "react-native-ui-lib";
+import { globalTokens } from "../../../src/styles";
 
 const profileIcon = require("../../../assets/link.png");
 
@@ -81,7 +82,7 @@ const SettingsItemStyles = StyleSheet.create({
   },
   text: {
     borderBottomWidth: 1,
-    borderBottomColor: "white",
+    borderBottomColor: globalTokens.colors.lightGrey,
     paddingTop: 8,
     paddingBottom: 16,
     flexGrow: 1,
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 24,
-    backgroundColor: "lightgray",
+    backgroundColor: globalTokens.colors.white,
     paddingLeft: 16,
     paddingBottom: 4,
     paddingTop: 7,

@@ -1,20 +1,26 @@
 import { Link, Stack } from "expo-router";
 import React from "react";
-import { StyleSheet, ScrollView, Pressable } from "react-native";
+import { StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, View, Text, Image } from "react-native-ui-lib";
+import HistoryList from "../../src/components/HistoryList/HistoryList";
+import { globalStyles, globalTokens } from "../../src/styles";
+import CurrentSubscription from "../../src/components/CurrentSubscription/CurrentSubscription";
 
 const settingsIcon = require("../../assets/icon--settings.png");
+
+const { width, height } = Dimensions.get("window");
 
 export default function Profile() {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView style={{ paddingHorizontal: 16, height: height - 100 }}>
         <Stack.Screen
           options={{
             headerTransparent: true,
             //   headerLeft: () => <Text>Back</Text>,
             headerBackButtonMenuEnabled: true,
+
             headerRight: () => (
               <Link href={"/profile/settings"}>
                 <Image
@@ -38,6 +44,14 @@ export default function Profile() {
           </Text>
           <Text>example@example.com</Text>
         </View>
+        <View style={{ display: "flex", gap: 8, marginVertical: 45 }}>
+          <Text Text style={globalStyles.subtitle}>
+            Your subscription
+          </Text>
+          <CurrentSubscription />
+          <Text style={globalStyles.subtitle}>History</Text>
+          <HistoryList />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -46,11 +60,11 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 45,
-    paddingHorizontal: 16,
+    // backgroundColor: globalTokens.colors.white,
   },
   list: {
     marginTop: 24,
-    backgroundColor: "lightgray",
+    backgroundColor: globalTokens.colors.lightGrey,
     paddingLeft: 16,
     paddingBottom: 4,
     paddingTop: 7,
