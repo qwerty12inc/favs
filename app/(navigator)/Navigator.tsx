@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { IStateInterface } from "../../src/store/store";
 export default function Navigator() {
+  
   const auth = useSelector(
     (state: IStateInterface) => state.authentication.isLogined
   );
@@ -78,14 +79,23 @@ export default function Navigator() {
       />
       <Stack.Screen
         name="auth/login/index"
+        options={{
+          headerShown: false
+        }}
       />
 
       <Stack.Screen
         name="auth/register/index"
+        options={{
+          headerShown: false
+        }}
       />
 
       <Stack.Screen
         name="auth/register/pending"
+        options={{
+          headerShown: false
+        }}
       />
     </Stack>
   );
