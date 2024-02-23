@@ -47,7 +47,7 @@ function PlaceFeatureInfo(props: TProps) {
         {props.content.map((el, index) => {
           let { text, ...params } = el;
           return (
-            <Text {...params} key={index}>
+            <Text style={{fontFamily: "Archivo",}} {...params} key={index}>
               {text}
             </Text>
           );

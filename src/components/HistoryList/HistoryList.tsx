@@ -63,10 +63,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: globalTokens.colors.black,
+    fontFamily: "ClashDisplay",
   },
   place_description: {
     fontSize: 14,
     color: globalTokens.colors.darkGrey,
+    fontFamily: "Archivo",
   },
   list: {
     display: "flex",

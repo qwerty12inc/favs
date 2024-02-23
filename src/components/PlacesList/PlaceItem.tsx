@@ -8,8 +8,8 @@ import {
   TouchableWithoutFeedback,
   ImageSourcePropType,
 } from "react-native";
-import { Carousel, AnimatedImage, Text } from "react-native-ui-lib";
-const dogPhoto = require("../../../assets/random_img.jpeg");
+import { Carousel, AnimatedImage } from "react-native-ui-lib";
+import { CustomTitle as Title, CustomText as Text } from "../Text/CustomText";
 
 const { width, height } = Dimensions.get("window");
 
@@ -68,7 +68,7 @@ export default function PlaceItem(props: TProps) {
           ))}
         </Carousel>
 
-        <Text style={styles.place__name}>{props.name}</Text>
+        <Title style={styles.place__name}>{props.name}</Title>
         <Text style={styles.place__address}>{props.address}</Text>
       </View>
     </Link>

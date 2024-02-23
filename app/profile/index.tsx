@@ -6,6 +6,7 @@ import { Avatar, View, Text, Image } from "react-native-ui-lib";
 import HistoryList from "../../src/components/HistoryList/HistoryList";
 import { globalStyles, globalTokens } from "../../src/styles";
 import CurrentSubscription from "../../src/components/CurrentSubscription/CurrentSubscription";
+import { CustomText, CustomTitle } from "../../src/components/Text/CustomText";
 
 const settingsIcon = require("../../assets/icon--settings.png");
 
@@ -39,10 +40,10 @@ export default function Profile() {
             containerStyle={{ width: 120, height: 120 }}
             imageStyle={{ width: "100%", height: "100%" }}
           />
-          <Text text40BO style={{ marginTop: 16 }}>
+          <CustomTitle style={[globalStyles.title, {marginTop: 16}]}>
             Name Surname
-          </Text>
-          <Text>example@example.com</Text>
+          </CustomTitle>
+          <CustomText>example@example.com</CustomText>
         </View>
         <View style={{ display: "flex", gap: 8, marginVertical: 45 }}>
           <Text Text style={globalStyles.subtitle}>

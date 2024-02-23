@@ -40,10 +40,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     color: globalTokens.colors.black,
+    fontFamily: "ClashDisplay",
   },
   subscription__description: {
     fontSize: 16,
     color: globalTokens.colors.darkGrey,
+    fontFamily: "Archivo",
   },
   image__container: {
     height: "100%",

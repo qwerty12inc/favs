@@ -1,9 +1,7 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import {
-  Text,
   Dimensions,
   StyleSheet,
-  ScrollView,
   useAnimatedValue,
   ActivityIndicator,
   Pressable,
@@ -22,7 +20,7 @@ import {
   AnimatedImage,
   Image,
   Chip,
-  Card,
+  Text,
 } from "react-native-ui-lib";
 import MapBlock from "../../src/components/Map";
 import { GestureHandlerRootView } from "react-native-gesture-handler";

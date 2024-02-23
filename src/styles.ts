@@ -16,6 +16,7 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
     marginBottom: 8,
+    fontFamily: "ClashDisplay",
   },
   subtitle: {
     fontSize: 20,
@@ -23,5 +24,6 @@ export const globalStyles = StyleSheet.create({
     textAlign: "left",
     marginTop: 16,
     marginBottom: 4,
+    fontFamily: "ClashDisplay",
   },
 });

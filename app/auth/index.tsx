@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, View, Text, Image } from "react-native-ui-lib";
+import { globalStyles } from "../../src/styles";
 
 const proileIcon = require("../../assets/link.png");
 
@@ -48,17 +49,7 @@ export default function Profile() {
           }}
         />
         <View style={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            source={{
-              uri: "https://lh3.googleusercontent.com/-cw77lUnOvmI/AAAAAAAAAAI/AAAAAAAAAAA/WMNck32dKbc/s181-c/104220521160525129167.jpg",
-            }}
-            containerStyle={{ width: 120, height: 120 }}
-            imageStyle={{ width: "100%", height: "100%" }}
-          />
-          <Text text40BO style={{ marginTop: 16 }}>
-            Name Surname
-          </Text>
-          <Text>example@example.com</Text>
+          <Text style={globalStyles.title}>Welcome!</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

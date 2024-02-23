@@ -1,8 +1,7 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "expo-router";
 import {
   StyleSheet,
-  Text,
   SafeAreaView,
   TextInput,
   Dimensions,
@@ -22,10 +21,19 @@ import PlaceItem from "../src/components/PlacesList/PlaceItem";
 import PlaceList, {
   PLACES_LIST_MOCK,
 } from "../src/components/PlacesList/PlaceList";
+import { useFonts } from "expo-font";
+import { CustomText as Text, CustomTitle as Title } from "../src/components/Text/CustomText";
+import * as SplashScreen from 'expo-splash-screen';
 
 const { width, height } = Dimensions.get("window");
 
 export default function Layout() {
+
+
+  const [fontsLoaded, fontError] = useFonts({
+    'Archivo': require('../assets/fonts/Archivo-Medium.ttf'),
+    'ClashDisplay': require('../assets/fonts/ClashDisplay-Medium.ttf')
+  });
   const auth = useSelector(
     (state: IStateInterface) => state.authentication.isLogined
   );
@@ -40,7 +48,7 @@ export default function Layout() {
   const [text, onChangeText] = React.useState("");
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView >
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
           <View style={styles.userProfile}>
@@ -70,7 +78,8 @@ export default function Layout() {
               <SegmentedControl
                 values={["Coffee", "Drink", "Eat"]}
                 selectedIndex={0}
-                style={{ paddingVertical: 20 }}
+                style={{ paddingVertical: 20}}
+                fontStyle={{fontFamily: "ClashDisplay" }}
                 // onChange={(event) => {
                 //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
                 // }}
@@ -137,6 +146,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
 
     borderRadius: 10,
+    fontFamily: "ClashDisplay"
   },
   padding: {
     marginTop: 100,

@@ -1,8 +1,8 @@
 import { Stack, useNavigation } from "expo-router";
+
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { IStateInterface } from "../../src/store/store";
-
 export default function Navigator() {
   const auth = useSelector(
     (state: IStateInterface) => state.authentication.isLogined
@@ -12,13 +12,13 @@ export default function Navigator() {
 
   useEffect(() => {
     if (auth != null && !auth) {
-      navigation.navigate("login/index", {});
+      navigation.navigate("auth/index", {});
     } else {
       navigation.navigate("index");
     }
   }, [navigation, auth]);
 
-  return (
+  const PrivateScreens = (
     <Stack>
       <Stack.Screen
         name="index"
@@ -55,17 +55,6 @@ export default function Navigator() {
         }}
       />
       <Stack.Screen
-        name="login/index"
-        options={{
-          headerShown: true,
-          headerTitle: "Login",
-          headerStyle: {
-            backgroundColor: "transparent",
-          },
-          headerBackVisible: false,
-        }}
-      />
-      <Stack.Screen
         name="test/index"
         options={{
           headerShown: true,
@@ -78,4 +67,30 @@ export default function Navigator() {
       />
     </Stack>
   );
+
+  const LoginScreens = (
+    <Stack>
+      <Stack.Screen
+        name="auth/index"
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name="auth/login/index"
+      />
+
+      <Stack.Screen
+        name="auth/register/index"
+      />
+
+      <Stack.Screen
+        name="auth/register/pending"
+      />
+    </Stack>
+  );
+
+  const screens = auth ? PrivateScreens : LoginScreens;
+
+  return screens ;
 }
