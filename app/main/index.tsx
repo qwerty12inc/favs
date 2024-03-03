@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useRouter } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import { StyleSheet, SafeAreaView, TextInput, Dimensions } from 'react-native';
 import { Avatar, View } from 'react-native-ui-lib';
 import MapBlock from '../../src/components/Map';
@@ -33,12 +33,25 @@ export default function MainPage() {
             setTimeout(() => {
                 router.navigate('/auth');
                 console.log('redirected');
-            }, 2000);
+            }, 800);
+        } else {
+            console.log('logined');
+            setTimeout(() => {
+                router.navigate('/auth');
+                console.log('redirected');
+            }, 1800);
         }
     }, [auth]);
 
     return (
         <SafeAreaView style={styles.container}>
+            <Stack.Screen
+                options={{
+                    headerTransparent: false,
+                    //   headerLeft: () => <Text>Back</Text>,
+                    headerBackButtonMenuEnabled: true,
+                }}
+            />
             <View style={styles.userProfile}>
                 <SafeAreaView>
                     <CityPicker />

@@ -1,4 +1,4 @@
-import { Link, Stack } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ import { ConfirmCodeInput } from '../../src/components/ConfirmCodeInput/ConfirmC
 const { width, height } = Dimensions.get('window');
 
 export default function LoginPage() {
+    const router = useRouter();
     return (
         <SafeAreaView style={styles.container}>
             <Stack.Screen
@@ -26,8 +27,17 @@ export default function LoginPage() {
                     Create an account and get access to cool places around the Europe
                 </Text>
                 <View style={[styles.cta]}>
-                    <Button onClick={() => console.log('click')} children={'Get started!'} />
+                    <Button
+                        onClick={() => router.replace('/auth/register')}
+                        children={'Get started!'}
+                    />
                 </View>
+                <Text>
+                    Already have an account?{' '}
+                    <Link replace href={'/auth/register'}>
+                        Log in
+                    </Link>
+                </Text>
             </SafeAreaView>
         </SafeAreaView>
     );

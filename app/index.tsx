@@ -18,7 +18,7 @@ const { width, height } = Dimensions.get('window');
 export default function Layout() {
     SplashScreen.preventAutoHideAsync();
 
-    // const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
+    const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
     // const navigation = useNavigation();
     // const router = useRouter();
 
@@ -58,7 +58,8 @@ export default function Layout() {
         return (
             <GestureHandlerRootView onLayout={onLayoutRootView}>
                 <BottomSheetModalProvider>
-                    <MainPage />
+                    {authenticated ? <MainPage /> : <LoginPage />}
+
                     {/* <Text>qwerty</Text> */}
                 </BottomSheetModalProvider>
             </GestureHandlerRootView>

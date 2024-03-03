@@ -53,6 +53,7 @@ const PrivateScreens = (
 
 const LoginScreens = (
     <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false, headerTitle: '' }} />
         <Stack.Screen
             name="auth/index"
             options={{
@@ -85,5 +86,6 @@ const LoginScreens = (
 export default function Navigator() {
     const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
 
+    console.log(authenticated, authenticated ? 'PrivateScreens' : 'LoginScreens');
     return authenticated ? PrivateScreens : LoginScreens;
 }
