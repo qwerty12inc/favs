@@ -36,10 +36,6 @@ export default function MainPage() {
             }, 800);
         } else {
             console.log('logined');
-            setTimeout(() => {
-                router.navigate('/auth');
-                console.log('redirected');
-            }, 1800);
         }
     }, [auth]);
 

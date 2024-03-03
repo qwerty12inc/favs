@@ -3,11 +3,9 @@ import React from 'react';
 import { StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, View, Text, Image } from 'react-native-ui-lib';
-import { globalStyles } from '../../src/styles';
+import { globalStyles, globalTokens } from '../../src/styles';
 import { Button } from './../../src/components/Button/Button';
 import { ConfirmCodeInput } from '../../src/components/ConfirmCodeInput/ConfirmCodeInput';
-
-const { width, height } = Dimensions.get('window');
 
 export default function LoginPage() {
     const router = useRouter();
@@ -28,13 +26,13 @@ export default function LoginPage() {
                 </Text>
                 <View style={[styles.cta]}>
                     <Button
-                        onClick={() => router.replace('/auth/register')}
+                        onClick={() => router.push('/auth/register')}
                         children={'Get started!'}
                     />
                 </View>
-                <Text>
-                    Already have an account?{' '}
-                    <Link replace href={'/auth/register'}>
+                <Text style={[globalStyles.subtitle]}>
+                    Or you already have an account?{' '}
+                    <Link push href={'/auth/login'}>
                         Log in
                     </Link>
                 </Text>
@@ -53,6 +51,9 @@ const styles = StyleSheet.create({
         marginBottom: 48,
         width: 200,
         height: 200,
+    },
+    link: {
+        color: globalTokens.colors.darkGrey,
     },
     subtitle: {
         paddingHorizontal: 16,

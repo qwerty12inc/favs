@@ -73,13 +73,6 @@ const LoginScreens = (
                 headerShown: false,
             }}
         />
-
-        <Stack.Screen
-            name="auth/register/pending"
-            options={{
-                headerShown: false,
-            }}
-        />
     </Stack>
 );
 
