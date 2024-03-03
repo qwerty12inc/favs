@@ -1,20 +1,20 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import AuthSlice, { IAuthState } from "./features/AuthSlice";
-import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
-import CitySlice, { ICityState } from "./features/CitySlice";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import isAuthSlice, { IAuthState } from './features/isAuthSlice';
+import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import CitySlice, { ICityState } from './features/CitySlice';
 
 export interface IStateInterface {
-  authentication: IAuthState;
-  cities: ICityState;
+    authentication: IAuthState;
+    cities: ICityState;
 }
 
 const rootReducer = combineReducers({
-  authentication: AuthSlice,
-  cities: CitySlice,
+    authentication: isAuthSlice,
+    cities: CitySlice,
 });
 
 export const store = configureStore({
-  reducer: rootReducer,
+    reducer: rootReducer,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

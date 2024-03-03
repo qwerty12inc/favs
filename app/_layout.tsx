@@ -1,14 +1,14 @@
-import React from "react";
-import { Stack } from "expo-router";
-import { View, Text } from "react-native";
-import { Provider, useSelector } from "react-redux";
-import { IStateInterface, store } from "../src/store/store";
-import Navigator from "./(navigator)/Navigator";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '../src/store/store';
+import Navigator from './(navigator)/Navigator';
+import { Slot } from 'expo-router';
 
 export default function RootLayout() {
-  return (
-    <Provider store={store}>
-      <Navigator />
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <Slot />
+            {/* <Navigator /> */}
+        </Provider>
+    );
 }

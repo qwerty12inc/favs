@@ -8,6 +8,7 @@ import {
     TextInputChangeEventData,
     TextInputFocusEventData,
     StyleSheet,
+    Pressable,
 } from 'react-native';
 import React, { useCallback, useRef, useState } from 'react';
 import CodeSlot from './PinCodeSlot';
@@ -18,7 +19,6 @@ export interface IProps {
     hasError?: boolean;
     error?: string;
     active?: boolean;
-    value?: any;
     onChange?: (eventOrValue: any) => void;
     onFocus?: (eventOrValue: any) => void;
     onBlur?: (eventOrValue: any) => void;
@@ -31,41 +31,35 @@ function normalize(text: string, size: number): string {
 export const ConfirmCodeInput: React.FC<IProps> = (props) => {
     const ref = useRef<TextInput>();
 
+    const [code, setCode] = useState('');
     const [focus, setFocus] = useState(false);
 
     const didPressed = useCallback(() => {
-        if (Platform.OS === 'android') {
-            ref?.current?.blur();
-            ref?.current?.focus();
-            return;
-        }
-
-        setTimeout(() => {
-            ref?.current?.focus();
-        }, 800);
-        console.log('click');
+        ref?.current.focus();
     }, [ref, focus]);
 
     const didChanged = useCallback(
         (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
             const text = e.nativeEvent.text || '';
-
-            props.onChange && props.onChange(normalize(text, props.size));
+            console.log(text);
+            setCode(text);
         },
         [props.onChange, props.size]
     );
 
     const didFocused = useCallback(() => {
         setFocus(true);
-        props.onFocus && props.onFocus(undefined);
+        console.log('focused');
+        // props.onFocus && props.onFocus(undefined);
     }, [props.onFocus]);
 
     const didBlurred = useCallback(() => {
         setFocus(false);
-        props.onBlur && props.onBlur(undefined);
+        // props.onBlur && props.onBlur(undefined);
+        console.log('blurred');
     }, [props.onBlur]);
 
-    const value = typeof props.value === 'string' ? normalize(props.value, props.size) : '';
+    const value = typeof code === 'string' ? normalize(code, props.size) : '';
 
     const hasError = props.hasError || (!!props.error && props.error.length > 0);
 
@@ -73,12 +67,12 @@ export const ConfirmCodeInput: React.FC<IProps> = (props) => {
 
     return (
         <>
-            <TouchableOpacity style={style.container} onPress={didPressed}>
+            <Pressable style={style.container} onPress={didPressed}>
                 {buildRange(0, props.size - 1).map((index) => (
                     <React.Fragment key={index}>
                         {index > 0 && <View style={{ width: 8 }} />}
                         <CodeSlot
-                            value={index < value.length ? value.charAt(index) : undefined}
+                            value={index < code.length ? value.charAt(index) : ''}
                             active={
                                 focus &&
                                 (value.length === index ||
@@ -88,7 +82,7 @@ export const ConfirmCodeInput: React.FC<IProps> = (props) => {
                         />
                     </React.Fragment>
                 ))}
-            </TouchableOpacity>
+            </Pressable>
             <TextInput
                 ref={ref}
                 style={style.input}
@@ -98,6 +92,7 @@ export const ConfirmCodeInput: React.FC<IProps> = (props) => {
                 onChange={didChanged}
                 onFocus={didFocused}
                 onBlur={didBlurred}
+                keyboardType="numeric"
             />
         </>
     );
@@ -107,6 +102,7 @@ const style = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'center',
+        height: 400,
     },
     input: {
         width: 1,

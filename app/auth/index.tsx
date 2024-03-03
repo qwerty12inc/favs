@@ -1,42 +1,34 @@
 import { Link, Stack } from 'expo-router';
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, View, Text, Image } from 'react-native-ui-lib';
 import { globalStyles } from '../../src/styles';
 import { Button } from './../../src/components/Button/Button';
 import { ConfirmCodeInput } from '../../src/components/ConfirmCodeInput/ConfirmCodeInput';
 
-type TSettingsProps = {
-    name: string;
-    icon: any;
-    link: string;
-    last?: boolean;
-};
+const { width, height } = Dimensions.get('window');
 
-export default function Profile() {
+export default function LoginPage() {
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <Stack.Screen
-                    options={{
-                        headerTransparent: true,
-                        //   headerLeft: () => <Text>Back</Text>,
-                        headerBackButtonMenuEnabled: true,
-                    }}
-                />
-                <View style={{ display: 'flex', alignItems: 'center', height: '60%' }}>
-                    {/* <Image style={styles.kv} source={require('../../assets/favicon.png')} />
-          <Text style={[globalStyles.title]}>Welcome to FAVS!</Text>
-          <Text style={[globalStyles.subtitle, styles.subtitle]}>
-            Create an account and get access to cool places around the Europe
-          </Text>
-          <View style={[styles.cta]}>
-            <Button onClick={() => console.log('click')}>Get started!</Button>
-          </View> */}
-                    <ConfirmCodeInput size={4} />
+            <Stack.Screen
+                options={{
+                    headerTransparent: false,
+                    //   headerLeft: () => <Text>Back</Text>,
+                    headerBackButtonMenuEnabled: true,
+                }}
+            />
+            <SafeAreaView style={{ display: 'flex', alignItems: 'center' }}>
+                <Image style={styles.kv} source={require('../../assets/favicon.png')} />
+                <Text style={[globalStyles.title]}>Welcome to FAVS!</Text>
+                <Text style={[globalStyles.subtitle, styles.subtitle]}>
+                    Create an account and get access to cool places around the Europe
+                </Text>
+                <View style={[styles.cta]}>
+                    <Button onClick={() => console.log('click')} children={'Get started!'} />
                 </View>
-            </ScrollView>
+            </SafeAreaView>
         </SafeAreaView>
     );
 }
