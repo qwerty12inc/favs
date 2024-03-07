@@ -8,7 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PLACES_LIST_MOCK } from "../../src/components/PlacesList/PlaceList";
 import PlaceItem from "../../src/components/PlacesList/PlaceItem";
 
-const App = () => {
+const TestPage = () => {
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default TestPage;

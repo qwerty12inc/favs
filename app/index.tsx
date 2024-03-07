@@ -1,21 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, SafeAreaView, TextInput, Dimensions, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, TextInput, Dimensions, Text, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { IStateInterface } from '../src/store/store';
 import MainPage from './main';
 import LoginPage from './auth/index';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Navigator from './(navigator)/Navigator';
 
 // import AppRoot from './(navigator)/AppRoot';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { useNavigation, useRouter } from 'expo-router';
+import { View } from 'react-native-ui-lib';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
-export default function Layout() {
+export default function Layout({ children }) {
     SplashScreen.preventAutoHideAsync();
 
     const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
@@ -38,8 +40,6 @@ export default function Layout() {
                 console.warn(e);
             } finally {
                 setAppIsReady(true);
-                console.clear();
-                console.log('ready');
             }
         }
 
@@ -56,13 +56,13 @@ export default function Layout() {
         return null;
     } else
         return (
-            <GestureHandlerRootView onLayout={onLayoutRootView}>
-                <BottomSheetModalProvider>
-                    {authenticated ? <MainPage /> : <LoginPage />}
 
-                    {/* <Text>qwerty</Text> */}
-                </BottomSheetModalProvider>
-            </GestureHandlerRootView>
+            <View style={{ height }} onLayout={onLayoutRootView}>
+                <NavigationContainer independent={true}>
+                    <Navigator />
+                </NavigationContainer>
+            </View>
+
         );
 }
 

@@ -1,84 +1,110 @@
-import { Stack, useNavigation, useRouter } from 'expo-router';
-
 import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
+import MainPage from '../main';
+import PlacePage from '../places/[id]';
+import ProfilePage from '../profile';
+import ProfileSettingsPage from '../profile/settings';
+import TestPage from '../test';
+import WelcomePage from '../auth';
+import LoginPage from '../auth/login';
+import RegisterPage from '../auth/register';
+import useAuth from '../../src/utils/auth';
 import { useSelector } from 'react-redux';
 import { IStateInterface } from '../../src/store/store';
 
-const PrivateScreens = (
-    <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false, headerTitle: '' }} />
-        <Stack.Screen
-            name="places/[id]"
-            options={{
-                headerShown: true,
-                headerTitle: '',
-                headerStyle: {
-                    backgroundColor: 'transparent',
-                },
-            }}
-        />
-        <Stack.Screen
-            name="profile/index"
-            options={{
-                headerShown: true,
-                headerTitle: 'Profile',
-                headerStyle: {
-                    backgroundColor: 'transparent',
-                },
-            }}
-        />
-        <Stack.Screen
-            name="profile/settings/index"
-            options={{
-                headerShown: true,
-                headerTitle: 'Settings',
-                headerStyle: {
-                    backgroundColor: 'transparent',
-                },
-            }}
-        />
-        <Stack.Screen
-            name="test/index"
-            options={{
-                headerShown: true,
-                headerTitle: 'test',
-                headerStyle: {
-                    backgroundColor: 'transparent',
-                },
-                headerBackVisible: false,
-            }}
-        />
-    </Stack>
-);
-
-const LoginScreens = (
-    <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false, headerTitle: '' }} />
-        <Stack.Screen
-            name="auth/index"
-            options={{
-                headerShown: false,
-            }}
-        />
-        <Stack.Screen
-            name="auth/login/index"
-            options={{
-                headerShown: false,
-            }}
-        />
-
-        <Stack.Screen
-            name="auth/register/index"
-            options={{
-                headerShown: false,
-            }}
-        />
-    </Stack>
-);
-
 export default function Navigator() {
     const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
+    const { user } = useAuth();
+    const Stack = createNativeStackNavigator()
 
-    console.log(authenticated, authenticated ? 'PrivateScreens' : 'LoginScreens');
-    return authenticated ? PrivateScreens : LoginScreens;
+    // console.log(authenticated, authenticated ? 'PrivateScreens' : 'LoginScreens');
+    if (user) {
+        console.log('private screens')
+        return (
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='index'>
+                <Stack.Screen
+                    name="index"
+                    options={{ headerShown: false, headerTitle: '' }}
+                    component={MainPage}
+                />
+                <Stack.Screen
+                    name="places/[id]"
+                    options={{
+                        headerShown: true,
+                        headerTransparent: true,
+                        headerTitle: ''
+                    }}
+                    component={PlacePage}
+                />
+                <Stack.Screen
+                    name="profile/index"
+                    options={{
+                        headerShown: true,
+                        headerTransparent: true,
+                        headerTitle: ''
+                    }}
+                    component={ProfilePage}
+                />
+                <Stack.Screen
+                    name="profile/settings/index"
+                    options={{
+                        headerShown: true,
+                        headerTitle: 'Settings',
+                        headerStyle: {
+                            backgroundColor: 'transparent',
+                        },
+                    }}
+                    component={ProfileSettingsPage}
+                />
+                <Stack.Screen
+                    name="test/index"
+                    options={{
+                        headerShown: true,
+                        headerTitle: 'test',
+                        headerStyle: {
+                            backgroundColor: 'transparent',
+                        },
+                        headerBackVisible: false,
+                    }}
+                    component={TestPage}
+                />
+            </Stack.Navigator>
+        )
+    } else {
+        console.log('login screens')
+        return (
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='index'>
+                <Stack.Screen
+                    name="index"
+                    options={{
+                        headerShown: false,
+                        headerTitle: ''
+                    }}
+                    component={WelcomePage}
+                />
+                <Stack.Screen
+                    name="auth/login/index"
+                    options={{
+                        headerShown: true,
+                        headerTransparent: true,
+                        headerTitle: ''
+                    }}
+                    component={LoginPage}
+                />
+
+                <Stack.Screen
+                    name="auth/register/index"
+                    options={{
+                        headerShown: true,
+                        headerTransparent: true,
+                        headerTitle: ''
+                    }}
+                    component={RegisterPage}
+                />
+            </Stack.Navigator>
+        )
+    }
 }

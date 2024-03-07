@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, Stack, useRouter } from 'expo-router';
-import { StyleSheet, SafeAreaView, TextInput, Dimensions } from 'react-native';
+import { Link, useNavigation, useRouter } from 'expo-router';
+import { StyleSheet, SafeAreaView, TextInput, Dimensions, Pressable } from 'react-native';
 import { Avatar, View } from 'react-native-ui-lib';
 import MapBlock from '../../src/components/Map';
 import { useSelector } from 'react-redux';
@@ -27,39 +27,30 @@ export default function MainPage() {
 
     const [text, onChangeText] = React.useState('');
 
-    useEffect(() => {
-        if (auth != null && !auth) {
-            console.log('not logined');
-            setTimeout(() => {
-                router.navigate('/auth');
-                console.log('redirected');
-            }, 800);
-        } else {
-            console.log('logined');
-        }
-    }, [auth]);
+    const navigation = useNavigation();
+
+    const onProfilePress = () => {
+        //@ts-ignore
+        navigation.navigate('profile/index');
+    };
 
     return (
         <SafeAreaView style={styles.container}>
-            <Stack.Screen
-                options={{
-                    headerTransparent: false,
-                    //   headerLeft: () => <Text>Back</Text>,
-                    headerBackButtonMenuEnabled: true,
-                }}
-            />
             <View style={styles.userProfile}>
                 <SafeAreaView>
                     <CityPicker />
                 </SafeAreaView>
-                <Link href={'/profile'} style={styles.userAvatar}>
+                <Pressable
+                    onPress={onProfilePress}
+                    style={styles.userAvatar}
+                >
                     <Avatar
                         source={{
                             uri: 'https://lh3.googleusercontent.com/-cw77lUnOvmI/AAAAAAAAAAI/AAAAAAAAAAA/WMNck32dKbc/s181-c/104220521160525129167.jpg',
                         }}
                         label={'it'}
                     />
-                </Link>
+                </Pressable>
             </View>
             <View style={styles.searchBar_shadow}>
                 <View style={{ paddingVertical: 0 }}>
@@ -77,9 +68,9 @@ export default function MainPage() {
                         selectedIndex={0}
                         style={{ paddingVertical: 20 }}
                         fontStyle={{ fontFamily: 'ClashDisplay-Medium' }}
-                        // onChange={(event) => {
-                        //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
-                        // }}
+                    // onChange={(event) => {
+                    //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
+                    // }}
                     />
                 </View>
             </View>

@@ -1,4 +1,3 @@
-import { Link, Stack } from "expo-router";
 import React from "react";
 import { StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,31 +6,18 @@ import HistoryList from "../../src/components/HistoryList/HistoryList";
 import { globalStyles, globalTokens } from "../../src/styles";
 import CurrentSubscription from "../../src/components/CurrentSubscription/CurrentSubscription";
 import { CustomText, CustomTitle } from "../../src/components/Text/CustomText";
+import useAuth from "../../src/utils/auth";
 
 const settingsIcon = require("../../assets/icon--settings.png");
 
 const { width, height } = Dimensions.get("window");
 
-export default function Profile() {
+export default function ProfilePage() {
+  const { user } = useAuth()
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ paddingHorizontal: 16, height: height - 100 }}>
-        <Stack.Screen
-          options={{
-            headerTransparent: true,
-            //   headerLeft: () => <Text>Back</Text>,
-            headerBackButtonMenuEnabled: true,
 
-            headerRight: () => (
-              <Link href={"/profile/settings"}>
-                <Image
-                  source={settingsIcon}
-                  style={{ width: 24, height: 24, opacity: 0.7 }}
-                />
-              </Link>
-            ),
-          }}
-        />
         <View style={{ display: "flex", alignItems: "center" }}>
           <Avatar
             source={{
@@ -40,10 +26,10 @@ export default function Profile() {
             containerStyle={{ width: 120, height: 120 }}
             imageStyle={{ width: "100%", height: "100%" }}
           />
-          <CustomTitle style={[globalStyles.title, {marginTop: 16}]}>
-            Name Surname
+          <CustomTitle style={[globalStyles.title, { marginTop: 16 }]}>
+            {user?.displayName ? user?.displayName : "–"}
           </CustomTitle>
-          <CustomText>example@example.com</CustomText>
+          <CustomText>{user?.email ? user?.email : "–"}</CustomText>
         </View>
         <View style={{ display: "flex", gap: 8, marginVertical: 45 }}>
           <Text Text style={globalStyles.subtitle}>

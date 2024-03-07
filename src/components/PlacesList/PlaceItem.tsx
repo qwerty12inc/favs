@@ -7,6 +7,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     ImageSourcePropType,
+    Pressable,
 } from 'react-native';
 import { Carousel, AnimatedImage } from 'react-native-ui-lib';
 import { CustomTitle as Title, CustomText as Text } from '../Text/CustomText';
@@ -30,12 +31,9 @@ export default function PlaceItem(props: TProps) {
     };
 
     return (
-        <Link
+        <Pressable
             style={[props.isFirst && { marginTop: 0 }, styles.container]}
-            href={{
-                pathname: '/places/[id]',
-                params: { id: props.id },
-            }}
+            onPress={onPress}
         >
             <View>
                 <Carousel
@@ -74,7 +72,7 @@ export default function PlaceItem(props: TProps) {
                 <Title style={styles.place__name}>{props.name}</Title>
                 <Text style={styles.place__address}>{props.address}</Text>
             </View>
-        </Link>
+        </Pressable>
     );
 }
 

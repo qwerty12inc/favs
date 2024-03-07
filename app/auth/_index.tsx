@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Slot, Stack, useRouter } from 'expo-router';
+import { Slot, useRouter } from 'expo-router';
 import { View, Text, SafeAreaView } from 'react-native';
 import { Provider, useSelector } from 'react-redux';
 

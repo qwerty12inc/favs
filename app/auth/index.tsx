@@ -1,4 +1,4 @@
-import { Link, Stack, useRouter } from 'expo-router';
+import { Link, useNavigation, useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,17 +7,21 @@ import { globalStyles, globalTokens } from '../../src/styles';
 import { Button } from './../../src/components/Button/Button';
 import { ConfirmCodeInput } from '../../src/components/ConfirmCodeInput/ConfirmCodeInput';
 
-export default function LoginPage() {
-    const router = useRouter();
+export default function WelcomePage() {
+    const navigation = useNavigation();
+
+    const onLoginPress = () => {
+        //@ts-ignore
+        navigation.navigate('auth/login/index');
+    };
+
+    const onRegisterPress = () => {
+        //@ts-ignore
+        navigation.navigate('auth/register/index');
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <Stack.Screen
-                options={{
-                    headerTransparent: false,
-                    //   headerLeft: () => <Text>Back</Text>,
-                    headerBackButtonMenuEnabled: true,
-                }}
-            />
             <SafeAreaView style={{ display: 'flex', alignItems: 'center' }}>
                 <Image style={styles.kv} source={require('../../assets/favicon.png')} />
                 <Text style={[globalStyles.title]}>Welcome to FAVS!</Text>
@@ -26,13 +30,13 @@ export default function LoginPage() {
                 </Text>
                 <View style={[styles.cta]}>
                     <Button
-                        onClick={() => router.push('/auth/register')}
+                        onClick={onRegisterPress}
                         children={'Get started!'}
                     />
                 </View>
                 <Text style={[globalStyles.subtitle]}>
                     Or you already have an account?{' '}
-                    <Link push href={'/auth/login'}>
+                    <Link href={'/'} onPress={onLoginPress}>
                         Log in
                     </Link>
                 </Text>

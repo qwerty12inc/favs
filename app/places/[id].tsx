@@ -12,7 +12,6 @@ import Animated, {
   useAnimatedStyle,
   interpolate,
 } from "react-native-reanimated";
-import { Stack } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import {
   Carousel,
@@ -33,6 +32,7 @@ import ContactsList from "../../src/components/ContactsList/ContactsList";
 import OpeningHours from "../../src/components/OpeningHours/OpeningHours";
 import AddressBlock from "../../src/components/AddressBlock/AddressBlock";
 import { globalStyles, globalTokens } from "../../src/styles";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const dogPhoto = require("../../assets/random_img.jpeg");
 const qr = require("../../assets/qr.png");
@@ -98,12 +98,6 @@ export default function PlacePage() {
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
         <View style={styles.container}>
-          <Stack.Screen
-            options={{
-              headerTransparent: true,
-              // headerLeft: () => <Text>Back</Text>
-            }}
-          />
           <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
             <Animated.View style={[styles.image, imageAnimatedStyle]}>
               <Carousel

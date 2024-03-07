@@ -8,27 +8,29 @@ import { auth } from '../../../src/utils/firebase';
 
 const { width, height } = Dimensions.get('window');
 
-export default function index() {
+export default function LoginPage() {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
-    const [isFormValid, setIsFormValid] = useState<boolean>(false);
+    const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
     const handleSubmit = () => {
         if (!isFormValid) {
             return;
         } else {
-            createUserWithEmailAndPassword(auth, email, password)
+            signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Signed up
+                    // Signed in
                     const user = userCredential.user;
+                    console.log(user)
                     // ...
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
+                    console.log(error)
                     // ..
                 });
         }
