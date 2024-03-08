@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.g.tupikov.cofegeo"
+      "package": "com.g.tupikov.cofegeo",
+      "googleServicesFile": "./src/utils/GoogleService-Info.plist"
     },
     "web": {
       "favicon": "./assets/favicon.png",
