@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.g.tupikov.cofegeo"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,9 +34,28 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Archivo-Medium.ttf"]
+          "fonts": [
+            "./assets/fonts/Archivo-Medium.ttf"
+          ]
+        }
+      ],
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "43689992-519b-4088-a10c-16d4187ea3f2"
+      }
+    }
   }
 }
