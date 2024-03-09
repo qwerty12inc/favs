@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     },
     placesCount: {
         textAlign: 'center',
-        // marginBottom: 24,
+        fontFamily: 'ClashDisplay-Medium',
         fontWeight: '500',
         fontSize: 18,
         marginTop: 14,

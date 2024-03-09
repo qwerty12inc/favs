@@ -38,7 +38,6 @@ const CityPicker: React.FC = () => {
                 style={{
                     fontSize: 24,
                     fontWeight: '600',
-                    textTransform: 'uppercase',
                     fontFamily: 'ClashDisplay-Medium',
                 }}
             >

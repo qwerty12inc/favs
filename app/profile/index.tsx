@@ -7,13 +7,24 @@ import { globalStyles, globalTokens } from "../../src/styles";
 import CurrentSubscription from "../../src/components/CurrentSubscription/CurrentSubscription";
 import { CustomText, CustomTitle } from "../../src/components/Text/CustomText";
 import useAuth from "../../src/utils/auth";
+import { Button } from "../../src/components/Button/Button";
+import { signOut } from "firebase/auth";
+import { auth } from "../../src/utils/firebase";
 
 const settingsIcon = require("../../assets/icon--settings.png");
 
 const { width, height } = Dimensions.get("window");
 
+
 export default function ProfilePage() {
   const { user } = useAuth()
+
+  const logout = () => {
+    signOut(auth)
+      .then(() => (console.log('logout')))
+      .catch((e) => (console.log('logout error: ', e)))
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ paddingHorizontal: 16, height: height - 100 }}>
@@ -38,6 +49,7 @@ export default function ProfilePage() {
           <CurrentSubscription />
           <Text style={globalStyles.subtitle}>History</Text>
           <HistoryList />
+          <Button onClick={logout} type="secondary">Logout</Button>
         </View>
       </ScrollView>
     </SafeAreaView>
