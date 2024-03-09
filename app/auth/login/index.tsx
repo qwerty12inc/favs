@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { globalStyles, globalTokens } from '../../../src/styles';
 import { Button } from '../../../src/components/Button/Button';
@@ -44,6 +44,15 @@ export default function LoginPage() {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(error)
+                    if (errorCode === 'auth/invalid-credential') {
+                        Alert.alert("Error", `Wrong login or password`, [
+                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                        ])
+                    } else {
+                        Alert.alert("Error", `${errorCode}: ${errorMessage}`, [
+                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                        ])
+                    }
                     // ..
                 })
                 .finally(() => {

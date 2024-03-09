@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, NativeSyntheticEvent, TextInputChangeEventData, Alert } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { globalStyles, globalTokens } from '../../../src/styles';
 import { Button } from '../../../src/components/Button/Button';
@@ -7,11 +7,14 @@ import { MaskedInput } from 'react-native-ui-lib';
 import { emailValidator } from '../../../src/utils/validators';
 import { auth } from '../../../src/utils/firebase';
 import { debounce } from 'lodash';
+import { useNavigation } from 'expo-router';
 
 
 const { width, height } = Dimensions.get('window');
 
 export default function RegisterPage() {
+    const navigation = useNavigation();
+
     const [name, setName] = useState<string>('');
     const [isNameError, setIsNameError] = useState<boolean>(null);
 
@@ -85,10 +88,22 @@ export default function RegisterPage() {
                             console.log(errorCode, errorMessage);
                         });
                 })
+
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorCode, errorMessage);
+                    if (errorCode === 'auth/email-already-in-use') {
+                        Alert.alert("Error", `Email ${email} already registered`, [
+                            { text: 'Ok' },
+                            //@ts-ignore
+                            { text: 'Log in', onPress: () => navigation.navigate('auth/login/index') },
+                        ])
+                    } else {
+                        Alert.alert("Error", `${errorCode}: ${errorMessage}`, [
+                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                        ])
+                    }
                 })
                 .finally(() => {
                     setLoading(false)

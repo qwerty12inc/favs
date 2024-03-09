@@ -166,6 +166,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 18,
         marginTop: 14,
-        marginBottom: 14,
+        // marginBottom: 14,
     },
 });
