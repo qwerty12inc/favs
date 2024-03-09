@@ -14,8 +14,6 @@ export default function RootLayout({ children }) {
                     <Slot />
                 </BottomSheetModalProvider>
             </GestureHandlerRootView >
-
-
         </Provider>
     );
 }

@@ -1,25 +1,64 @@
-import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import { globalStyles, globalTokens } from '../../../src/styles';
 import { Button } from '../../../src/components/Button/Button';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { MaskedInput } from 'react-native-ui-lib';
+import { emailValidator } from '../../../src/utils/validators';
 import { auth } from '../../../src/utils/firebase';
+import { debounce } from 'lodash';
+
 
 const { width, height } = Dimensions.get('window');
 
 export default function RegisterPage() {
     const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+    const [isNameError, setIsNameError] = useState<boolean>(null);
 
-    const [isFormValid, setIsFormValid] = useState<boolean>(true);
+    const [email, setEmail] = useState<string>('');
+    const [isEmailError, setIsEmailError] = useState<boolean>(null);
+
+    const [password, setPassword] = useState<string>('');
+    const [isPasswordError, setIsPasswordError] = useState<boolean>(null);
+
+    const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+    const [isPasswordConfirmError, setIsPasswordConfirmError] = useState<boolean>(null);
+
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const isFormValid = (isEmailError !== null && !isEmailError) && (isNameError !== null && !isNameError) && (isPasswordError !== null && !isPasswordError) && (isPasswordConfirmError !== null && !isPasswordConfirmError)
+
+    const handleNameChange = (text) => {
+        setName(text)
+        setIsNameError(!(text.length > 0))
+    }
+
+    const handleEmailChange =
+        debounce((text) => {
+            setEmail(text)
+            setIsEmailError(!emailValidator(text))
+        }, 600)
+
+    const handlePasswordChange =
+        debounce((text) => {
+            setPassword(text)
+            setIsPasswordError(!(text.length > 7));
+            if (text === passwordConfirm) {
+                setIsPasswordConfirmError(false);
+            }
+        }, 400)
+
+    const handlePasswordConfirmChange =
+        debounce((text) => {
+            setPasswordConfirm(text)
+            setIsPasswordConfirmError(!(text === password));
+        }, 500)
 
     const handleSubmit = () => {
         if (!isFormValid) {
             return;
         } else {
+            setLoading(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     // Signed up
@@ -30,15 +69,18 @@ export default function RegisterPage() {
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(error);
+                    console.log(errorCode, errorMessage);
                     // ..
-                });
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
         }
     };
 
     return (
-        <SafeAreaView
-            style={{
+        <ScrollView
+            contentContainerStyle={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -52,32 +94,51 @@ export default function RegisterPage() {
                     aria-label="Your name"
                     placeholder="Name"
                     keyboardType="email-address"
-                    onChange={(e) => setName(e.nativeEvent.text)}
+                    textContentType='name'
+                    onChangeText={handleNameChange}
                 />
+                {
+                    isNameError && <Text style={{ color: globalTokens.colors.red }}>Add Name</Text>
+                }
                 <TextInput
                     style={style.input}
                     aria-label="Email"
                     placeholder="Your email"
-                    keyboardType="default"
-                    onChange={(e) => setEmail(e.nativeEvent.text)}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    textContentType="emailAddress"
+                    onChangeText={handleEmailChange}
                 />
+                {
+                    isEmailError && <Text style={{ color: globalTokens.colors.red }}>Unvalid email</Text>
+                }
                 <TextInput
                     style={style.input}
                     aria-label="Password"
                     placeholder="Password"
+                    secureTextEntry={true}
                     keyboardType="default"
-                    onChange={(e) => setPassword(e.nativeEvent.text)}
+                    textContentType="newPassword"
+                    onChangeText={handlePasswordChange}
                 />
+                {
+                    isPasswordError && <Text style={{ color: globalTokens.colors.red }}>The password must contain at least 8 symbols</Text>
+                }
                 <TextInput
                     style={style.input}
                     aria-label="Confirm password"
                     placeholder="Confirm password"
+                    secureTextEntry={true}
                     keyboardType="default"
-                    onChange={(e) => setPasswordConfirm(e.nativeEvent.text)}
+                    textContentType="newPassword"
+                    onChangeText={handlePasswordConfirmChange}
                 />
-                <Button onClick={handleSubmit}>Register</Button>
+                {
+                    isPasswordConfirmError && <Text style={{ color: globalTokens.colors.red }}>Passwords mismatch</Text>
+                }
+                <Button onClick={handleSubmit} loading={loading} disabled={!isFormValid}>Register</Button>
             </View>
-        </SafeAreaView>
+        </ScrollView>
     );
 }
 

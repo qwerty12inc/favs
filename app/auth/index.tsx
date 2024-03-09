@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, View, Text, Image } from 'react-native-ui-lib';
 import { globalStyles, globalTokens } from '../../src/styles';
 import { Button } from './../../src/components/Button/Button';
-import { ConfirmCodeInput } from '../../src/components/ConfirmCodeInput/ConfirmCodeInput';
 
 export default function WelcomePage() {
     const navigation = useNavigation();
@@ -31,15 +30,14 @@ export default function WelcomePage() {
                 <View style={[styles.cta]}>
                     <Button
                         onClick={onRegisterPress}
-                        children={'Get started!'}
+                        children={'Sign up'}
+                    />
+                    <Button
+                        onClick={onLoginPress}
+                        children={'Sign in!'}
+                        type="secondary"
                     />
                 </View>
-                <Text style={[globalStyles.subtitle]}>
-                    Or you already have an account?{' '}
-                    <Link href={'/'} onPress={onLoginPress}>
-                        Log in
-                    </Link>
-                </Text>
             </SafeAreaView>
         </SafeAreaView>
     );
@@ -65,5 +63,8 @@ const styles = StyleSheet.create({
     },
     cta: {
         marginTop: 32,
+        display: "flex",
+        flexDirection: "row",
+        gap: 16
     },
 });

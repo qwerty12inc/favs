@@ -47,7 +47,7 @@
         "expo-build-properties",
         {
           "ios": {
-            "useFrameworks": "static",
+            "useFrameworks": "static"
           }
         }
       ]
@@ -59,6 +59,10 @@
       "eas": {
         "projectId": "43689992-519b-4088-a10c-16d4187ea3f2"
       }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/43689992-519b-4088-a10c-16d4187ea3f2"
     }
   }
 }
