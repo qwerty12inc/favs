@@ -83,15 +83,7 @@ export default function MainPage() {
                 index={0}
                 snapPoints={snapPoints}
             >
-                <View
-                    style={{
-                        display: 'flex',
-                        gap: 8,
-                        paddingHorizontal: 16,
-                    }}
-                >
-                    <Text style={styles.placesCount}>{PLACES_LIST_MOCK.length} places on map</Text>
-                </View>
+                <Text style={styles.placesCount}>{PLACES_LIST_MOCK.length} places on map</Text>
                 <PlaceList />
             </BottomSheet>
         </SafeAreaView>
