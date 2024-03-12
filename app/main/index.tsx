@@ -16,8 +16,6 @@ import { CustomText as Text, CustomTitle as Title } from '../../src/components/T
 const { width, height } = Dimensions.get('window');
 
 export default function MainPage() {
-    const auth = useSelector((state: IStateInterface) => state.authentication.isLogined);
-    const router = useRouter();
 
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
     const currentCity = useSelector((state: IStateInterface) => state.cities.current);

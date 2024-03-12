@@ -1,55 +1,72 @@
 import { StyleSheet, Text, SafeAreaView, Dimensions } from "react-native";
 import { Avatar, View, Picker, ModalProps } from "react-native-ui-lib";
-import MapView, { Marker, Region } from "react-native-maps";
+import MapView, { Details, LatLng, Marker, MarkerPressEvent, Region } from "react-native-maps";
 import React, { useEffect, useState } from "react";
+// import MapService from "../http/MapService";
 
-type TPosition = {
-  latitude: number;
-  longitude: number;
-  latitudeDelta?: number;
-  longitudeDelta?: number;
-};
+type TMapType = 'general' | 'detailed';
 
-export default function MapBlock(props: {
-  initialPosition: TPosition;
+type Props = {
+  initialPosition: Region;
   zoom?: number;
   markers?: any[];
-}) {
+  type?: TMapType
+}
+
+const MapBlock: React.FC<Props> = (props) => {
+
+  const { initialPosition, zoom, markers, type = 'general' } = props
+
   const { width, height } = Dimensions.get("window");
 
   const ASPECT_RATIO = width / height;
-  const LATITUDE_DELTA = props.zoom ? props.zoom : 0.12;
+  const LATITUDE_DELTA = zoom ? zoom : 0.12;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
   const [region, setRegion] = useState<Region>({
-    latitude: props.initialPosition.latitude,
-    longitude: props.initialPosition.longitude,
+    latitude: initialPosition.latitude,
+    longitude: initialPosition.longitude,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
 
   useEffect(() => {
-    console.log("Данные для карты:", props.initialPosition);
-    //@ts-ignore
     setRegion((prev) => {
       return {
         ...prev,
-        latitude: props.initialPosition.latitude,
-        longitude: props.initialPosition.longitude,
+        latitude: initialPosition.latitude,
+        longitude: initialPosition.longitude,
       };
     });
   }, [props.initialPosition]);
+
+  const handleRegionChange = (region: Region, details: Details) => {
+    // MapService.getPlaceByRegion(region)
+    //   .then((places) => {
+    //     console.log(places)
+    //   })
+    //   .catch((err) => console.log(err))
+    console.log(region, details)
+  }
+
+  const handleMarkerClick = (e: MarkerPressEvent) => {
+    console.log(e.currentTarget)
+  }
 
   return (
     <View style={styles.mapContainer}>
       <MapView
         style={styles.map}
         region={region}
-        //   initialRegion={region}
+        // initialRegion={region}
         //   onPress={e => this.onMapPress(e)}
+        onMarkerPress={handleMarkerClick}
+        onRegionChange={handleRegionChange}
+      // scrollEnabled={type === 'general'}
+      // onMapReady={() => setRegion(region)}
       >
-        {props.markers &&
-          props.markers.map((marker: TPosition) => (
+        {markers &&
+          markers.map((marker: LatLng) => (
             <Marker
               key={(marker.longitude + marker.latitude).toString()}
               coordinate={marker}
@@ -72,3 +89,6 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
+
+
+export default MapBlock
