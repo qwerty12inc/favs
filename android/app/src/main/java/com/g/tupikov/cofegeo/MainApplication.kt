@@ -1,4 +1,4 @@
-package com.cofegeo
+package com.g.tupikov.cofegeo
 
 import android.app.Application
 import android.content.res.Configuration

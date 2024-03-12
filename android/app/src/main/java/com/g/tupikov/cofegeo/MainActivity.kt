@@ -1,4 +1,4 @@
-package com.cofegeo
+package com.g.tupikov.cofegeo
 
 import android.os.Build
 import android.os.Bundle

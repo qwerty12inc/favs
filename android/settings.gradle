@@ -1,4 +1,4 @@
-rootProject.name = 'cofegeo'
+rootProject.name = 'Favs best places in Europe'
 
 dependencyResolutionManagement {
   versionCatalogs {

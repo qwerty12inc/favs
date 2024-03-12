@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "cofegeo",
+    "name": "Favs: best places in Europe",
     "slug": "cofegeo",
     "scheme": "your-app-scheme",
     "version": "1.0.0",
@@ -17,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.g.tupikov.cofegeo",
+      "bundleIdentifier": "website.favs.app",
       "googleServicesFile": "./src/utils/GoogleService-Info.plist"
     },
     "android": {
@@ -63,6 +63,7 @@
     "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/43689992-519b-4088-a10c-16d4187ea3f2"
-    }
+    },
+    "owner": "g.tupikov"
   }
 }
