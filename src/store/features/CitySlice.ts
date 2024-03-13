@@ -1,9 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { LatLng } from "react-native-maps";
 
 type TCoordinates = { latitude: number; longitude: number };
 
 export interface TCityMap {
-  [cityName: string]: TCoordinates;
+  [cityName: string]: LatLng;
 }
 
 export const CITY_POSITION: TCityMap = {
@@ -12,12 +13,12 @@ export const CITY_POSITION: TCityMap = {
   Berlin: { latitude: 52.52437, longitude: 13.41053 },
 };
 
-export interface ICityState {
+export interface L {
   cities: TCityMap;
   current: string;
 }
 
-const initialState: ICityState = {
+const initialState  = {
   cities: CITY_POSITION,
   current: "Berlin",
 };

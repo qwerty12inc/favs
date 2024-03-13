@@ -25,7 +25,7 @@ export default function LoginPage() {
         debounce((text) => {
             setEmail(text)
             setIsEmailError(!emailValidator(text))
-        }, 600)
+        }, 2000)
 
 
     const handleSubmit = () => {

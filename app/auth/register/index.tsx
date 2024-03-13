@@ -40,7 +40,7 @@ export default function RegisterPage() {
         debounce((text) => {
             setEmail(text)
             setIsEmailError(!emailValidator(text))
-        }, 600)
+        }, 2000)
 
     const handlePasswordChange =
         debounce((text) => {
@@ -49,13 +49,13 @@ export default function RegisterPage() {
             if (text === passwordConfirm) {
                 setIsPasswordConfirmError(false);
             }
-        }, 400)
+        }, 2000)
 
     const handlePasswordConfirmChange =
         debounce((text) => {
             setPasswordConfirm(text)
             setIsPasswordConfirmError(!(text === password));
-        }, 500)
+        }, 2000)
 
     const handleSubmit = () => {
         if (!isFormValid) {

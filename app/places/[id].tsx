@@ -187,7 +187,8 @@ export default function PlacePage() {
                 <MapBlock
                   initialPosition={{ latitude: 52.52437, longitude: 13.41053 }}
                   zoom={0.05}
-                  markers={[{ latitude: 52.52437, longitude: 13.41053 }]}
+                  marker={{ latitude: 52.52437, longitude: 13.41053 }}
+                  type={"detailed"}
                 />
               </View>
               <View style={{ marginTop: 0 }}>

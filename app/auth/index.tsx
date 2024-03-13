@@ -34,7 +34,7 @@ export default function WelcomePage() {
                     />
                     <Button
                         onClick={onLoginPress}
-                        children={'Sign in!'}
+                        children={'Sign in'}
                         type="secondary"
                     />
                 </View>

@@ -2,20 +2,24 @@ import { StyleSheet, Text, SafeAreaView, Dimensions } from "react-native";
 import { Avatar, View, Picker, ModalProps } from "react-native-ui-lib";
 import MapView, { Details, LatLng, Marker, MarkerPressEvent, Region } from "react-native-maps";
 import React, { useEffect, useState } from "react";
-// import MapService from "../http/MapService";
+import MapService from "../http/MapService";
+import { TMapApiResponse } from "../models/maps";
+import { useNavigation } from "expo-router";
+import { debounce } from 'lodash';
 
 type TMapType = 'general' | 'detailed';
 
 type Props = {
-  initialPosition: Region;
+  initialPosition: LatLng;
   zoom?: number;
-  markers?: any[];
+  marker?: any;
   type?: TMapType
 }
 
 const MapBlock: React.FC<Props> = (props) => {
+  const navigation = useNavigation();
 
-  const { initialPosition, zoom, markers, type = 'general' } = props
+  const { initialPosition, zoom, marker, type = 'general' } = props
 
   const { width, height } = Dimensions.get("window");
 
@@ -30,6 +34,8 @@ const MapBlock: React.FC<Props> = (props) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
+  const [mapMarkers, setMapMarkers] = useState<TMapApiResponse[]>([])
+
   useEffect(() => {
     setRegion((prev) => {
       return {
@@ -38,19 +44,29 @@ const MapBlock: React.FC<Props> = (props) => {
         longitude: initialPosition.longitude,
       };
     });
+    MapService.getAllPlaces()
+      .then((res) => res.data)
+      .then((data) => setMapMarkers(data))
   }, [props.initialPosition]);
 
-  const handleRegionChange = (region: Region, details: Details) => {
-    // MapService.getPlaceByRegion(region)
-    //   .then((places) => {
-    //     console.log(places)
-    //   })
-    //   .catch((err) => console.log(err))
-    console.log(region, details)
-  }
+  const handleRegionChange =
+    debounce((region: Region, details: Details) => {
+      MapService.getPlaceByRegion(region)
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data)
+          setMapMarkers(data)
+        })
+        .catch((err) => {
+          console.error(err)
+        });
+      console.log(region, details)
+    }, 500)
+
 
   const handleMarkerClick = (e: MarkerPressEvent) => {
     console.log(e.currentTarget)
+    navigation.navigate('places/[id]', { id: e.currentTarget });
   }
 
   return (
@@ -60,18 +76,28 @@ const MapBlock: React.FC<Props> = (props) => {
         region={region}
         // initialRegion={region}
         //   onPress={e => this.onMapPress(e)}
-        onMarkerPress={handleMarkerClick}
-        onRegionChange={handleRegionChange}
+        onMarkerPress={type === 'general' && handleMarkerClick}
+      // onRegionChange={type === 'general' && handleRegionChange}
       // scrollEnabled={type === 'general'}
       // onMapReady={() => setRegion(region)}
       >
-        {markers &&
-          markers.map((marker: LatLng) => (
+        {(marker && type === 'detailed') &&
+          <Marker
+            key={(marker.longitude + marker.latitude).toString()}
+            coordinate={marker}
+          />
+        }
+        {
+          (mapMarkers && type === 'general') &&
+          mapMarkers.map((marker) => (
             <Marker
-              key={(marker.longitude + marker.latitude).toString()}
-              coordinate={marker}
+              key={(marker.coordinates.latitude + marker.coordinates.longitude).toString()}
+              coordinate={marker.coordinates}
+              identifier={marker.id}
+              onPress={handleMarkerClick}
             />
-          ))}
+          ))
+        }
       </MapView>
     </View>
   );
