@@ -23,14 +23,24 @@ export default class MapService {
     }
 
     static async getAllPlaces() :Promise<AxiosResponse<TMapApiResponse[]>> {
-        
-        console.log(auth.currentUser.stsTokenManager.accessToken)
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: auth.currentUser.stsTokenManager.accessToken
             },
         }
         return api.get('/places', config)
+    }
+
+    static async getPlaceInfo(id: string) :Promise<AxiosResponse<TMapApiResponse>> {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: auth.currentUser.stsTokenManager.accessToken
+            },
+            params: {
+                id: id
+            }
+        }
+        return api.get(`/places/${id}`, config)
     }
 }
 

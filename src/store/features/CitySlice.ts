@@ -20,7 +20,7 @@ export interface L {
 
 const initialState  = {
   cities: CITY_POSITION,
-  current: "Berlin",
+  current: "Milan",
 };
 
 export const CitySlice = createSlice({

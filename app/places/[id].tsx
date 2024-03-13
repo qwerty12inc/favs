@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -33,6 +33,8 @@ import OpeningHours from "../../src/components/OpeningHours/OpeningHours";
 import AddressBlock from "../../src/components/AddressBlock/AddressBlock";
 import { globalStyles, globalTokens } from "../../src/styles";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MapService from "../../src/http/MapService";
+import { TMapApiResponse } from "../../src/models/maps";
 
 const dogPhoto = require("../../assets/random_img.jpeg");
 const qr = require("../../assets/qr.png");
@@ -43,6 +45,8 @@ const IMG_HEIGHT = 300;
 export default function PlacePage() {
   const { id } = useLocalSearchParams();
 
+  const [placeInfo, setPlaceInfo] = useState<TMapApiResponse>(null)
+
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
 
@@ -51,7 +55,6 @@ export default function PlacePage() {
   const checkInModalRef = useRef<BottomSheetModal>(null);
 
   const handleOpenModalRef = useCallback((id) => {
-    console.log(id);
     checkInModalRef.current?.present();
   }, []);
 
@@ -72,6 +75,16 @@ export default function PlacePage() {
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
+
+  useEffect(() => {
+    //@ts-ignore
+    MapService.getPlaceInfo(id)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data)
+        setPlaceInfo(data)
+      })
+  }, [])
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -136,7 +149,11 @@ export default function PlacePage() {
               }}
             >
               <View style={styles.content}>
-                <Text style={globalStyles.title}>Place name {id}</Text>
+                <Text style={globalStyles.title}>
+                  {
+                    placeInfo?.name ? placeInfo.name : 'loading..'
+                  }
+                </Text>
                 <View
                   style={{
                     width: 100,
@@ -185,9 +202,9 @@ export default function PlacePage() {
                 }}
               >
                 <MapBlock
-                  initialPosition={{ latitude: 52.52437, longitude: 13.41053 }}
-                  zoom={0.05}
-                  marker={{ latitude: 52.52437, longitude: 13.41053 }}
+                  initialPosition={{ latitude: placeInfo?.coordinates.latitude, longitude: placeInfo?.coordinates.longitude }}
+                  zoom={0.005}
+                  marker={{ latitude: placeInfo?.coordinates.latitude, longitude: placeInfo?.coordinates.longitude }}
                   type={"detailed"}
                 />
               </View>
