@@ -2,15 +2,18 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import isAuthSlice, { IAuthState } from './features/isAuthSlice';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import CitySlice, { ICityState } from './features/CitySlice';
+import PlacesSlice, { IPlaceState } from './features/PlacesSlice';
 
 export interface IStateInterface {
     authentication: IAuthState;
     cities: ICityState;
+    places: IPlaceState;
 }
 
 const rootReducer = combineReducers({
     authentication: isAuthSlice,
     cities: CitySlice,
+    places: PlacesSlice
 });
 
 export const store = configureStore({

@@ -9,5 +9,6 @@ export type TMapApiResponse = {
     labels?: string[],
     locationURL?: string,
     name: string,
-    website?: string
+    website?: string,
+    photos?: string[], 
 }

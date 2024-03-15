@@ -19,6 +19,9 @@ export default function MainPage() {
 
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
     const currentCity = useSelector((state: IStateInterface) => state.cities.current);
+    const places = useSelector((state: IStateInterface) => state.places.places);
+    const placesAmount = useSelector((state: IStateInterface) => state.places.placesAmount);
+
     const snapPoints = useMemo(() => [100, height - 195], []);
 
     const BottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -81,7 +84,7 @@ export default function MainPage() {
                 index={0}
                 snapPoints={snapPoints}
             >
-                <Text style={styles.placesCount}>{PLACES_LIST_MOCK.length} places on map</Text>
+                <Text style={styles.placesCount}>{placesAmount} places in {currentCity}</Text>
                 <PlaceList />
             </BottomSheet>
         </SafeAreaView>

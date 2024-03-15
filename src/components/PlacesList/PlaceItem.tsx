@@ -9,13 +9,13 @@ import {
     ImageSourcePropType,
     Pressable,
 } from 'react-native';
-import { Carousel, AnimatedImage } from 'react-native-ui-lib';
+import { Carousel, AnimatedImage, Image } from 'react-native-ui-lib';
 import { CustomTitle as Title, CustomText as Text } from '../Text/CustomText';
 
 const { width, height } = Dimensions.get('window');
 
 type TProps = {
-    id: number;
+    id: string;
     name: string;
     address: string;
     photos: string[];
@@ -36,38 +36,53 @@ export default function PlaceItem(props: TProps) {
             onPress={onPress}
         >
             <View>
-                <Carousel
-                    containerStyle={{
-                        height: 250,
-                        padding: 0,
-                        margin: 0,
-                    }}
-                    containerMarginHorizontal={0}
-                    pagingEnabled
-                    itemSpacings={0}
-                    pageWidth={width}
-                    pageControlPosition={'over'}
-                    allowAccessibleLayout
-                    style={{ borderRadius: 8 }}
-                >
-                    {props.photos.map((item) => (
-                        <TouchableWithoutFeedback key={item.toString()} onPress={onPress}>
-                            <View
-                                style={{
-                                    width: '100%',
-                                    padding: 0,
-                                    backgroundColor: 'grey',
-                                }}
-                            >
-                                <AnimatedImage
-                                    style={{ height: '100%', width: '100%' }}
-                                    source={{ uri: item }}
-                                    loader={<ActivityIndicator />}
-                                />
-                            </View>
-                        </TouchableWithoutFeedback>
-                    ))}
-                </Carousel>
+                {props.photos && props.photos?.length > 0 &&
+                    <Carousel
+                        containerStyle={{
+                            height: 250,
+                            padding: 0,
+                            margin: 0,
+                        }}
+                        containerMarginHorizontal={0}
+                        pagingEnabled
+                        itemSpacings={0}
+                        pageWidth={width}
+                        pageControlPosition={'over'}
+                        allowAccessibleLayout
+                        style={{ borderRadius: 8 }}
+                    >
+                        {props.photos.map((item) => (
+                            <TouchableWithoutFeedback key={item.toString()} onPress={onPress}>
+                                <View
+                                    style={{
+                                        width: '100%',
+                                        padding: 0,
+                                        backgroundColor: 'grey',
+                                    }}
+                                >
+                                    <AnimatedImage
+                                        style={{ height: '100%', width: '100%' }}
+                                        source={{ uri: item }}
+                                        loader={<ActivityIndicator />}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        ))
+                        }
+                    </Carousel>
+                }
+                {
+                    !props.photos &&
+                    <Image
+                        style={{
+                            height: 250,
+                            padding: 0,
+                            margin: 0,
+                        }}
+                        source={require('../../../assets/default-fallback-image.png')}
+                    />
+
+                }
 
                 <Title style={styles.place__name}>{props.name}</Title>
                 <Text style={styles.place__address}>{props.address}</Text>

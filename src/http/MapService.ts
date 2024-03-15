@@ -7,7 +7,7 @@ import { TMapApiResponse } from "../models/maps";
 export default class MapService {
     static async getPlaceByRegion(region : Region) :Promise<AxiosResponse<TMapApiResponse[]>> {
         const {latitude, longitude, latitudeDelta, longitudeDelta} = region
-        console.log(auth.currentUser.stsTokenManager.accessToken)
+        // console.log(auth.currentUser.stsTokenManager.accessToken)
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: auth.currentUser.stsTokenManager.accessToken
@@ -26,6 +26,18 @@ export default class MapService {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: auth.currentUser.stsTokenManager.accessToken
+            },
+        }
+        return api.get('/places', config)
+    }
+
+    static async getPlacesByCity(city: string) :Promise<AxiosResponse<TMapApiResponse[]>> {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: auth.currentUser.stsTokenManager.accessToken
+            },
+            params: {
+                city: city
             },
         }
         return api.get('/places', config)

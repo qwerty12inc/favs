@@ -14,13 +14,17 @@ import RegisterPage from '../auth/register';
 import useAuth from '../../src/utils/auth';
 import { useSelector } from 'react-redux';
 import { IStateInterface } from '../../src/store/store';
+import SplashScreen from '../auth/splashScreen/SplashScreen';
 
 export default function Navigator() {
     const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
     const { user } = useAuth();
     const Stack = createNativeStackNavigator()
 
-    // console.log(authenticated, authenticated ? 'PrivateScreens' : 'LoginScreens');
+    useEffect(() => {
+        console.log('user: ', user)
+    }, [user])
+
     if (user) {
         console.log('private screens')
         return (
@@ -76,7 +80,15 @@ export default function Navigator() {
     } else {
         console.log('login screens')
         return (
-            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='index'>
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loader'>
+                <Stack.Screen
+                    name="loader"
+                    options={{
+                        headerShown: false,
+                        headerTitle: ''
+                    }}
+                    component={SplashScreen}
+                />
                 <Stack.Screen
                     name="index"
                     options={{

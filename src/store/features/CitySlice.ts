@@ -10,10 +10,10 @@ export interface TCityMap {
 export const CITY_POSITION: TCityMap = {
   Milan: { latitude: 45.46427, longitude: 9.18951 },
   Amsterdam: { latitude: 52.37403, longitude: 4.88969 },
-  Berlin: { latitude: 52.52437, longitude: 13.41053 },
+  // Berlin: { latitude: 52.52437, longitude: 13.41053 },
 };
 
-export interface L {
+export interface ICityState {
   cities: TCityMap;
   current: string;
 }
