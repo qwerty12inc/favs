@@ -10,8 +10,11 @@ import useAuth from "../../src/utils/auth";
 import { Button } from "../../src/components/Button/Button";
 import { signOut } from "firebase/auth";
 import { auth } from "../../src/utils/firebase";
+import Banner from "../../src/components/Banner/Banner";
+import BannerSlider from "../../src/components/Banner/BannerSlider";
 
 const settingsIcon = require("../../assets/icon--settings.png");
+const profileDefaultAvatar = require("../../assets/icons/user.png");
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,28 +30,50 @@ export default function ProfilePage() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ paddingHorizontal: 16, height: height - 100 }}>
+      <ScrollView style={{ height: height - 100 }}>
 
-        <View style={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            source={{
-              uri: "https://lh3.googleusercontent.com/-cw77lUnOvmI/AAAAAAAAAAI/AAAAAAAAAAA/WMNck32dKbc/s181-c/104220521160525129167.jpg",
-            }}
-            containerStyle={{ width: 120, height: 120 }}
-            imageStyle={{ width: "100%", height: "100%" }}
+        <View style={{ paddingHorizontal: 16, display: "flex", alignItems: "center" }}>
+          <Image
+            width={125}
+            height={125}
+            source={profileDefaultAvatar}
           />
           <CustomTitle style={[globalStyles.title, { marginTop: 16 }]}>
             {user?.displayName ? user?.displayName : "–"}
           </CustomTitle>
           <CustomText>{user?.email ? user?.email : "–"}</CustomText>
         </View>
-        <View style={{ display: "flex", gap: 8, marginVertical: 45 }}>
+        <View style={{ paddingHorizontal: 16, display: "flex", gap: 8, marginTop: 45 }}>
           <Text Text style={globalStyles.subtitle}>
+            Support project
+          </Text>
+        </View>
+        <BannerSlider>
+          <Banner
+            title='Amsterdam'
+            description='Donate to #NAME #SURNAME – Author of our Amsterdam`s places list '
+            link={`https://www.google.com/search?q=donate_amsterdam`}
+            backgroundColor='#260202'
+            darkBackground
+            size="large"
+          />
+          <Banner
+            title='Milan'
+            description='Donate to #NAME #SURNAME – Author of our Milan`s places list'
+            link={`https://www.google.com/search?q=donate_milan`}
+            size="large"
+          />
+        </BannerSlider>
+        <View style={{ paddingHorizontal: 16, display: "flex", gap: 8, marginBottom: 45, height: 100, justifyContent: 'flex-end' }}>
+          {/* <Text Text style={globalStyles.subtitle}>
+            Support project
+          </Text> */}
+          {/* <Text Text style={globalStyles.subtitle}>
             Your subscription
           </Text>
-          <CurrentSubscription />
-          <Text style={globalStyles.subtitle}>History</Text>
-          <HistoryList />
+          <CurrentSubscription /> */}
+          {/* <Text style={globalStyles.subtitle}>History</Text>
+          <HistoryList /> */}
           <Button onClick={logout} type="secondary">Logout</Button>
         </View>
       </ScrollView>

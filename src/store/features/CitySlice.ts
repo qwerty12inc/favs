@@ -28,7 +28,7 @@ export const CitySlice = createSlice({
   initialState,
   reducers: {
     setCurrent: (state, action) => {
-      console.log(action);
+      // console.log(action);
       state.current = action.payload;
     },
   },

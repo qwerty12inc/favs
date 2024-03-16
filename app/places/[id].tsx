@@ -208,14 +208,14 @@ export default function PlacePage() {
                   type={"detailed"}
                 />
               </View>
-              <View style={{ marginTop: 0 }}>
+              {/* <View style={{ marginTop: 0 }}>
                 <Pressable
                   style={styles.button}
                   onPress={handlePresentModalPress}
                 >
                   <Text style={styles.button__text}>Check in</Text>
                 </Pressable>
-              </View>
+              </View> */}
             </View>
           </Animated.ScrollView>
         </View>

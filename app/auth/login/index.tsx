@@ -37,7 +37,7 @@ export default function LoginPage() {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    console.log(user)
+                    // console.log(user)
                     // ...
                 })
                 .catch((error) => {

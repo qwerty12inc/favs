@@ -22,11 +22,11 @@ export default function Navigator() {
     const Stack = createNativeStackNavigator()
 
     useEffect(() => {
-        console.log('user: ', user)
+        // console.log('user: ', user)
     }, [user])
 
     if (user) {
-        console.log('private screens')
+        // console.log('private screens')
         return (
             <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='index'>
                 <Stack.Screen
@@ -78,7 +78,7 @@ export default function Navigator() {
             </Stack.Navigator>
         )
     } else {
-        console.log('login screens')
+        // console.log('login screens')
         return (
             <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loader'>
                 <Stack.Screen

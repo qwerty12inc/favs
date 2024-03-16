@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigation, useRouter } from 'expo-router';
-import { StyleSheet, SafeAreaView, TextInput, Dimensions, Pressable } from 'react-native';
-import { Avatar, View } from 'react-native-ui-lib';
+import { StyleSheet, SafeAreaView, TextInput, Dimensions, Pressable, } from 'react-native';
+import { Avatar, View, Image } from 'react-native-ui-lib';
 import MapBlock from '../../src/components/Map';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IStateInterface } from '../../src/store/store';
 import CityPicker from '../../src/components/CityPicker';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
@@ -12,6 +12,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import PlaceItem from '../../src/components/PlacesList/PlaceItem';
 import PlaceList, { PLACES_LIST_MOCK } from '../../src/components/PlacesList/PlaceList';
 import { CustomText as Text, CustomTitle as Title } from '../../src/components/Text/CustomText';
+import Banner from '../../src/components/Banner/Banner';
+import BannerSlider from '../../src/components/Banner/BannerSlider';
+import { globalTokens } from '../../src/styles';
+import { TMapApiResponse } from '../../src/models/maps';
+import { setFilterPlaces } from '../../src/store/features/PlacesSlice';
+const profileDefaultAvatar = require("../../assets/icons/user.png");
 
 const { width, height } = Dimensions.get('window');
 
@@ -19,21 +25,41 @@ export default function MainPage() {
 
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
     const currentCity = useSelector((state: IStateInterface) => state.cities.current);
-    const places = useSelector((state: IStateInterface) => state.places.places);
-    const placesAmount = useSelector((state: IStateInterface) => state.places.placesAmount);
+    const filterPlaces = useSelector((state: IStateInterface) => state.places.filteredPlaces);
+    const filterPlacesAmount = useSelector((state: IStateInterface) => state.places.filteredPlacesAmount);
+    const [bottomSheetState, setBottomSheetState] = useState<1 | 0>(0)
+    const [searchFocused, setSearchFocused] = useState<boolean>(false)
+    const [placesList, setPlacesList] = useState<TMapApiResponse[]>([])
 
     const snapPoints = useMemo(() => [100, height - 195], []);
 
     const BottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-    const [text, onChangeText] = React.useState('');
-
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setPlacesList(filterPlaces)
+    }, [filterPlaces])
 
     const onProfilePress = () => {
         //@ts-ignore
         navigation.navigate('profile/index');
     };
+
+    const onInputChange = (text) => {
+        dispatch(setFilterPlaces(text))
+    }
+
+    const onInputFocus = () => {
+        setBottomSheetState(1)
+        setSearchFocused(true)
+    }
+
+    const onInputBlur = () => {
+        setBottomSheetState(0)
+        setSearchFocused(false)
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -45,26 +71,38 @@ export default function MainPage() {
                     onPress={onProfilePress}
                     style={styles.userAvatar}
                 >
-                    <Avatar
-                        source={{
-                            uri: 'https://lh3.googleusercontent.com/-cw77lUnOvmI/AAAAAAAAAAI/AAAAAAAAAAA/WMNck32dKbc/s181-c/104220521160525129167.jpg',
-                        }}
-                        label={'it'}
+                    <Image
+                        width={25}
+                        height={25}
+                        source={profileDefaultAvatar}
                     />
                 </Pressable>
             </View>
             <View style={styles.searchBar_shadow}>
-                <View style={{ paddingVertical: 0 }}>
+                <BannerSlider style={{ background: globalTokens.colors.white }}>
+                    <Banner
+                        title='Support author'
+                        description={`Donate to Author of ${currentCity} places list `}
+                        link={`https://www.google.com/search?q=donate_${currentCity}`}
+                        backgroundColor='#260202'
+                        darkBackground
+                    />
+                    <Banner
+                        title='What is Favs?'
+                        description='Learn more'
+                        link='https://favs.site'
+                    />
+                </BannerSlider>
+                <View style={{ paddingVertical: 0, paddingHorizontal: 16, }}>
                     <TextInput
                         // value={text}
-                        onChangeText={onChangeText}
+                        onChangeText={onInputChange}
                         placeholder={'Search'}
-                        onChange={(e) => {
-                            console.log(e.nativeEvent.text);
-                        }}
                         style={styles.input}
+                        onFocus={onInputFocus}
+                        onBlur={onInputBlur}
                     />
-                    <SegmentedControl
+                    {/* <SegmentedControl
                         values={['Coffee', 'Drink', 'Eat']}
                         selectedIndex={0}
                         style={{ paddingVertical: 20 }}
@@ -72,7 +110,7 @@ export default function MainPage() {
                     // onChange={(event) => {
                     //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
                     // }}
-                    />
+                    /> */}
                 </View>
             </View>
             <View style={styles.mapContainer}>
@@ -81,11 +119,11 @@ export default function MainPage() {
             <BottomSheet
                 style={styles.shadow}
                 ref={BottomSheetModalRef}
-                index={0}
+                index={bottomSheetState}
                 snapPoints={snapPoints}
             >
-                <Text style={styles.placesCount}>{placesAmount} places in {currentCity}</Text>
-                <PlaceList />
+                <Text style={styles.placesCount}>{filterPlacesAmount} places in {currentCity}</Text>
+                <PlaceList searchInProgress={searchFocused} />
             </BottomSheet>
         </SafeAreaView>
     );
@@ -120,7 +158,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         fontSize: 17,
         lineHeight: 22,
-        marginVertical: 20,
+        marginTop: 8,
+        marginBottom: 8,
 
         borderRadius: 10,
         fontFamily: 'ClashDisplay-Medium',
@@ -140,7 +179,6 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     searchBar_shadow: {
-        paddingHorizontal: 16,
         zIndex: 20,
         backgroundColor: 'white',
         paddingBottom: 16,
@@ -158,7 +196,6 @@ const styles = StyleSheet.create({
         fontFamily: 'ClashDisplay-Medium',
         fontWeight: '500',
         fontSize: 18,
-        marginTop: 14,
-        // marginBottom: 14,
+        marginTop: 8,
     },
 });

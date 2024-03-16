@@ -1,5 +1,5 @@
 import { StyleSheet, Text, SafeAreaView, Dimensions } from "react-native";
-import { Avatar, View, Picker, ModalProps } from "react-native-ui-lib";
+import { Avatar, View, Picker, ModalProps, Image } from "react-native-ui-lib";
 import MapView, { Details, LatLng, Marker, MarkerPressEvent, Region } from "react-native-maps";
 import React, { useEffect, useState } from "react";
 import MapService from "../http/MapService";
@@ -9,6 +9,9 @@ import { debounce } from 'lodash';
 import { useDispatch, useSelector } from "react-redux";
 import { resetPlaces, setPlaces } from "../store/features/PlacesSlice";
 import { IStateInterface } from "../store/store";
+import { PLACES_LIST_MOCK } from "./PlacesList/PlaceList";
+const placeIcon = require('../../assets/icons/coffee.png');
+
 
 type TMapType = 'general' | 'detailed';
 
@@ -40,7 +43,7 @@ const MapBlock: React.FC<Props> = (props) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
-  const [mapMarkers, setMapMarkers] = useState<TMapApiResponse[]>([])
+  // const [mapMarkers, setMapMarkers] = useState<TMapApiResponse[]>([])
 
   useEffect(() => {
     setRegion((prev) => {
@@ -50,11 +53,12 @@ const MapBlock: React.FC<Props> = (props) => {
         longitude: initialPosition.longitude,
       };
     });
+    dispatch(setPlaces(PLACES_LIST_MOCK))
     MapService.getPlacesByCity(currentCity)
       .then((res) => res.data)
       .then((data) => {
         // console.log(data)
-        setMapMarkers(data)
+        // setMapMarkers(data)
         dispatch(setPlaces(data))
       })
       .catch((err) => {
@@ -119,7 +123,9 @@ const MapBlock: React.FC<Props> = (props) => {
               coordinate={marker?.coordinates}
               identifier={marker?.id}
               onPress={handleMarkerClick}
-            />
+            >
+              <Image style={styles.marker} source={placeIcon} />
+            </Marker>
           ))
         }
       </MapView>
@@ -138,6 +144,10 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  marker: {
+    width: 25,
+    height: 30
+  }
 });
 
 
