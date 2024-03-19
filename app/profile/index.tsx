@@ -52,7 +52,7 @@ export default function ProfilePage() {
           <Banner
             title='Amsterdam'
             description='Donate to #NAME #SURNAME – Author of our Amsterdam`s places list '
-            link={`https://www.google.com/search?q=donate_amsterdam`}
+            link={`https://favsapp.gumroad.com/l/Lerasguide`}
             backgroundColor='#260202'
             darkBackground
             size="large"
@@ -60,7 +60,7 @@ export default function ProfilePage() {
           <Banner
             title='Milan'
             description='Donate to #NAME #SURNAME – Author of our Milan`s places list'
-            link={`https://www.google.com/search?q=donate_milan`}
+            link={`https://favsapp.gumroad.com/l/hgpkc`}
             size="large"
           />
         </BannerSlider>

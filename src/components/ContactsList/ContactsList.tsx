@@ -4,6 +4,7 @@ import { Card } from "react-native-ui-lib";
 // import { styles as ImportedStyles } from "../";
 import { Link } from "expo-router";
 import PlaceFeatureItem from "../PlaceFeatureItem/PlaceFeatureItem";
+import { globalStyles } from "../../styles";
 const linkIcon = require("../../../assets/link.png");
 const instIcon = require("../../../assets/icon--instagram.png");
 
@@ -37,9 +38,9 @@ export default function ContactsList(props: IProps) {
   function getContactLink(contact: string): string {
     switch (contact) {
       case "instagram":
-        return `https://www.instagram.com/${props.contacts.instagram}`;
+        return `${props.contacts.instagram}`;
       case "website":
-        return `https://${props.contacts.website}`;
+        return `${props.contacts.website}`;
       case "phone":
         return `tel:${props.contacts.phone}`;
       default:
@@ -49,27 +50,31 @@ export default function ContactsList(props: IProps) {
   if (Object.keys(props.contacts).length > 0)
     return (
       <View>
-        {Object.keys(props.contacts).map((contact) => {
-          return (
-            <PlaceFeatureItem
-              key={contact}
-              imageSource={getContactIcon(contact)}
-              link={getContactLink(contact)}
-              content={[
-                {
-                  text: contact,
-                  text90: true,
-                  $textDisabled: false,
-                },
-                {
-                  text: props.contacts[contact],
-                  text90: true,
-                  $textDisabled: true,
-                },
-              ]}
-            />
-          );
-        })}
+        <View>
+          {Object.keys(props.contacts).map((contact) => {
+            if (props.contacts[contact]) {
+              return (
+                <PlaceFeatureItem
+                  key={contact}
+                  imageSource={getContactIcon(contact)}
+                  link={getContactLink(contact)}
+                  content={[
+                    {
+                      text: contact,
+                      text90: true,
+                      $textDisabled: false,
+                    },
+                    {
+                      text: props.contacts[contact],
+                      text90: true,
+                      $textDisabled: true,
+                    },
+                  ]}
+                />
+              );
+            } else return
+          })}
+        </View>
       </View>
     );
 }

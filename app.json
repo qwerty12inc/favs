@@ -18,7 +18,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "website.favs.app",
-      "googleServicesFile": "./src/utils/GoogleService-Info.plist"
+      "googleServicesFile": "./src/utils/GoogleService-Info.plist",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.1076432211496-a5kbtfng4f3sje3f82chpom0tli632qi"
+            ]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -64,6 +73,6 @@
     "updates": {
       "url": "https://u.expo.dev/43689992-519b-4088-a10c-16d4187ea3f2"
     },
-    "owner": "g.tupikov"
+    "owner": "favsapplication"
   }
 }

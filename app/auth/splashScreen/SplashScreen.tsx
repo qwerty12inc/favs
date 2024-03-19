@@ -11,7 +11,9 @@ export default function SplashScreen() {
 
     useEffect(() => {
         setTimeout(() => {
-            if (!auth) {
+            console.log(auth.currentUser)
+            if (!auth.currentUser) {
+                console.log(auth)
                 //@ts-ignore
                 navigation.replace('index');
             }

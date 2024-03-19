@@ -20,6 +20,7 @@ import {
   Image,
   Chip,
   Text,
+  ScrollBar,
 } from "react-native-ui-lib";
 import MapBlock from "../../src/components/Map";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -35,6 +36,7 @@ import { globalStyles, globalTokens } from "../../src/styles";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MapService from "../../src/http/MapService";
 import { TMapApiResponse } from "../../src/models/maps";
+import Skeleton from "../../src/components/Skeleton/Skeleton";
 
 const dogPhoto = require("../../assets/random_img.jpeg");
 const qr = require("../../assets/qr.png");
@@ -46,6 +48,7 @@ export default function PlacePage() {
   const { id } = useLocalSearchParams();
 
   const [placeInfo, setPlaceInfo] = useState<TMapApiResponse>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
@@ -83,6 +86,11 @@ export default function PlacePage() {
       .then((data) => {
         console.log(data)
         setPlaceInfo(data)
+        setIsLoading(false)
+      })
+      .catch((e) => {
+        console.log(e)
+        setIsLoading(false)
       })
   }, [])
 
@@ -148,51 +156,66 @@ export default function PlacePage() {
                 borderRadius: 24,
               }}
             >
-              <View style={styles.content}>
+              <View style={[styles.content, { marginTop: 25 }]}>
                 <Text style={globalStyles.title}>
-                  {
-                    placeInfo?.name ? placeInfo.name : 'loading..'
-                  }
+                  {!isLoading ? placeInfo?.name : <Skeleton height={38} width={100} />}
                 </Text>
-                <View
-                  style={{
-                    width: 100,
-                  }}
-                >
-                  <Chip
-                    label={"Cafe"}
-                    onPress={() => console.log("pressed")}
-                    dismissContainerStyle={{ width: 10 }}
-                  />
-                </View>
+              </View>
+
+              <ScrollBar
+                contentContainerStyle={{ gap: 10 }}
+                contentInset={{ left: 16, right: 16 }}
+                contentOffset={{ x: -16, y: 0 }}
+              >
+                {
+                  !isLoading ?
+                    placeInfo?.labels.map((chip) => (
+                      <Chip
+                        key={chip}
+                        label={chip}
+                      />
+                    )) :
+                    [1, 2, 3].map((el) => (
+                      <Skeleton width={80} height={28} key={el} style={{ marginBottom: 5 }} />
+                    ))
+                }
+
+              </ScrollBar>
+              <View style={[styles.content, { marginBottom: 24 }]}>
                 <Text style={styles.description}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
+                  {
+                    isLoading ?
+                      [1, 2, 3, 4].map((el) => (
+                        <Skeleton height={17.3} width={300} key={el} />
+                      )) :
+                      placeInfo?.description && placeInfo?.description
+                  }
                 </Text>
                 <View
                   style={{
                     display: "flex",
                     gap: 8,
-                    marginTop: 24,
                   }}
                 >
                   <Text style={globalStyles.subtitle}>Address</Text>
-                  <AddressBlock />
+                  {
+                    placeInfo?.locationURL &&
+                    <AddressBlock link={placeInfo?.locationURL} />
+                  }
                   <Text style={globalStyles.subtitle}>Opening hours</Text>
                   <OpeningHours />
-                  <Text style={globalStyles.subtitle}>Contacts</Text>
-                  <ContactsList
-                    contacts={{
-                      instagram: "grusha229",
-                      website: "google.com",
-                    }}
-                  />
+                  {
+                    (placeInfo?.instagram || placeInfo?.website) &&
+                    <View>
+                      <Text style={globalStyles.subtitle}>Contacts</Text>
+                      <ContactsList
+                        contacts={{
+                          instagram: placeInfo?.instagram && placeInfo.instagram,
+                          website: placeInfo?.website && placeInfo.website
+                        }}
+                      />
+                    </View>
+                  }
                 </View>
               </View>
               <View
@@ -263,8 +286,8 @@ export default function PlacePage() {
             </Pressable>
           </View>
         </BottomSheetModal>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+      </BottomSheetModalProvider >
+    </GestureHandlerRootView >
   );
 }
 
@@ -275,8 +298,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   content: {
-    marginTop: 25,
-    marginBottom: 15,
     paddingHorizontal: 15,
   },
   image: {

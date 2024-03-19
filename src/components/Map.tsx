@@ -53,7 +53,7 @@ const MapBlock: React.FC<Props> = (props) => {
         longitude: initialPosition.longitude,
       };
     });
-    dispatch(setPlaces(PLACES_LIST_MOCK))
+    // dispatch(setPlaces(PLACES_LIST_MOCK))
     MapService.getPlacesByCity(currentCity)
       .then((res) => res.data)
       .then((data) => {

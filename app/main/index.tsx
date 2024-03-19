@@ -38,6 +38,17 @@ export default function MainPage() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
+    const handleDonateLink = () => {
+        switch (currentCity) {
+            case 'Milan':
+                return 'https://favsapp.gumroad.com/l/hgpkc'
+                break;
+            case 'Amsterdam':
+                return 'https://favsapp.gumroad.com/l/Lerasguide'
+                break
+        }
+    }
+
     useEffect(() => {
         setPlacesList(filterPlaces)
     }, [filterPlaces])
@@ -83,7 +94,7 @@ export default function MainPage() {
                     <Banner
                         title='Support author'
                         description={`Donate to Author of ${currentCity} places list `}
-                        link={`https://www.google.com/search?q=donate_${currentCity}`}
+                        link={handleDonateLink()}
                         backgroundColor='#260202'
                         darkBackground
                     />
