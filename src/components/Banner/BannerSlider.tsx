@@ -7,7 +7,7 @@ export default function BannerSlider({ children, ...props }) {
         <ScrollBar
             {...props}
             style={[{ marginVertical: 12 }, props.style]}
-            contentContainerStyle={{ gap: 10, display: 'flex', flexDirection: "row" }}
+            contentContainerStyle={{ gap: 10, display: 'flex', flexDirection: "row", alignItems: "stretch" }}
             contentInset={{ left: 16, right: 16 }}
             contentOffset={{ x: -16, y: 0 }}
         >

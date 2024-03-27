@@ -7,9 +7,10 @@ import { TMapApiResponse } from "../models/maps";
 import { useNavigation } from "expo-router";
 import { debounce } from 'lodash';
 import { useDispatch, useSelector } from "react-redux";
-import { resetPlaces, setPlaces } from "../store/features/PlacesSlice";
+import { patchPlaces, resetPlaces, setPlaces } from "../store/features/PlacesSlice";
 import { IStateInterface } from "../store/store";
 import { PLACES_LIST_MOCK } from "./PlacesList/PlaceList";
+import storage, { firebase } from '@react-native-firebase/storage';
 const placeIcon = require('../../assets/icons/coffee.png');
 
 
@@ -43,9 +44,10 @@ const MapBlock: React.FC<Props> = (props) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
-  // const [mapMarkers, setMapMarkers] = useState<TMapApiResponse[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    if (type === 'general') {
     setRegion((prev) => {
       return {
         ...prev,
@@ -54,9 +56,11 @@ const MapBlock: React.FC<Props> = (props) => {
       };
     });
     // dispatch(setPlaces(PLACES_LIST_MOCK))
+    setLoading(true)
     MapService.getPlacesByCity(currentCity)
       .then((res) => res.data)
       .then((data) => {
+
         // console.log(data)
         // setMapMarkers(data)
         dispatch(setPlaces(data))
@@ -67,8 +71,40 @@ const MapBlock: React.FC<Props> = (props) => {
         }
         console.log('err: ', err);
         console.log('err code: ', err.response.status);
-      });
+      })
+      .finally(() => setLoading(false));
+    }
   }, [initialPosition]);
+
+  useEffect(() => {
+    if (places && type === 'general') {
+      console.info('get pics for main page...:');
+      places.forEach((placeInfo) => {
+        console.log('current placeInfo:', placeInfo.name);
+        
+        storage()
+            .ref(`places/${placeInfo?.city}/${placeInfo?.id}/`)
+            .listAll()
+            .then((data) => {
+                const downloadURLPromises = data.items.map((item) => { 
+                  return item.getDownloadURL();
+                });
+
+                Promise.all(downloadURLPromises).then((urls) => {
+                  dispatch(patchPlaces({id: placeInfo.id, photosUrl: urls, ...placeInfo}))
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            })
+        })
+    }
+
+    return () => {
+      console.info('clean up');
+    }
+}, [loading]);
+
 
   // const handleRegionChange =
   //   debounce((region: Region, details: Details) => {
@@ -90,8 +126,8 @@ const MapBlock: React.FC<Props> = (props) => {
   //   }, 500)
 
 
-  const handleMarkerClick = (event: MarkerPressEvent) => {
-    console.log(event.nativeEvent.id)
+  function handleMarkerClick(event: MarkerPressEvent) {
+    console.log(event.nativeEvent.id);
     //@ts-ignore
     navigation.navigate('places/[id]', { id: event.nativeEvent.id });
   }

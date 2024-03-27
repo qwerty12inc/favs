@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
         width: 160,
         padding: 16,
         borderWidth: 1,
-        // borderColor: globalTokens.colors.black,
-        backgroundColor: 'linear-gradient(114.44deg, #4147D1 0%, #6CDDC2 100%)',
+        flex: 1,
     },
     block__large: {
         maxHeight: 120,

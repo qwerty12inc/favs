@@ -23,7 +23,7 @@ export default function OpeningHours(props: TProps) {
     return {
       text: day,
       text90: true,
-      $textDisabled: !(currentDayIndex === index),
+      $textDisabled: !(currentDayIndex - 1  === index),
     }
   })
 

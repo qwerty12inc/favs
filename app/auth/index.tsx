@@ -5,12 +5,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, View, Text, Image } from 'react-native-ui-lib';
 import { globalStyles, globalTokens } from '../../src/styles';
 import { Button } from './../../src/components/Button/Button';
-import auth from "@react-native-firebase/auth"
+import auth, { signInWithCredential } from "firebase/auth"
+import {auth as firebaseAuth} from './../../src/utils/firebase';
 import {
     GoogleSignin,
     GoogleSigninButton,
     statusCodes
 } from "@react-native-google-signin/google-signin";
+
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+const provider = new GoogleAuthProvider();
 
 export default function WelcomePage() {
     const navigation = useNavigation();
@@ -34,59 +39,23 @@ export default function WelcomePage() {
 
     const signin = async () => {
         console.log("click")
+        const auth = getAuth();
         const { idToken } = await GoogleSignin.signIn();
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+        const googleCredential = GoogleAuthProvider.credential(idToken)
 
-        const user_sign_in = auth().signInWithCredential(googleCredential)
-
-        user_sign_in.then((user) => {
-            console.log(user)
+        signInWithCredential(auth ,googleCredential)
+        .then((user) => {
+            // console.log('signed in:', user);
         })
         .catch((error) => {
-            console.log(error)
+            console.log('error:',error)
         })
     }
-
-    // GoogleSignin.configure({
-    //     webClientId: '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', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
-    //     scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-    //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-    //     hostedDomain: '', // specifies a hosted domain restriction
-    //     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.taken from GoogleService-Info.plist)
-    //     googleServicePlistPath: './../../ios/FavsbestplacesinEurope/GoogleService-Info.plist', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
-    //     profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
-    //   });
 
     const onRegisterPress = () => {
         //@ts-ignore
         navigation.navigate('auth/register/index');
     };
-
-    // const signIn = async () => {
-    //     try {
-    //       await GoogleSignin.hasPlayServices();
-    //       const userInfo = await GoogleSignin.signIn();
-    //       console.log({ userInfo, error: undefined });
-    //     } catch (error) {
-    //       if (error) {
-    //         switch (error.code) {
-    //           case statusCodes.SIGN_IN_CANCELLED:
-    //             // user cancelled the login flow
-    //             break;
-    //           case statusCodes.IN_PROGRESS:
-    //             // operation (eg. sign in) already in progress
-    //             break;
-    //           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-    //             // play services not available or outdated
-    //             break;
-    //           default:
-    //           // some other error happened
-    //         }
-    //       } else {
-    //         // an error that's not related to google sign in occurred
-    //       }
-    //     }
-    //   };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -107,11 +76,13 @@ export default function WelcomePage() {
                         type="secondary"
                     />
                 </View>
-                {/* <GoogleSigninButton
-                    size={GoogleSigninButton.Size.Standard}
-                    color={GoogleSigninButton.Color.Light}
-                    onPress={signin}
-                /> */}
+                <View style={{marginTop: 16}}>
+                    <GoogleSigninButton
+                        size={GoogleSigninButton.Size.Wide}
+                        color={GoogleSigninButton.Color.Light}
+                        onPress={signin}
+                    />
+                </View>
             </SafeAreaView>
         </SafeAreaView>
     );

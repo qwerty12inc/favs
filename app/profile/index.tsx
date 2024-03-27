@@ -22,6 +22,8 @@ const { width, height } = Dimensions.get("window");
 export default function ProfilePage() {
   const { user } = useAuth()
 
+  const profileAvatar = user?.photoURL ? { uri: user?.photoURL } : profileDefaultAvatar;
+
   const logout = () => {
     signOut(auth)
       .then(() => (console.log('logout')))
@@ -36,7 +38,8 @@ export default function ProfilePage() {
           <Image
             width={125}
             height={125}
-            source={profileDefaultAvatar}
+            source={profileAvatar}
+            style={{ borderRadius: 125 / 2 }}
           />
           <CustomTitle style={[globalStyles.title, { marginTop: 16 }]}>
             {user?.displayName ? user?.displayName : "–"}
@@ -50,17 +53,24 @@ export default function ProfilePage() {
         </View>
         <BannerSlider>
           <Banner
+                title='What is Favs?'
+                description='Learn more'
+                link='https://favs.website'
+          />
+          <Banner
             title='Amsterdam'
-            description='Donate to #NAME #SURNAME – Author of our Amsterdam`s places list '
+            description='Donate to Author of our Amsterdam`s places list '
             link={`https://favsapp.gumroad.com/l/Lerasguide`}
-            backgroundColor='#260202'
+            backgroundColor='#000'
             darkBackground
             size="large"
           />
           <Banner
             title='Milan'
-            description='Donate to #NAME #SURNAME – Author of our Milan`s places list'
+            description='Donate to Author of our Milan`s places list'
             link={`https://favsapp.gumroad.com/l/hgpkc`}
+            backgroundColor='#000'
+            darkBackground
             size="large"
           />
         </BannerSlider>

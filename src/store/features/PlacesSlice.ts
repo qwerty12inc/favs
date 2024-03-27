@@ -25,6 +25,26 @@ export const PlacesSlice = createSlice({
             state.filteredPlaces = action.payload;
             state.filteredPlacesAmount = action.payload.length;
         },
+        patchPlaces: (state, action: PayloadAction<TMapApiResponse>) => {
+            state.places = state.places.map((place) => {
+                if (place.id === action.payload.id) {
+                    return {
+                        ...place,
+                        ...action.payload
+                    }
+                }
+                return place
+            })
+            state.filteredPlaces = state.filteredPlaces.map((place) => {
+                if (place.id === action.payload.id) {
+                    return {
+                        ...place,
+                        ...action.payload
+                    }
+                }
+                return place
+            })
+        },
         resetPlaces: (state) => {
             state.places = [];
             state.placesAmount = 0;
@@ -43,6 +63,6 @@ export const PlacesSlice = createSlice({
     },
 });
 
-export const { setPlaces, resetPlaces, setFilterPlaces } = PlacesSlice.actions;
+export const { setPlaces, resetPlaces, setFilterPlaces, patchPlaces } = PlacesSlice.actions;
 
 export default PlacesSlice.reducer;

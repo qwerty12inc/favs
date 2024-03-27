@@ -102,23 +102,31 @@ export default function PlacePage() {
 
   useEffect(() => {
     if (placeInfo?.city && placeInfo?.id) {
-      secondaryStorageBucket
+      console.log('get pics...:');
+      storage()
           .ref(`places/${placeInfo?.city}/${placeInfo?.id}/`)
           .listAll()
           .then((data) => {
               console.log('data items:', data.items);
-              const downloadURLPromises = data.items.map((item) => item.getDownloadURL());
-              return Promise.all(downloadURLPromises);
-          })
-          .then((urls) => {
-              setImgArray(urls);
+              
+              const downloadURLPromises = data.items.map((item) => { 
+                return item.getDownloadURL(); // Return the promise
+              });
+              
+              Promise.all(downloadURLPromises).then((urls) => {
+                setImgArray(urls);
+              });
           })
           .catch((error) => {
               console.error('Error fetching data:', error);
           })
-          .finally(() => console.log(imgArray));
+          .finally(() => console.log("imgArray: ",imgArray)); // This will not show updated imgArray due to asynchronous nature of setImgArray
     }
 }, [placeInfo]);
+
+  useEffect(() => {
+    console.log("imgArray: ", imgArray);
+  }, [imgArray]);
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -165,7 +173,7 @@ export default function PlacePage() {
                     />
                 }
                 {
-                  imgArray?.length < 0 &&
+                  imgArray?.length > 0 &&
                     imgArray.map((item) => (
                       <View
                         style={{
@@ -177,7 +185,7 @@ export default function PlacePage() {
                       >
                         <AnimatedImage
                           style={{ height: "100%", width: "100%" }}
-                          source={item}
+                          source={{ uri: item }}
                           loader={<ActivityIndicator />}
                         />
                       </View>

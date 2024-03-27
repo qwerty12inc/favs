@@ -106,7 +106,7 @@ export default function MainPage() {
                         <Banner
                             title='What is Favs?'
                             description='Learn more'
-                            link='https://favs.site'
+                            link='https://favs.website'
                         />
                     </BannerSlider> */}
                     <View style={{ paddingVertical: 0, paddingHorizontal: 16, }}>

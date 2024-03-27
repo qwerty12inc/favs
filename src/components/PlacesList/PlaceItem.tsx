@@ -25,7 +25,8 @@ type TProps = {
 export default function PlaceItem(props: TProps) {
     const navigation = useNavigation();
 
-    const onPress = () => {
+    const onPress = (e) => {
+        e.preventDefault();
         //@ts-ignore
         navigation.navigate('places/[id]', { id: props.id });
     };

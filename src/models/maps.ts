@@ -22,5 +22,6 @@ export type TMapApiResponse = {
     instagram: string,
     labels: string[],
     name: string,
-    website: string
+    website: string,
+    photosUrl?: string[], // для отображения фотографий после их загрузки из firebase (не api)
 }

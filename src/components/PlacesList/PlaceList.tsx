@@ -82,11 +82,11 @@ const PlaceList: React.FC<TPlaceList> = (props) => {
   const places = useSelector((state: IStateInterface) => state.places.filteredPlaces);
 
   const renderItem = useCallback(
-    ({ item }) => (
+    ( {item}) => (
       <PlaceItem
-        name={item.name}
-        address={item.name}
-        photos={item.photos}
+        name={item?.name}
+        address={item?.googleMapsInfo?.formattedAddress}
+        photos={item?.photosUrl}
         id={item.id}
       />
     ),
