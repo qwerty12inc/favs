@@ -5,6 +5,7 @@ import { IStateInterface } from '../src/store/store';
 import MainPage from './main';
 import LoginPage from './auth/index';
 import Navigator from './(navigator)/Navigator';
+import 'expo-dev-client';
 
 // import AppRoot from './(navigator)/AppRoot';
 import * as SplashScreen from 'expo-splash-screen';

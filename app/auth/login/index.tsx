@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { globalStyles, globalTokens } from '../../../src/styles';
 import { Button } from '../../../src/components/Button/Button';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -17,9 +17,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false)
 
-
     const isFormValid = (isEmailError !== null && !isEmailError)
-
 
     const handleEmailChange =
         debounce((text) => {

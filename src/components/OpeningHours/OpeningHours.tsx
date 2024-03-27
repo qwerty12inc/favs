@@ -3,42 +3,34 @@ import PlaceFeatureItem from "../PlaceFeatureItem/PlaceFeatureItem";
 
 const timeIcon = require("../../../assets/clock.png");
 
-export default function OpeningHours() {
+type TProps = {
+  openingHours: string[]
+}
+
+type TTimetable = {
+  text: string;
+  text90: boolean;
+  $textDisabled: boolean;
+}
+
+export default function OpeningHours(props: TProps) {
+
+  const {openingHours} = props
+
+  let currentDayIndex = new Date().getDay()
+
+  const content: TTimetable[] = openingHours.map((day, index) => {
+    return {
+      text: day,
+      text90: true,
+      $textDisabled: !(currentDayIndex === index),
+    }
+  })
+
   return (
     <PlaceFeatureItem
       imageSource={timeIcon}
-      content={[
-        {
-          text: "Wednesday 11:30 AM–11 PM",
-          text90: true,
-          $textDisabled: false,
-        },
-        {
-          text: "Thursday 11:30 AM–11 PM",
-          text90: true,
-          $textDisabled: true,
-        },
-        {
-          text: "Friday 11:30 AM–11 PM",
-          text90: true,
-          $textDisabled: true,
-        },
-        {
-          text: "Sunday 11:30 AM–11 PM",
-          text90: true,
-          $textDisabled: true,
-        },
-        {
-          text: "Monday 11:30 AM–11 PM",
-          text90: true,
-          $textDisabled: true,
-        },
-        {
-          text: "Tuesday 11:30 AM–11 PM",
-          text90: true,
-          $textDisabled: true,
-        },
-      ]}
+      content={content}
     />
   );
 }

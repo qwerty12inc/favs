@@ -15,6 +15,7 @@ import useAuth from '../../src/utils/auth';
 import { useSelector } from 'react-redux';
 import { IStateInterface } from '../../src/store/store';
 import SplashScreen from '../auth/splashScreen/SplashScreen';
+import CitiesPage from '../cities';
 
 export default function Navigator() {
     const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
@@ -29,10 +30,16 @@ export default function Navigator() {
         // console.log('private screens')
         return (
             <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='index'>
+
                 <Stack.Screen
                     name="index"
                     options={{ headerShown: false, headerTitle: '' }}
                     component={MainPage}
+                />
+                <Stack.Screen
+                    name="test"
+                    options={{ headerShown: false, headerTitle: '' }}
+                    component={CitiesPage}
                 />
                 <Stack.Screen
                     name="places/[id]"

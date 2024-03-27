@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>website.favs.app.1</string>
+	<string>website.favs.app</string>
 	<key>PROJECT_ID</key>
 	<string>cofegeo</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:457717190004:ios:ee5266186ade0a1e017021</string>
+	<string>1:1076432211496:ios:8cf10d1790667b72f4ef1d</string>
 </dict>
 </plist>

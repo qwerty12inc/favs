@@ -12,6 +12,7 @@ import Animated, {
   useAnimatedStyle,
   interpolate,
 } from "react-native-reanimated";
+import storage, { firebase } from '@react-native-firebase/storage';
 import { useLocalSearchParams } from "expo-router";
 import {
   Carousel,
@@ -38,15 +39,19 @@ import MapService from "../../src/http/MapService";
 import { TMapApiResponse } from "../../src/models/maps";
 import Skeleton from "../../src/components/Skeleton/Skeleton";
 
-const dogPhoto = require("../../assets/random_img.jpeg");
+// const dogPhoto = require("../../assets/random_img.jpeg");
+
 const qr = require("../../assets/qr.png");
 
 const { width, height } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
 
+const secondaryStorageBucket = firebase.app().storage('gs://favs-85f44.appspot.com')
+
 export default function PlacePage() {
   const { id } = useLocalSearchParams();
 
+  const [imgArray, setImgArray] = useState([])
   const [placeInfo, setPlaceInfo] = useState<TMapApiResponse>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -84,7 +89,8 @@ export default function PlacePage() {
     MapService.getPlaceInfo(id)
       .then((res) => res.data)
       .then((data) => {
-        console.log(data)
+        console.clear();
+        console.log("data: ",data)
         setPlaceInfo(data)
         setIsLoading(false)
       })
@@ -93,6 +99,26 @@ export default function PlacePage() {
         setIsLoading(false)
       })
   }, [])
+
+  useEffect(() => {
+    if (placeInfo?.city && placeInfo?.id) {
+      secondaryStorageBucket
+          .ref(`places/${placeInfo?.city}/${placeInfo?.id}/`)
+          .listAll()
+          .then((data) => {
+              console.log('data items:', data.items);
+              const downloadURLPromises = data.items.map((item) => item.getDownloadURL());
+              return Promise.all(downloadURLPromises);
+          })
+          .then((urls) => {
+              setImgArray(urls);
+          })
+          .catch((error) => {
+              console.error('Error fetching data:', error);
+          })
+          .finally(() => console.log(imgArray));
+    }
+}, [placeInfo]);
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -130,22 +156,33 @@ export default function PlacePage() {
                 pageControlPosition={"over"}
                 allowAccessibleLayout
               >
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <View
-                    style={{
-                      width: "100%",
-                      padding: 0,
-                      backgroundColor: "grey",
-                    }}
-                    key={item}
-                  >
-                    <AnimatedImage
+                {
+                  imgArray?.length < 1 &&
+                  <AnimatedImage
                       style={{ height: "100%", width: "100%" }}
-                      source={dogPhoto}
+                      //@ts-ignore
                       loader={<ActivityIndicator />}
                     />
-                  </View>
-                ))}
+                }
+                {
+                  imgArray?.length < 0 &&
+                    imgArray.map((item) => (
+                      <View
+                        style={{
+                          width: "100%",
+                          padding: 0,
+                          backgroundColor: "grey",
+                        }}
+                        key={item}
+                      >
+                        <AnimatedImage
+                          style={{ height: "100%", width: "100%" }}
+                          source={item}
+                          loader={<ActivityIndicator />}
+                        />
+                      </View>
+                    ))
+                }
               </Carousel>
             </Animated.View>
             <View
@@ -199,11 +236,19 @@ export default function PlacePage() {
                 >
                   <Text style={globalStyles.subtitle}>Address</Text>
                   {
-                    placeInfo?.locationURL &&
-                    <AddressBlock link={placeInfo?.locationURL} />
+                    (placeInfo?.googleMapsInfo?.locationURL && placeInfo?.googleMapsInfo?.formattedAddress) &&
+                    <AddressBlock 
+                      address={placeInfo?.googleMapsInfo?.formattedAddress}
+                      link={placeInfo?.googleMapsInfo?.locationURL}
+                    />
                   }
-                  <Text style={globalStyles.subtitle}>Opening hours</Text>
-                  <OpeningHours />
+                  {
+                    placeInfo?.googleMapsInfo?.openingInfo && 
+                      <View>
+                        <Text style={globalStyles.subtitle}>Opening hours</Text>
+                        <OpeningHours openingHours={placeInfo?.googleMapsInfo?.openingInfo} />
+                      </View>
+                  }
                   {
                     (placeInfo?.instagram || placeInfo?.website) &&
                     <View>
@@ -211,7 +256,7 @@ export default function PlacePage() {
                       <ContactsList
                         contacts={{
                           instagram: placeInfo?.instagram && placeInfo.instagram,
-                          website: placeInfo?.website && placeInfo.website
+                          website: placeInfo?.website.length > 0 ? placeInfo.website : placeInfo.googleMapsInfo.website
                         }}
                       />
                     </View>

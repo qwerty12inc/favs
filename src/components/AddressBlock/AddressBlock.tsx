@@ -3,14 +3,14 @@ import PlaceFeatureItem from "../PlaceFeatureItem/PlaceFeatureItem";
 
 const mapIcon = require("../../../assets/map.png");
 
-export default function AddressBlock(props: { link: string }) {
+export default function AddressBlock(props: { link: string, address: string }) {
   return (
     <PlaceFeatureItem
       imageSource={mapIcon}
       link={props.link}
       content={[
         {
-          text: "Berlin, Fasanenstrasse 40",
+          text: props.address,
           text80: true,
           $textDefault: true,
         },

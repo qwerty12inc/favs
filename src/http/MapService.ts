@@ -54,6 +54,15 @@ export default class MapService {
         }
         return api.get(`/places/${id}`, config)
     }
+
+    static async getCitiesList() :Promise<AxiosResponse<string[]>> {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: auth.currentUser.stsTokenManager.accessToken
+            },
+        }
+        return api.get(`/cities`, config)
+    }
 }
 
 // currentUser:  {

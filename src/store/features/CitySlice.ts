@@ -15,6 +15,7 @@ export const CITY_POSITION: TCityMap = {
 
 export interface ICityState {
   cities: TCityMap;
+  // cities: string[];
   current: string;
 }
 
@@ -31,9 +32,12 @@ export const CitySlice = createSlice({
       // console.log(action);
       state.current = action.payload;
     },
+    setCities: (state, action: PayloadAction<TCityMap>) => {
+      state.cities = action.payload;
+    },
   },
 });
 
-export const { setCurrent } = CitySlice.actions;
+export const { setCurrent, setCities } = CitySlice.actions;
 
 export default CitySlice.reducer;

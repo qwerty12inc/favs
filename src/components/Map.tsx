@@ -113,7 +113,9 @@ const MapBlock: React.FC<Props> = (props) => {
           <Marker
             key={(marker?.Longitude + marker?.Latitude).toString()}
             coordinate={marker}
-          />
+          >
+            <Image style={styles.marker} source={placeIcon} />
+          </Marker>
         }
         {
           (places.length > 0 && type === 'general') &&

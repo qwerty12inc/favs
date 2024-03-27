@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigation, useRouter } from 'expo-router';
-import { StyleSheet, SafeAreaView, TextInput, Dimensions, Pressable, } from 'react-native';
-import { Avatar, View, Image } from 'react-native-ui-lib';
+import { StyleSheet, TextInput, Dimensions, Pressable, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Avatar, View, Image, SafeAreaSpacerView } from 'react-native-ui-lib';
 import MapBlock from '../../src/components/Map';
 import { useDispatch, useSelector } from 'react-redux';
 import { IStateInterface } from '../../src/store/store';
@@ -17,6 +17,8 @@ import BannerSlider from '../../src/components/Banner/BannerSlider';
 import { globalTokens } from '../../src/styles';
 import { TMapApiResponse } from '../../src/models/maps';
 import { setFilterPlaces } from '../../src/store/features/PlacesSlice';
+import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
+import { FirebaseStorageTypes, firebase } from '@react-native-firebase/storage';
 const profileDefaultAvatar = require("../../assets/icons/user.png");
 
 const { width, height } = Dimensions.get('window');
@@ -31,7 +33,7 @@ export default function MainPage() {
     const [searchFocused, setSearchFocused] = useState<boolean>(false)
     const [placesList, setPlacesList] = useState<TMapApiResponse[]>([])
 
-    const snapPoints = useMemo(() => [100, height - 195], []);
+    const snapPoints = useMemo(() => [100, height - 125], []);
 
     const BottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -74,59 +76,65 @@ export default function MainPage() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.userProfile}>
-                <SafeAreaView>
-                    <CityPicker />
-                </SafeAreaView>
-                <Pressable
-                    onPress={onProfilePress}
-                    style={styles.userAvatar}
-                >
-                    <Image
-                        width={25}
-                        height={25}
-                        source={profileDefaultAvatar}
-                    />
-                </Pressable>
-            </View>
-            <View style={styles.searchBar_shadow}>
-                <BannerSlider style={{ background: globalTokens.colors.white }}>
-                    <Banner
-                        title='Support author'
-                        description={`Donate to Author of ${currentCity} places list `}
-                        link={handleDonateLink()}
-                        backgroundColor='#260202'
-                        darkBackground
-                    />
-                    <Banner
-                        title='What is Favs?'
-                        description='Learn more'
-                        link='https://favs.site'
-                    />
-                </BannerSlider>
-                <View style={{ paddingVertical: 0, paddingHorizontal: 16, }}>
-                    <TextInput
-                        // value={text}
-                        onChangeText={onInputChange}
-                        placeholder={'Search'}
-                        style={styles.input}
-                        onFocus={onInputFocus}
-                        onBlur={onInputBlur}
-                    />
-                    {/* <SegmentedControl
-                        values={['Coffee', 'Drink', 'Eat']}
-                        selectedIndex={0}
-                        style={{ paddingVertical: 20 }}
-                        fontStyle={{ fontFamily: 'ClashDisplay-Medium' }}
-                    // onChange={(event) => {
-                    //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
-                    // }}
-                    /> */}
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.userProfile}>
+                    <SafeAreaView>
+                        <CityPicker />
+                    </SafeAreaView>
+                    <Pressable
+                        onPress={onProfilePress}
+                        style={styles.userAvatar}
+                    >
+                        <Image
+                            width={25}
+                            height={25}
+                            source={profileDefaultAvatar}
+                        />
+                    </Pressable>
                 </View>
-            </View>
-            <View style={styles.mapContainer}>
-                <MapBlock initialPosition={cities[currentCity]} />
-            </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.searchBar_shadow}>
+                    {/* <BannerSlider style={{ background: globalTokens.colors.white }}>
+                        <Banner
+                            title='Support author'
+                            description={`Donate to Author of ${currentCity} places list `}
+                            link={handleDonateLink()}
+                            backgroundColor='#260202'
+                            darkBackground
+                        />
+                        <Banner
+                            title='What is Favs?'
+                            description='Learn more'
+                            link='https://favs.site'
+                        />
+                    </BannerSlider> */}
+                    <View style={{ paddingVertical: 0, paddingHorizontal: 16, }}>
+                        <TextInput
+                            // value={text}
+                            onChangeText={onInputChange}
+                            placeholder={'Search'}
+                            style={styles.input}
+                            onFocus={onInputFocus}
+                            onBlur={onInputBlur}
+                        />
+                        {/* <SegmentedControl
+                            values={['Coffee', 'Drink', 'Eat']}
+                            selectedIndex={0}
+                            style={{ paddingVertical: 20 }}
+                            fontStyle={{ fontFamily: 'ClashDisplay-Medium' }}
+                        // onChange={(event) => {
+                        //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
+                        // }}
+                        /> */}
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.mapContainer}>
+                    <MapBlock initialPosition={cities[currentCity]} />
+                </View>
+            </TouchableWithoutFeedback>
             <BottomSheet
                 style={styles.shadow}
                 ref={BottomSheetModalRef}
