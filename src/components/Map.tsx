@@ -47,7 +47,7 @@ const MapBlock: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (type === 'general') {
+    
     setRegion((prev) => {
       return {
         ...prev,
@@ -55,6 +55,7 @@ const MapBlock: React.FC<Props> = (props) => {
         longitude: initialPosition.longitude,
       };
     });
+    if (type === 'general') {
     // dispatch(setPlaces(PLACES_LIST_MOCK))
     setLoading(true)
     MapService.getPlacesByCity(currentCity)
@@ -137,12 +138,15 @@ const MapBlock: React.FC<Props> = (props) => {
       <MapView
         style={styles.map}
         region={region}
+        showsMyLocationButton={true}
+        showsCompass={true}
         //   onPress={e => this.onMapPress(e)}
         onMarkerPress={type === 'general' && handleMarkerClick}
+        mapPadding={{ top: 15, right: 15, bottom: 25, left: 15 }}
         // onRegionChange={type === 'general' && handleRegionChange}
         // onRegionChangeComplete={() => console.log('complete')}
-        scrollEnabled={type === 'general'}
-        zoomEnabled={type === 'general'}
+        // scrollEnabled={type === 'general'}
+        // zoomEnabled={type === 'general'}
       // onMapReady={() => setRegion(region)}
       >
         {(marker && type === 'detailed') &&
