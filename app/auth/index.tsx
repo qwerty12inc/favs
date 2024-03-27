@@ -21,31 +21,31 @@ export default function WelcomePage() {
     };
 
 
-    // const configureGoogleSignIn = () => {
-    //     GoogleSignin.configure({
-    //         webClientId: "1076432211496-f93a4j5ofqda6l3vbcq0eq4rrqo1tb0s.apps.googleusercontent.com",
-    //         iosClientId: "1076432211496-a5kbtfng4f3sje3f82chpom0tli632qi.apps.googleusercontent.com",
-    //     })
-    // };
+    const configureGoogleSignIn = () => {
+        GoogleSignin.configure({
+            webClientId: "1076432211496-f93a4j5ofqda6l3vbcq0eq4rrqo1tb0s.apps.googleusercontent.com",
+            iosClientId: "1076432211496-a5kbtfng4f3sje3f82chpom0tli632qi.apps.googleusercontent.com",
+        })
+    };
 
-    // useEffect(() => {
-    //     configureGoogleSignIn()
-    // });
+    useEffect(() => {
+        configureGoogleSignIn()
+    });
 
-    // const signin = async () => {
-    //     console.log("click")
-    //     const { idToken } = await GoogleSignin.signIn();
-    //     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+    const signin = async () => {
+        console.log("click")
+        const { idToken } = await GoogleSignin.signIn();
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken)
 
-    //     const user_sign_in = auth().signInWithCredential(googleCredential)
+        const user_sign_in = auth().signInWithCredential(googleCredential)
 
-    //     user_sign_in.then((user) => {
-    //         console.log(user)
-    //     })
-    //     .catch((error) => {
-    //         console.log(error)
-    //     })
-    // }
+        user_sign_in.then((user) => {
+            console.log(user)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
 
     // GoogleSignin.configure({
     //     webClientId: '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', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
