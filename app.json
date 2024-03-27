@@ -39,7 +39,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "website.favs.app",
-      "googleServicesFile": "./src/utils/GoogleService-Info.plist",
+      "googleServicesFile": "./ios/FavsbestplacesinEurope/GoogleService-Info.plist",
       "infoPlist": {
         "CFBundleURLTypes": [
           {

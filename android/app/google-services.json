@@ -2,18 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>1076432211496-ef0k1uhpvbm84q6j250tgu5atbkhh29p.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1076432211496-ef0k1uhpvbm84q6j250tgu5atbkhh29p</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDqk4-TCkX6khC2khK_NNJdXJhTCAwRHCQ</string>
+	<string>AIzaSyA-183Uw6-ZBo0Ng-2tPfiulnoi4KRv96s</string>
 	<key>GCM_SENDER_ID</key>
-	<string>457717190004</string>
+	<string>1076432211496</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>website.favs.app</string>
 	<key>PROJECT_ID</key>
-	<string>cofegeo</string>
+	<string>favs-85f44</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cofegeo.appspot.com</string>
+	<string>favs-85f44.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -23,7 +27,7 @@
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true>true</true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:1076432211496:ios:8cf10d1790667b72f4ef1d</string>
 </dict>
