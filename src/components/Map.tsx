@@ -1,13 +1,13 @@
 import { StyleSheet, Text, SafeAreaView, Dimensions } from "react-native";
 import { Avatar, View, Picker, ModalProps, Image } from "react-native-ui-lib";
 import MapView, { Details, LatLng, Marker, MarkerPressEvent, Region } from "react-native-maps";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MapService from "../http/MapService";
 import { TMapApiResponse } from "../models/maps";
 import { useNavigation } from "expo-router";
 import { debounce } from 'lodash';
 import { useDispatch, useSelector } from "react-redux";
-import { patchPlaces, resetPlaces, setPlaces } from "../store/features/PlacesSlice";
+import { patchPlaces, resetPlaces, setCurrentPlace, setPlaces } from "../store/features/PlacesSlice";
 import { IStateInterface } from "../store/store";
 import { PLACES_LIST_MOCK } from "./PlacesList/PlaceList";
 import storage, { firebase } from '@react-native-firebase/storage';
@@ -38,8 +38,8 @@ const MapBlock: React.FC<Props> = (props) => {
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
   const [region, setRegion] = useState<Region>({
-    latitude: initialPosition.latitude,
-    longitude: initialPosition.longitude,
+    latitude: initialPosition?.latitude,
+    longitude: initialPosition?.longitude,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
@@ -47,7 +47,6 @@ const MapBlock: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    
     setRegion((prev) => {
       return {
         ...prev,
@@ -58,7 +57,7 @@ const MapBlock: React.FC<Props> = (props) => {
     if (type === 'general') {
     // dispatch(setPlaces(PLACES_LIST_MOCK))
     setLoading(true)
-    MapService.getPlacesByCity(currentCity)
+    MapService.getPlacesByCity(currentCity?.name)
       .then((res) => res.data)
       .then((data) => {
 
@@ -82,7 +81,7 @@ const MapBlock: React.FC<Props> = (props) => {
       console.info('get pics for main page...:');
       places.forEach((placeInfo) => {
         console.log('current placeInfo:', placeInfo.name);
-        
+
         storage()
             .ref(`places/${placeInfo?.city}/${placeInfo?.id}/`)
             .listAll()
@@ -127,11 +126,12 @@ const MapBlock: React.FC<Props> = (props) => {
   //   }, 500)
 
 
-  function handleMarkerClick(event: MarkerPressEvent) {
+  const handleMarkerClick = useCallback((event: MarkerPressEvent) => {
     console.log(event.nativeEvent.id);
+    dispatch(setCurrentPlace(event.nativeEvent.id))
     //@ts-ignore
     navigation.navigate('places/[id]', { id: event.nativeEvent.id });
-  }
+  },[])
 
   return (
     <View style={styles.mapContainer}>

@@ -2,9 +2,19 @@ import {AxiosRequestConfig, AxiosResponse } from "axios";
 import api from ".";
 import { auth } from "../utils/firebase";
 import { Region } from "react-native-maps";
-import { TMapApiResponse } from "../models/maps";
+import { TCityApiResponse, TMapApiResponse } from "../models/maps";
 
 export default class MapService {
+
+    static async getAvalibleCities() :Promise<AxiosResponse<TCityApiResponse[]>> {
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: auth.currentUser.stsTokenManager.accessToken
+            },
+        }
+        return api.get(`/cities`, config)
+    }
+
     static async getPlaceByRegion(region : Region) :Promise<AxiosResponse<TMapApiResponse[]>> {
         const {latitude, longitude, latitudeDelta, longitudeDelta} = region
         // console.log(auth.currentUser.stsTokenManager.accessToken)
@@ -55,13 +65,13 @@ export default class MapService {
         return api.get(`/places/${id}`, config)
     }
 
-    static async getCitiesList() :Promise<AxiosResponse<string[]>> {
+    static async getFiltersList() :Promise<AxiosResponse<string[]>> {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: auth.currentUser.stsTokenManager.accessToken
             },
         }
-        return api.get(`/cities`, config)
+        return api.get(`/filter`, config)
     }
 }
 

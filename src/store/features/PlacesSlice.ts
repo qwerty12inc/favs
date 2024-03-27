@@ -2,17 +2,23 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { TMapApiResponse } from '../../models/maps';
 
 export interface IPlaceState {
+    filterList: string[],
+    currentFilter: string,
     places: TMapApiResponse[],
     placesAmount: number,
     filteredPlaces: TMapApiResponse[],
     filteredPlacesAmount: number,
+    currentPlace: TMapApiResponse,
 }
 
 const initialState: IPlaceState = {
-  places: [],
-  placesAmount: 0,
-  filteredPlaces: [],
-  filteredPlacesAmount: 0,
+    filterList: [],
+    currentFilter: '',
+    places: [],
+    placesAmount: 0,
+    filteredPlaces: [],
+    filteredPlacesAmount: 0,
+    currentPlace: null
 };
 
 export const PlacesSlice = createSlice({
@@ -59,10 +65,30 @@ export const PlacesSlice = createSlice({
                 state.filteredPlaces = state.places.filter((place) => place.name.toUpperCase().includes(action.payload.toUpperCase()))
                 state.filteredPlacesAmount = state.places.filter((place) => place.name.toUpperCase().includes(action.payload.toUpperCase())).length
             }
-        }
+        },
+        setCurrentPlace: ( state, action: PayloadAction<TMapApiResponse['id']> ) => {
+            state.currentPlace = state.places.find((place) => place.id === action.payload)
+        },
+        resetCurrentPlace: ( state ) => {
+            state.currentPlace = null
+        },
+        setFilters: ( state, action: PayloadAction<TMapApiResponse['labels']> ) => {
+            state.filterList = action.payload
+        },
+        resetFilters: ( state ) => {
+            state.filterList = []
+        },
+        setSelectedFilter: ( state, action: PayloadAction<string> ) => {
+            state.currentFilter = action.payload
+        },
+        resetSelectedFilter: ( state ) => {
+            state.currentFilter = null
+        },
     },
 });
 
-export const { setPlaces, resetPlaces, setFilterPlaces, patchPlaces } = PlacesSlice.actions;
+export const { setPlaces, resetPlaces, setFilterPlaces, patchPlaces,
+                setCurrentPlace, resetCurrentPlace, setFilters, resetFilters,
+                 setSelectedFilter, resetSelectedFilter } = PlacesSlice.actions;
 
 export default PlacesSlice.reducer;

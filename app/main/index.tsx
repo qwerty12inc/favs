@@ -19,6 +19,7 @@ import { TMapApiResponse } from '../../src/models/maps';
 import { setFilterPlaces } from '../../src/store/features/PlacesSlice';
 import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 import { FirebaseStorageTypes, firebase } from '@react-native-firebase/storage';
+import FilterList from '../../src/components/FilterList/FilterList';
 const profileDefaultAvatar = require("../../assets/icons/user.png");
 
 const { width, height } = Dimensions.get('window');
@@ -76,7 +77,7 @@ export default function MainPage() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
+            <TouchableWithoutFeedback style={{flex: 1, borderRadius: 8}} onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.userProfile}>
                     <SafeAreaView>
                         <CityPicker />
@@ -109,7 +110,12 @@ export default function MainPage() {
                             link='https://favs.website'
                         />
                     </BannerSlider> */}
-                    <View style={{ paddingVertical: 0, paddingHorizontal: 16, }}>
+                </View>
+            </TouchableWithoutFeedback>
+            <View style={{flex: 1}} accessible={false}>
+                <View style={styles.mapContainer}>
+                    <MapBlock initialPosition={currentCity?.center} />
+                    <View style={styles.overlay}>
                         <TextInput
                             // value={text}
                             onChangeText={onInputChange}
@@ -118,6 +124,7 @@ export default function MainPage() {
                             onFocus={onInputFocus}
                             onBlur={onInputBlur}
                         />
+                        <FilterList/>
                         {/* <SegmentedControl
                             values={['Coffee', 'Drink', 'Eat']}
                             selectedIndex={0}
@@ -129,19 +136,14 @@ export default function MainPage() {
                         /> */}
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
-                <View style={styles.mapContainer}>
-                    <MapBlock initialPosition={cities[currentCity]} />
-                </View>
-            </TouchableWithoutFeedback>
+            </View>
             <BottomSheet
                 style={styles.shadow}
                 ref={BottomSheetModalRef}
                 index={bottomSheetState}
                 snapPoints={snapPoints}
             >
-                <Text style={styles.placesCount}>{filterPlacesAmount} places in {currentCity}</Text>
+                <Text style={styles.placesCount}>{filterPlacesAmount} places in {currentCity.name}</Text>
                 <PlaceList searchInProgress={searchFocused} />
             </BottomSheet>
         </SafeAreaView>
@@ -155,30 +157,42 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     mapContainer: {
+        position: "relative",
         width: '100%',
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
+        marginTop: -10,
         marginBottom: 40,
+        // paddingHorizontal: 16,
+    },
+    overlay: {
+        position: "absolute",
+        top: 10,
+        width: "100%",
     },
     userProfile: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 15,
+        paddingHorizontal: 16,
         paddingVertical: 10,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        zIndex: 100,
     },
     userAvatar: {
         marginLeft: 'auto',
     },
     input: {
-        backgroundColor: 'rgba(118, 118, 128, 0.12)',
+        backgroundColor: '#fff',
         paddingVertical: 12,
         paddingHorizontal: 16,
         fontSize: 17,
         lineHeight: 22,
         marginTop: 8,
         marginBottom: 8,
+        marginHorizontal: 16,
 
         borderRadius: 10,
         fontFamily: 'ClashDisplay-Medium',
@@ -198,8 +212,9 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     searchBar_shadow: {
+        position: "absolute",
         zIndex: 20,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         paddingBottom: 16,
         shadowColor: '#000',
         shadowOffset: {

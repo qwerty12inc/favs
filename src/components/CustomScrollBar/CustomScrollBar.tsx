@@ -1,0 +1,18 @@
+import { View, Text } from 'react-native'
+import React from 'react'
+import { ScrollBar } from 'react-native-ui-lib'
+
+export default function CustomScrollBar({ children, ...props }) {
+    return (
+        <ScrollBar
+            {...props}
+            style={[{ marginVertical: 12 }, props.style]}
+            contentContainerStyle={{ gap: 10, display: 'flex', flexDirection: "row", alignItems: "stretch" }}
+            contentInset={{ left: 16, right: 16 }}
+            contentOffset={{ x: -16, y: 0 }}
+            gradientColor='transparent'
+        >
+            {children}
+        </ScrollBar>
+    )
+}

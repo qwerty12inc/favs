@@ -1,40 +1,50 @@
 import { Picker } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { IStateInterface } from '../store/store';
-import { useEffect, useState } from 'react';
-import { setCurrent } from '../store/features/CitySlice';
+import { useEffect, useMemo, useState } from 'react';
+import { setCities, setCurrent } from '../store/features/CitySlice';
+import MapService from '../http/MapService';
+import { setFilters } from '../store/features/PlacesSlice';
 
 const CityPicker: React.FC = () => {
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
     const currentCity = useSelector((state: IStateInterface) => state.cities.current);
     const dispatch = useDispatch();
 
-    const CITY_PICKER_OPTIONS = [];
-
     const handleCityChange = (item) => {
-        console.log(item);
         dispatch(setCurrent(item));
     };
 
-    Object.keys(cities).forEach((city) => {
-        CITY_PICKER_OPTIONS.push({ label: city, value: city });
+    const CITY_PICKER_OPTIONS = cities.map((city) => {
+        return ({ label: city.name, value: city.name });
     });
+
+    const value = useMemo(() => {
+        return currentCity.name
+    }, [currentCity])
+
+    useEffect(()=>{
+        if (cities.length <= 1) {
+            MapService.getAvalibleCities()
+                .then((res) => res.data)
+                .then((data) => {
+                    dispatch(setCities(data))
+                    dispatch(setCurrent(data[1].name))
+                });
+        } else {
+            dispatch(setFilters(currentCity.categories[0].labels))
+        }
+    },[currentCity])
 
     if (CITY_PICKER_OPTIONS.length > 0)
         return (
             <Picker
-                placeholder="Choose city"
-                value={currentCity ? currentCity : 'value'}
+                placeholder={value}
+                value={currentCity.name}
                 defaultValue={CITY_PICKER_OPTIONS.length > 0 && CITY_PICKER_OPTIONS[0].value}
                 onChange={handleCityChange}
                 mode={Picker.modes.SINGLE}
-                // trailingAccessory={dropdownIcon}
                 fieldType="filter"
-                topBarProps={{ containerStyle: { marginTop: 60 } }}
-                pickerModalProps={{
-                    containerStyle: { margin: 60, padding: 100, height: 200 },
-                    animationType: 'slide',
-                }}
                 style={{
                     fontSize: 24,
                     fontWeight: '600',

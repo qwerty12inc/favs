@@ -38,6 +38,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MapService from "../../src/http/MapService";
 import { TMapApiResponse } from "../../src/models/maps";
 import Skeleton from "../../src/components/Skeleton/Skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { IStateInterface } from "../../src/store/store";
+import { resetCurrentPlace } from "../../src/store/features/PlacesSlice";
+import FilterList from "../../src/components/FilterList/FilterList";
 
 // const dogPhoto = require("../../assets/random_img.jpeg");
 
@@ -50,13 +54,15 @@ const secondaryStorageBucket = firebase.app().storage('gs://favs-85f44.appspot.c
 
 export default function PlacePage() {
   const { id } = useLocalSearchParams();
+  const CurrentPlaceInfo = useSelector((state: IStateInterface) => state.places.currentPlace)
 
   const [imgArray, setImgArray] = useState([])
-  const [placeInfo, setPlaceInfo] = useState<TMapApiResponse>(null)
+  // const [placeInfo, setPlaceInfo] = useState<TMapApiResponse>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+  const dispatch = useDispatch();
 
   // ref
   const BottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -85,48 +91,10 @@ export default function PlacePage() {
   }, []);
 
   useEffect(() => {
-    //@ts-ignore
-    MapService.getPlaceInfo(id)
-      .then((res) => res.data)
-      .then((data) => {
-        console.clear();
-        console.log("data: ",data)
-        setPlaceInfo(data)
-        setIsLoading(false)
-      })
-      .catch((e) => {
-        console.log(e)
-        setIsLoading(false)
-      })
-  }, [])
-
-  useEffect(() => {
-    if (placeInfo?.city && placeInfo?.id) {
-      console.log('get pics...:');
-      storage()
-          .ref(`places/${placeInfo?.city}/${placeInfo?.id}/`)
-          .listAll()
-          .then((data) => {
-              console.log('data items:', data.items);
-              
-              const downloadURLPromises = data.items.map((item) => { 
-                return item.getDownloadURL(); // Return the promise
-              });
-              
-              Promise.all(downloadURLPromises).then((urls) => {
-                setImgArray(urls);
-              });
-          })
-          .catch((error) => {
-              console.error('Error fetching data:', error);
-          })
-          .finally(() => console.log("imgArray: ",imgArray)); // This will not show updated imgArray due to asynchronous nature of setImgArray
+    if (CurrentPlaceInfo) {
+      setIsLoading(false)
     }
-}, [placeInfo]);
-
-  useEffect(() => {
-    console.log("imgArray: ", imgArray);
-  }, [imgArray]);
+  },[CurrentPlaceInfo])
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -203,7 +171,7 @@ export default function PlacePage() {
             >
               <View style={[styles.content, { marginTop: 25 }]}>
                 <Text style={globalStyles.title}>
-                  {!isLoading ? placeInfo?.name : <Skeleton height={38} width={100} />}
+                  {!isLoading ? CurrentPlaceInfo?.name : <Skeleton height={38} width={100} />}
                 </Text>
               </View>
 
@@ -214,7 +182,7 @@ export default function PlacePage() {
               >
                 {
                   !isLoading ?
-                    placeInfo?.labels.map((chip) => (
+                    CurrentPlaceInfo?.labels.map((chip) => (
                       <Chip
                         key={chip}
                         label={chip}
@@ -233,7 +201,7 @@ export default function PlacePage() {
                       [1, 2, 3, 4].map((el) => (
                         <Skeleton height={17.3} width={300} key={el} />
                       )) :
-                      placeInfo?.description && placeInfo?.description
+                      CurrentPlaceInfo?.description && CurrentPlaceInfo?.description
                   }
                 </Text>
                 <View
@@ -244,27 +212,27 @@ export default function PlacePage() {
                 >
                   <Text style={globalStyles.subtitle}>Address</Text>
                   {
-                    (placeInfo?.googleMapsInfo?.locationURL && placeInfo?.googleMapsInfo?.formattedAddress) &&
+                    (CurrentPlaceInfo?.googleMapsInfo?.locationURL && CurrentPlaceInfo?.googleMapsInfo?.formattedAddress) &&
                     <AddressBlock 
-                      address={placeInfo?.googleMapsInfo?.formattedAddress}
-                      link={placeInfo?.googleMapsInfo?.locationURL}
+                      address={CurrentPlaceInfo?.googleMapsInfo?.formattedAddress}
+                      link={CurrentPlaceInfo?.googleMapsInfo?.locationURL}
                     />
                   }
                   {
-                    placeInfo?.googleMapsInfo?.openingInfo && 
+                    CurrentPlaceInfo?.googleMapsInfo?.openingInfo && 
                       <View>
                         <Text style={globalStyles.subtitle}>Opening hours</Text>
-                        <OpeningHours openingHours={placeInfo?.googleMapsInfo?.openingInfo} />
+                        <OpeningHours openingHours={CurrentPlaceInfo?.googleMapsInfo?.openingInfo} />
                       </View>
                   }
                   {
-                    (placeInfo?.instagram || placeInfo?.website) &&
+                    (CurrentPlaceInfo?.instagram || CurrentPlaceInfo?.website) &&
                     <View>
                       <Text style={globalStyles.subtitle}>Contacts</Text>
                       <ContactsList
                         contacts={{
-                          instagram: placeInfo?.instagram && placeInfo.instagram,
-                          website: placeInfo?.website.length > 0 ? placeInfo.website : placeInfo.googleMapsInfo.website
+                          instagram: CurrentPlaceInfo?.instagram && CurrentPlaceInfo.instagram,
+                          website: CurrentPlaceInfo?.website.length > 0 ? CurrentPlaceInfo.website : CurrentPlaceInfo.googleMapsInfo.website
                         }}
                       />
                     </View>
@@ -278,9 +246,9 @@ export default function PlacePage() {
                 }}
               >
                 <MapBlock
-                  initialPosition={{ latitude: placeInfo?.coordinates.latitude, longitude: placeInfo?.coordinates.longitude }}
+                  initialPosition={{ latitude: CurrentPlaceInfo?.coordinates.latitude, longitude: CurrentPlaceInfo?.coordinates.longitude }}
                   zoom={0.005}
-                  marker={{ latitude: placeInfo?.coordinates.latitude, longitude: placeInfo?.coordinates.longitude }}
+                  marker={{ latitude: CurrentPlaceInfo?.coordinates.latitude, longitude: CurrentPlaceInfo?.coordinates.longitude }}
                   type={"detailed"}
                 />
               </View>

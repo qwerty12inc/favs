@@ -25,3 +25,15 @@ export type TMapApiResponse = {
     website: string,
     photosUrl?: string[], // для отображения фотографий после их загрузки из firebase (не api)
 }
+
+type TCategory = {
+  labels: string[],
+  name: string,
+}
+
+export type TCityApiResponse = {
+  categories: TCategory[],
+  center: LatLng,
+  imageURL: string,
+  name: string,
+}
