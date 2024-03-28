@@ -1,5 +1,5 @@
 import { Link, useNavigation } from 'expo-router';
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
     View,
     ActivityIndicator,
@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { Carousel, AnimatedImage, Image } from 'react-native-ui-lib';
 import { CustomTitle as Title, CustomText as Text } from '../Text/CustomText';
+import { setCurrentPlace } from '../../store/features/PlacesSlice';
+import { useDispatch } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,17 +26,19 @@ type TProps = {
 
 export default function PlaceItem(props: TProps) {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-    const onPress = (e) => {
-        e.preventDefault();
+    const handleItemClick = useCallback((id: string) => {
+        // console.log(event.nativeEvent.id);
+        dispatch(setCurrentPlace(id))
         //@ts-ignore
-        navigation.navigate('places/[id]', { id: props.id });
-    };
+        navigation.navigate('places/[id]', { id: id });
+      },[])
 
     return (
         <Pressable
             style={[props.isFirst && { marginTop: 0 }, styles.container]}
-            onPress={onPress}
+            onPress={() => handleItemClick(props.id)}
         >
             <View>
                 {props.photos && props.photos?.length > 0 &&
@@ -53,7 +57,7 @@ export default function PlaceItem(props: TProps) {
                         style={{ borderRadius: 8 }}
                     >
                         {props.photos.map((item) => (
-                            <TouchableWithoutFeedback key={item.toString()} onPress={onPress}>
+                            <TouchableWithoutFeedback key={item.toString()} onPress={()=> handleItemClick(props.id)}>
                                 <View
                                     style={{
                                         width: '100%',

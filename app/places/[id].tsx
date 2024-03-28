@@ -93,6 +93,7 @@ export default function PlacePage() {
   useEffect(() => {
     if (CurrentPlaceInfo) {
       setIsLoading(false)
+      console.log(CurrentPlaceInfo.photosUrl)
     }
   },[CurrentPlaceInfo])
 
@@ -122,9 +123,14 @@ export default function PlacePage() {
       <BottomSheetModalProvider>
         <View style={styles.container}>
           <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
-            <Animated.View style={[styles.image, imageAnimatedStyle]}>
+            <Animated.View style={[styles.image, imageAnimatedStyle, { height: (CurrentPlaceInfo?.photosUrl?.length === 0 && !isLoading) ? 125 : IMG_HEIGHT}]}>
               <Carousel
-                containerStyle={{ height: 360, padding: 0, margin: 0 }}
+                containerStyle={
+                  { 
+                    height: 360,
+                    padding: 0, 
+                    margin: 0 }
+                }
                 containerMarginHorizontal={0}
                 pagingEnabled
                 itemSpacings={0}
@@ -133,7 +139,7 @@ export default function PlacePage() {
                 allowAccessibleLayout
               >
                 {
-                  imgArray?.length < 1 &&
+                  (isLoading) &&
                   <AnimatedImage
                       style={{ height: "100%", width: "100%" }}
                       //@ts-ignore
@@ -141,8 +147,8 @@ export default function PlacePage() {
                     />
                 }
                 {
-                  imgArray?.length > 0 &&
-                    imgArray.map((item) => (
+                  (CurrentPlaceInfo?.photosUrl?.length > 0 && !isLoading ) &&
+                  CurrentPlaceInfo?.photosUrl?.map((item) => (
                       <View
                         style={{
                           width: "100%",

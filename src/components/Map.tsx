@@ -38,7 +38,7 @@ const MapBlock: React.FC<Props> = (props) => {
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
   const [region, setRegion] = useState<Region>({
-    latitude: initialPosition?.latitude,
+    latitude: initialPosition.latitude,
     longitude: initialPosition?.longitude,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
