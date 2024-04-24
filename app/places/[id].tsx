@@ -87,13 +87,13 @@ export default function PlacePage() {
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    // console.log("handleSheetChanges", index);
   }, []);
 
   useEffect(() => {
     if (CurrentPlaceInfo) {
       setIsLoading(false)
-      console.log(CurrentPlaceInfo.photosUrl)
+      // console.log(CurrentPlaceInfo.photosUrl)
     }
   },[CurrentPlaceInfo])
 
@@ -187,13 +187,16 @@ export default function PlacePage() {
                 contentOffset={{ x: -16, y: 0 }}
               >
                 {
-                  !isLoading ?
+                  !isLoading && CurrentPlaceInfo?.labels &&
                     CurrentPlaceInfo?.labels.map((chip) => (
                       <Chip
                         key={chip}
                         label={chip}
                       />
-                    )) :
+                    ))
+                }
+                { 
+                  isLoading && !CurrentPlaceInfo?.labels &&
                     [1, 2, 3].map((el) => (
                       <Skeleton width={80} height={28} key={el} style={{ marginBottom: 5 }} />
                     ))

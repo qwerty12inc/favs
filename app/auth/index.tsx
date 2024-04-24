@@ -45,7 +45,7 @@ export default function WelcomePage() {
 
         signInWithCredential(auth ,googleCredential)
         .then((user) => {
-            // console.log('signed in:', user);
+            console.log('signed in:', user);
         })
         .catch((error) => {
             console.log('error:',error)

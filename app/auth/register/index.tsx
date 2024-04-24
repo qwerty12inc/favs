@@ -73,7 +73,7 @@ export default function RegisterPage() {
                             .catch((error) => {
                                 const errorCode = error.code;
                                 const errorMessage = error.message;
-                                console.log(errorCode, errorMessage);
+                                console.error(errorCode, errorMessage);
                             }),
                         sendEmailVerification(auth.currentUser)
                             .catch((error) => {
@@ -85,14 +85,14 @@ export default function RegisterPage() {
                         .catch((error) => {
                             const errorCode = error.code;
                             const errorMessage = error.message;
-                            console.log(errorCode, errorMessage);
+                            console.error(errorCode, errorMessage);
                         });
                 })
 
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(errorCode, errorMessage);
+                    console.error(errorCode, errorMessage);
                     if (errorCode === 'auth/email-already-in-use') {
                         Alert.alert("Error", `Email ${email} already registered`, [
                             { text: 'Ok' },
@@ -101,7 +101,7 @@ export default function RegisterPage() {
                         ])
                     } else {
                         Alert.alert("Error", `${errorCode}: ${errorMessage}`, [
-                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                            { text: 'OK', onPress: () => console.info('OK Pressed') },
                         ])
                     }
                 })

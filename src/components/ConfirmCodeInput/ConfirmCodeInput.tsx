@@ -41,7 +41,6 @@ export const ConfirmCodeInput: React.FC<IProps> = (props) => {
     const didChanged = useCallback(
         (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
             const text = e.nativeEvent.text || '';
-            console.log(text);
             setCode(text);
         },
         [props.onChange, props.size]
@@ -49,14 +48,12 @@ export const ConfirmCodeInput: React.FC<IProps> = (props) => {
 
     const didFocused = useCallback(() => {
         setFocus(true);
-        console.log('focused');
         // props.onFocus && props.onFocus(undefined);
     }, [props.onFocus]);
 
     const didBlurred = useCallback(() => {
         setFocus(false);
         // props.onBlur && props.onBlur(undefined);
-        console.log('blurred');
     }, [props.onBlur]);
 
     const value = typeof code === 'string' ? normalize(code, props.size) : '';

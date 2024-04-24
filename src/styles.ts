@@ -9,6 +9,7 @@ export const globalTokens = {
         white: '#ffffff',
         red: '#EB0038',
         darkRed: '#AC052D',
+        primaryBlue: "#0B73FE"
     },
 };
 

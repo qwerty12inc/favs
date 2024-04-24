@@ -1,24 +1,32 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TMapApiResponse } from '../../models/maps';
+import { TCategory, TMapApiResponse } from '../../models/maps';
 
 export interface IPlaceState {
     filterList: string[],
     currentFilter: string,
+
     places: TMapApiResponse[],
     placesAmount: number,
+
     filteredPlaces: TMapApiResponse[],
     filteredPlacesAmount: number,
     currentPlace: TMapApiResponse,
+
+    categoriesList: TCategory[],
+    currentCategory: TCategory
 }
 
 const initialState: IPlaceState = {
     filterList: [],
-    currentFilter: '',
+    currentFilter: null,
     places: [],
     placesAmount: 0,
     filteredPlaces: [],
     filteredPlacesAmount: 0,
-    currentPlace: null
+    currentPlace: null,
+
+    categoriesList: [],
+    currentCategory: null
 };
 
 export const PlacesSlice = createSlice({
@@ -73,7 +81,7 @@ export const PlacesSlice = createSlice({
             state.currentPlace = null
         },
         setFilters: ( state, action: PayloadAction<TMapApiResponse['labels']> ) => {
-            state.filterList = action.payload
+            state.filterList = ['all'].concat(action.payload)
         },
         resetFilters: ( state ) => {
             state.filterList = []
@@ -84,11 +92,24 @@ export const PlacesSlice = createSlice({
         resetSelectedFilter: ( state ) => {
             state.currentFilter = null
         },
+        setCategoriesList: ( state, action: PayloadAction<TCategory[]> ) => {
+            state.categoriesList = action.payload
+        },
+        resetCategoriesList: ( state ) => {
+            state.categoriesList = null
+        },
+        setCurrentCategory: ( state, action: PayloadAction<TCategory> ) => {
+            state.currentCategory = action.payload
+        },
+        resetCurrentCategory: ( state ) => {
+            state.currentCategory = null
+        },
     },
 });
 
-export const { setPlaces, resetPlaces, setFilterPlaces, patchPlaces,
+export const {  setPlaces, resetPlaces, setFilterPlaces, patchPlaces,
                 setCurrentPlace, resetCurrentPlace, setFilters, resetFilters,
-                 setSelectedFilter, resetSelectedFilter } = PlacesSlice.actions;
+                setSelectedFilter, resetSelectedFilter, setCategoriesList,
+                setCurrentCategory, resetCurrentCategory, resetCategoriesList } = PlacesSlice.actions;
 
 export default PlacesSlice.reducer;

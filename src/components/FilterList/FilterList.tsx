@@ -1,25 +1,53 @@
 import { View, Text } from 'react-native'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { IStateInterface } from '../../store/store'
 import { Chip, ScrollBar } from 'react-native-ui-lib'
 import CustomScrollBar from '../CustomScrollBar/CustomScrollBar'
+import { FilterItem } from './FilterItem'
+import { resetFilters, resetSelectedFilter, setFilters, setSelectedFilter } from '../../store/features/PlacesSlice'
 
 export default function FilterList() {
 
-    const filters = useSelector((state: IStateInterface) => state.places.filterList)
-    const selectedFilter = useSelector((state: IStateInterface) => state.places)
+    const filters = useSelector((state: IStateInterface) => state.places.filterList);
+    const currentFilter = useSelector((state: IStateInterface) => state.places.currentFilter);
+    const currentCity = useSelector((state: IStateInterface) => state.cities.currentCity);
+    const currentCategory = useSelector((state: IStateInterface) => state.places.currentCategory);
+
+    const dispatch = useDispatch();
+
+    const [index, setIndex] = useState(filters.indexOf(currentFilter))
+
+    useEffect(() => {
+      dispatch(setFilters(currentCategory?.labels))
+      dispatch(setSelectedFilter(filters[0]))
+
+      return () => {
+        dispatch(resetFilters())
+        dispatch(resetSelectedFilter())
+      }
+    }, [currentCategory])
+
+    useEffect(() => {
+      setIndex((prev) => {
+        if (prev <= filters.indexOf(currentFilter)) {
+          return filters.indexOf(currentFilter) + 1
+        } else {
+          return filters.indexOf(currentFilter) - 1
+        }
+      })
+    }, [filters.indexOf(currentFilter)])
+
   return (
-    <CustomScrollBar>
+    <CustomScrollBar focusIndex={index}>
         {
-            filters?.map((chip) => (
-                <Chip
-                  key={chip}
-                  label={chip}
-                //   style={{backgroundColor: ""}}
-                containerStyle={{backgroundColor: '#fff', borderColor: '#f1f1f1'}}
-                />
-              ))
+            currentFilter && filters?.map((item) => (
+              <FilterItem
+                title={item}
+                active={item === currentFilter}
+                key={item}
+              />
+            ))
         }
     </CustomScrollBar>
   )

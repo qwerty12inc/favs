@@ -21,15 +21,15 @@ export default function CitiesPage() {
         navigation.navigate('profile/index');
     };
 
-    useEffect(() => {
-        MapService.getCitiesList().then((res) => {
-            console.log(res.data)
-            // dispatch(setCities(res.data))
-        })
-        .catch((err) => {
-            console.log(err)
-        });
-    }, [])
+    // useEffect(() => {
+    //     MapService.getCitiesList().then((res) => {
+    //         console.log(res.data)
+    //         // dispatch(setCities(res.data))
+    //     })
+    //     .catch((err) => {
+    //         console.error(err)
+    //     });
+    // }, [])
 
     return (
         <SafeAreaView style={styles.container}>

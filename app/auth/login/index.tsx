@@ -41,14 +41,14 @@ export default function LoginPage() {
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(error)
+                    console.error(error)
                     if (errorCode === 'auth/invalid-credential') {
                         Alert.alert("Error", `Wrong login or password`, [
-                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                            { text: 'OK', onPress: () => console.info('OK Pressed') },
                         ])
                     } else {
                         Alert.alert("Error", `${errorCode}: ${errorMessage}`, [
-                            { text: 'OK', onPress: () => console.log('OK Pressed') },
+                            { text: 'OK', onPress: () => console.info('OK Pressed') },
                         ])
                     }
                     // ..

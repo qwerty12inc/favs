@@ -1,24 +1,64 @@
-import { ActivityIndicator, ImageBackground, SafeAreaView, StyleSheet } from 'react-native'
+import { ActivityIndicator, Alert, ImageBackground, SafeAreaView, StyleSheet } from 'react-native'
 import React, { useEffect } from 'react'
 import { globalStyles, globalTokens } from '../../../src/styles'
 import { Text, Image } from 'react-native-ui-lib';
-import { useNavigation } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import { auth } from '../../../src/utils/firebase';
 
 
 export default function SplashScreen() {
     const navigation = useNavigation();
 
+    // useEffect(() => {
+    //     console.warn(auth)
+    //     if (!auth?.currentUser) {
+
+    //         let timeout = setInterval
+    //         Alert.alert('Can`t find user')
+    //         // console.log(auth)
+    //         //@ts-ignore
+    //         navigation.replace('index');
+    //     } else {
+    //         Alert.alert('Found user')
+    //         //@ts-ignore
+    //         navigation.replace('index');
+    //     }
+    // },[auth])
+
     useEffect(() => {
-        setTimeout(() => {
-            console.log(auth.currentUser)
-            if (!auth.currentUser) {
-                console.log(auth)
-                //@ts-ignore
-                navigation.replace('index');
+        // Функция для перенаправления на страницу логина
+        const redirectToLogin = () => {
+            Alert.alert('Can`t find user');
+            //@ts-ignore
+            navigation.replace('index');
+        };
+    
+        // Функция для перенаправления на другую страницу
+        const redirectToMapPage = () => {
+            Alert.alert('Found user');
+            //@ts-ignore
+            navigation.replace('index');
+        };
+    
+        // Проверка наличия auth при загрузке страницы
+        const authCheckTimer = setTimeout(() => {
+            if (!auth?.currentUser) {
+                redirectToLogin();
+            } else {
+                redirectToMapPage();
             }
-        }, 2500)
-    })
+        }, 5000); // 5000 миллисекунд = 5 секунд
+    
+        // Если auth появится до истечения таймера, очищаем таймер
+        if (auth?.currentUser) {
+            clearTimeout(authCheckTimer);
+            redirectToMapPage(); // Напрямую перенаправляем на другую страницу
+        }
+    
+        // Очистка таймера при размонтировании компонента
+        return () => clearTimeout(authCheckTimer);
+    }, [auth, navigation]);
+
     return (
         <SafeAreaView style={styles.container}>
             <SafeAreaView style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

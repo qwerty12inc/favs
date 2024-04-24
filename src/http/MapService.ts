@@ -2,7 +2,7 @@ import {AxiosRequestConfig, AxiosResponse } from "axios";
 import api from ".";
 import { auth } from "../utils/firebase";
 import { Region } from "react-native-maps";
-import { TCityApiResponse, TMapApiResponse } from "../models/maps";
+import { TCategory, TCityApiResponse, TMapApiResponse } from "../models/maps";
 
 export default class MapService {
 
@@ -41,13 +41,15 @@ export default class MapService {
         return api.get('/places', config)
     }
 
-    static async getPlacesByCity(city: string) :Promise<AxiosResponse<TMapApiResponse[]>> {
+    static async getPlacesByCity(city: string, category?: TCategory, filter?: string) :Promise<AxiosResponse<TMapApiResponse[]>> {
         const config: AxiosRequestConfig = {
             headers: {
                 Authorization: auth.currentUser.stsTokenManager.accessToken
             },
             params: {
-                city: city
+                city: city,
+                category: category,
+                labels: filter
             },
         }
         return api.get('/places', config)

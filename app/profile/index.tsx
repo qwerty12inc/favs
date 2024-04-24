@@ -26,8 +26,8 @@ export default function ProfilePage() {
 
   const logout = () => {
     signOut(auth)
-      .then(() => (console.log('logout')))
-      .catch((e) => (console.log('logout error: ', e)))
+      .then(() => (console.info('logout')))
+      .catch((e) => (console.info('logout error: ', e)))
   }
 
   return (

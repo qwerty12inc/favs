@@ -17,7 +17,7 @@ export const CITY_POSITION: TCityMap = {
 export interface ICityState {
   cities: TCityApiResponse[];
   // cities: string[];
-  current: TCityApiResponse;
+  currentCity: TCityApiResponse;
 }
 
 // categories: TCategory[],
@@ -33,27 +33,14 @@ const initialState: ICityState  = {
         latitude: 45.46427,
         longitude: 9.18951
       },
-      categories: [
-        {
-          name: '',
-          labels: ['specialty coffee', 'eat', 'tea']
-        }
-      ],
+      categories: null,
       imageURL: '',
     }
   ],
-  current: {
+  currentCity: {
     name: "",
-    center: {
-      latitude: 45.46427,
-      longitude: 9.18951
-    },
-    categories: [
-      {
-        name: '',
-        labels: ['specialty coffee', 'eat', 'tea']
-      }
-    ],
+    center: null,
+    categories: null,
     imageURL: '',
   }
 }
@@ -62,9 +49,9 @@ export const CitySlice = createSlice({
   name: "city",
   initialState,
   reducers: {
-    setCurrent: (state, action: PayloadAction<TCityApiResponse['name']>) => {
+    setCurrentCity: (state, action: PayloadAction<TCityApiResponse['name']>) => {
       // console.log(action);
-      state.current = state.cities.find((city) => city.name === action.payload)
+      state.currentCity = state.cities.find((city) => city.name === action.payload)
     },
     setCities: (state, action: PayloadAction<TCityApiResponse[]>) => {
       state.cities = action.payload;
@@ -75,6 +62,6 @@ export const CitySlice = createSlice({
   },
 });
 
-export const { setCurrent, setCities } = CitySlice.actions;
+export const { setCurrentCity, setCities } = CitySlice.actions;
 
 export default CitySlice.reducer;

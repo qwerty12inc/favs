@@ -26,7 +26,7 @@ export type TMapApiResponse = {
     photosUrl?: string[], // для отображения фотографий после их загрузки из firebase (не api)
 }
 
-type TCategory = {
+export type TCategory = {
   labels: string[],
   name: string,
 }

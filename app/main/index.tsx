@@ -20,6 +20,7 @@ import { setFilterPlaces } from '../../src/store/features/PlacesSlice';
 import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 import { FirebaseStorageTypes, firebase } from '@react-native-firebase/storage';
 import FilterList from '../../src/components/FilterList/FilterList';
+import CategoryList from '../../src/components/CategoryList/CategoryList';
 const profileDefaultAvatar = require("../../assets/icons/user.png");
 
 const { width, height } = Dimensions.get('window');
@@ -27,34 +28,23 @@ const { width, height } = Dimensions.get('window');
 export default function MainPage() {
 
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
-    const currentCity = useSelector((state: IStateInterface) => state.cities.current);
+    const currentCity = useSelector((state: IStateInterface) => state.cities.currentCity);
     const filterPlaces = useSelector((state: IStateInterface) => state.places.filteredPlaces);
     const filterPlacesAmount = useSelector((state: IStateInterface) => state.places.filteredPlacesAmount);
     const [bottomSheetState, setBottomSheetState] = useState<1 | 0>(0)
     const [searchFocused, setSearchFocused] = useState<boolean>(false)
     const [placesList, setPlacesList] = useState<TMapApiResponse[]>([])
 
-    const snapPoints = useMemo(() => [100, height - 125], []);
+    const snapPoints = useMemo(() => [75, height - 85], []);
 
     const BottomSheetModalRef = useRef<BottomSheetModal>(null);
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    const handleDonateLink = () => {
-        switch (currentCity) {
-            case 'Milan':
-                return 'https://favsapp.gumroad.com/l/hgpkc'
-                break;
-            case 'Amsterdam':
-                return 'https://favsapp.gumroad.com/l/Lerasguide'
-                break
-        }
-    }
-
     useEffect(() => {
         setPlacesList(filterPlaces)
-    }, [filterPlaces])
+    }, [])
 
     const onProfilePress = () => {
         //@ts-ignore
@@ -114,16 +104,9 @@ export default function MainPage() {
             </TouchableWithoutFeedback>
             <View style={{flex: 1}} accessible={false}>
                 <View style={styles.mapContainer}>
-                    <MapBlock initialPosition={currentCity?.center} />
+                    <MapBlock />
                     <View style={styles.overlay}>
-                        <TextInput
-                            // value={text}
-                            onChangeText={onInputChange}
-                            placeholder={'Search'}
-                            style={styles.input}
-                            onFocus={onInputFocus}
-                            onBlur={onInputBlur}
-                        />
+                        <CategoryList/>
                         <FilterList/>
                         {/* <SegmentedControl
                             values={['Coffee', 'Drink', 'Eat']}
@@ -144,6 +127,14 @@ export default function MainPage() {
                 snapPoints={snapPoints}
             >
                 <Text style={styles.placesCount}>{filterPlacesAmount} places in {currentCity.name}</Text>
+                {/* <TextInput
+                    // value={text}
+                    onChangeText={onInputChange}
+                    placeholder={'Search'}
+                    style={styles.input}
+                    onFocus={onInputFocus}
+                    onBlur={onInputBlur}
+                /> */}
                 <PlaceList searchInProgress={searchFocused} />
             </BottomSheet>
         </SafeAreaView>
@@ -170,6 +161,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 10,
         width: "100%",
+        display: "flex",
+        gap: 0, 
     },
     userProfile: {
         display: 'flex',
@@ -193,6 +186,8 @@ const styles = StyleSheet.create({
         marginTop: 8,
         marginBottom: 8,
         marginHorizontal: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: globalTokens.colors.lightGrey,
 
         borderRadius: 10,
         fontFamily: 'ClashDisplay-Medium',

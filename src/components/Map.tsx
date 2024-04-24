@@ -6,7 +6,7 @@ import MapService from "../http/MapService";
 import { TMapApiResponse } from "../models/maps";
 import { useNavigation } from "expo-router";
 import { debounce } from 'lodash';
-import { useDispatch, useSelector } from "react-redux";
+import { UseSelector, useDispatch, useSelector } from "react-redux";
 import { patchPlaces, resetPlaces, setCurrentPlace, setPlaces } from "../store/features/PlacesSlice";
 import { IStateInterface } from "../store/store";
 import { PLACES_LIST_MOCK } from "./PlacesList/PlaceList";
@@ -17,7 +17,7 @@ const placeIcon = require('../../assets/icons/coffee.png');
 type TMapType = 'general' | 'detailed';
 
 type Props = {
-  initialPosition: LatLng;
+  // initialPosition: LatLng;
   zoom?: number;
   marker?: any;
   type?: TMapType
@@ -27,9 +27,9 @@ const MapBlock: React.FC<Props> = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const places = useSelector((state: IStateInterface) => state.places.places);
-  const currentCity = useSelector((state: IStateInterface) => state.cities.current);
+  const currentCity = useSelector((state: IStateInterface) => state.cities.currentCity);
 
-  const { initialPosition, zoom, marker, type = 'general' } = props
+  const { zoom, marker, type = 'general' } = props
 
   const { width, height } = Dimensions.get("window");
 
@@ -38,26 +38,28 @@ const MapBlock: React.FC<Props> = (props) => {
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
   const [region, setRegion] = useState<Region>({
-    latitude: initialPosition.latitude,
-    longitude: initialPosition?.longitude,
+    latitude: null,
+    longitude: null,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
 
   const [loading, setLoading] = useState(false)
+  const currentFilter = useSelector((state: IStateInterface) => state.places.currentFilter)
+  const currentCategory = useSelector((state: IStateInterface) => state.places.currentCategory)
 
   useEffect(() => {
     setRegion((prev) => {
       return {
         ...prev,
-        latitude: initialPosition.latitude,
-        longitude: initialPosition.longitude,
+        latitude: currentCity?.center?.latitude,
+        longitude: currentCity?.center?.longitude,
       };
     });
     if (type === 'general') {
     // dispatch(setPlaces(PLACES_LIST_MOCK))
     setLoading(true)
-    MapService.getPlacesByCity(currentCity?.name)
+    MapService.getPlacesByCity(currentCity?.name, currentCategory, currentFilter === 'all' ? null : currentFilter)
       .then((res) => res.data)
       .then((data) => {
 
@@ -74,37 +76,38 @@ const MapBlock: React.FC<Props> = (props) => {
       })
       .finally(() => setLoading(false));
     }
-  }, [initialPosition]);
+  }, [currentCategory, currentFilter, currentCity]);
 
   useEffect(() => {
-    if (places && type === 'general') {
-      console.info('get pics for main page...:');
-      places.forEach((placeInfo) => {
-        console.log('current placeInfo:', placeInfo.name);
+    const fetchPlaceImages = async (placeInfo: TMapApiResponse) => {
+        try {
+            console.info('start fetch images');
+            const data = await storage().ref(`places/${placeInfo?.city}/${placeInfo?.id}/`).listAll();
+            const downloadURLPromises = data.items.map((item) => item.getDownloadURL());
+            const urls = await Promise.all(downloadURLPromises);
+            return { id: placeInfo.id, photosUrl: urls, ...placeInfo };
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;
+        }
+    };
 
-        storage()
-            .ref(`places/${placeInfo?.city}/${placeInfo?.id}/`)
-            .listAll()
-            .then((data) => {
-                const downloadURLPromises = data.items.map((item) => { 
-                  return item.getDownloadURL();
-                });
+    const updatePlaces = async () => {
+        try {
+            const promises = places.map(fetchPlaceImages);
+            const updatedPlaces = await Promise.all(promises);
+            updatedPlaces.forEach((place) => {
+                dispatch(patchPlaces(place));
+            });
+        } catch (error) {
+            console.error('Error updating places:', error);
+        }
+    };
 
-                Promise.all(downloadURLPromises).then((urls) => {
-                  dispatch(patchPlaces({id: placeInfo.id, photosUrl: urls, ...placeInfo}))
-                });
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            })
-        })
-    }
-
-    return () => {
-      console.info('clean up');
+    if (places.length > 0 && type === 'general' && !loading) {
+        updatePlaces();
     }
 }, [loading]);
-
 
   // const handleRegionChange =
   //   debounce((region: Region, details: Details) => {
