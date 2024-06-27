@@ -39,7 +39,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "website.favs.app",
-      "googleServicesFile": "./ios/FavsbestplacesinEurope/GoogleService-Info.plist",
+      "googleServicesFile": "./src/utils/GoogleService-Info.plist",
       "infoPlist": {
         "NSPrivacyAccessedAPICategoryFileTimestamp": "3B52.1 - This app needs access to file timestamp information for synchronization purposes.",
         "NSPrivacyAccessedAPICategoryDiskSpace": "85F4.1 - This app needs access to disk space information for efficient storage management.",

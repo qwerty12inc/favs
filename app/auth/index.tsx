@@ -4,9 +4,9 @@ import { StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, View, Text, Image } from 'react-native-ui-lib';
 import { globalStyles, globalTokens } from '../../src/styles';
-import { Button } from './../../src/components/Button/Button';
+import { Button } from '../../src/components/Button/Button';
 import auth, { signInWithCredential } from "firebase/auth"
-import {auth as firebaseAuth} from './../../src/utils/firebase';
+import {auth as firebaseAuth} from '../../src/utils/firebase';
 import {
     GoogleSignin,
     GoogleSigninButton,
