@@ -65,7 +65,8 @@ const MapBlock: React.FC<Props> = (props) => {
 
         // console.log(data)
         // setMapMarkers(data)
-        dispatch(setPlaces(data))
+        dispatch(setPlaces(data));
+        // console.log(places[2].imagePreview);
       })
       .catch((err) => {
         if (err.response.status === '404') {
@@ -77,37 +78,6 @@ const MapBlock: React.FC<Props> = (props) => {
       .finally(() => setLoading(false));
     }
   }, [currentCategory, currentFilter, currentCity]);
-
-  useEffect(() => {
-    const fetchPlaceImages = async (placeInfo: TMapApiResponse) => {
-        try {
-            console.info('start fetch images');
-            const data = await storage().ref(`places/${placeInfo?.city}/${placeInfo?.id}/`).listAll();
-            const downloadURLPromises = data.items.map((item) => item.getDownloadURL());
-            const urls = await Promise.all(downloadURLPromises);
-            return { id: placeInfo.id, photosUrl: urls, ...placeInfo };
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return null;
-        }
-    };
-
-    const updatePlaces = async () => {
-        try {
-            const promises = places.map(fetchPlaceImages);
-            const updatedPlaces = await Promise.all(promises);
-            updatedPlaces.forEach((place) => {
-                dispatch(patchPlaces(place));
-            });
-        } catch (error) {
-            console.error('Error updating places:', error);
-        }
-    };
-
-    if (places.length > 0 && type === 'general' && !loading) {
-        updatePlaces();
-    }
-}, [loading]);
 
   // const handleRegionChange =
   //   debounce((region: Region, details: Details) => {

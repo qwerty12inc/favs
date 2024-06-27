@@ -23,7 +23,8 @@ export type TMapApiResponse = {
     labels: string[],
     name: string,
     website: string,
-    photosUrl?: string[], // для отображения фотографий после их загрузки из firebase (не api)
+    photosUrl?: string[],
+    imagePreview?: string, // для отображения фотографий после их загрузки из firebase (не api)
 }
 
 export type TCategory = {

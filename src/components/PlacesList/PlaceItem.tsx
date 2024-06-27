@@ -20,7 +20,7 @@ type TProps = {
     id: string;
     name: string;
     address: string;
-    photos: string[];
+    photo: string;
     isFirst?: boolean;
 };
 
@@ -41,7 +41,7 @@ export default function PlaceItem(props: TProps) {
             onPress={() => handleItemClick(props.id)}
         >
             <View>
-                {props.photos && props.photos?.length > 0 &&
+                {props.photo &&
                     <Carousel
                         containerStyle={{
                             height: 250,
@@ -56,8 +56,7 @@ export default function PlaceItem(props: TProps) {
                         allowAccessibleLayout
                         style={{ borderRadius: 8 }}
                     >
-                        {props.photos.map((item) => (
-                            <TouchableWithoutFeedback key={item.toString()} onPress={()=> handleItemClick(props.id)}>
+                            <TouchableWithoutFeedback onPress={()=> handleItemClick(props.id)}>
                                 <View
                                     style={{
                                         width: '100%',
@@ -67,17 +66,15 @@ export default function PlaceItem(props: TProps) {
                                 >
                                     <AnimatedImage
                                         style={{ height: '100%', width: '100%' }}
-                                        source={{ uri: item }}
+                                        source={{ uri: props.photo }}
                                         loader={<ActivityIndicator />}
                                     />
                                 </View>
                             </TouchableWithoutFeedback>
-                        ))
-                        }
                     </Carousel>
                 }
                 {
-                    !props.photos &&
+                    !props.photo &&
                     <Image
                         style={{
                             height: 250,

@@ -86,7 +86,7 @@ const PlaceList: React.FC<TPlaceList> = (props) => {
       <PlaceItem
         name={item?.name}
         address={item?.googleMapsInfo?.formattedAddress}
-        photos={item?.photosUrl}
+        photo={item?.imagePreview}
         id={item.id}
       />
     ),
