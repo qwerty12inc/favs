@@ -8,6 +8,8 @@ import { emailValidator } from '../../../src/utils/validators';
 import { auth } from '../../../src/utils/firebase';
 import { debounce } from 'lodash';
 import { useNavigation } from 'expo-router';
+import { setAuthentication } from '../../../src/store/features/isAuthSlice';
+import { useDispatch } from 'react-redux';
 
 
 const { width, height } = Dimensions.get('window');
@@ -56,6 +58,7 @@ export default function RegisterPage() {
             setPasswordConfirm(text)
             setIsPasswordConfirmError(!(text === password));
         }, 2000)
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (!isFormValid) {
@@ -65,9 +68,11 @@ export default function RegisterPage() {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     // console.log(userCredential.user)
+                    dispatch(setAuthentication(userCredential.user))
                     Promise.all([
                         updateProfile(auth.currentUser, { displayName: name })
                             .then((userCredential) => {
+
                                 // console.log(userCredential)
                             })
                             .catch((error) => {

@@ -7,6 +7,8 @@ import { MaskedInput } from 'react-native-ui-lib';
 import { auth } from '../../../src/utils/firebase';
 import { emailValidator } from '../../../src/utils/validators';
 import { debounce } from 'lodash';
+import { useDispatch } from 'react-redux';
+import { setAuthentication } from '../../../src/store/features/isAuthSlice';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,6 +27,7 @@ export default function LoginPage() {
             setIsEmailError(!emailValidator(text))
         }, 2000)
 
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (!isFormValid) {
@@ -35,6 +38,7 @@ export default function LoginPage() {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
+                    dispatch(setAuthentication(user))
                     // console.log(user)
                     // ...
                 })

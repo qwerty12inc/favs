@@ -15,24 +15,26 @@ import useAuth from '../../src/utils/auth';
 import { useSelector } from 'react-redux';
 import { IStateInterface } from '../../src/store/store';
 import SplashScreen from '../auth/splashScreen/SplashScreen';
+import { auth } from '../../src/utils/firebase'
 import CitiesPage from '../cities';
 
 export default function Navigator() {
-    const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
-    const { user } = useAuth();
+    const authData = useSelector((state: IStateInterface) => state.authentication.authData);
+    // const { user } = useAuth();
     const Stack = createNativeStackNavigator()
 
     useEffect(() => {
         // console.log('user: ', user)
-    }, [user])
+    }, [])
 
-    if (user) {
+    console.warn(!!auth.currentUser, authData );
+
+    if (auth.currentUser || authData) {
         // console.log('private screens')
         return (
-            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='index'>
-
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='map'>
                 <Stack.Screen
-                    name="index"
+                    name="map"
                     options={{ headerShown: false, headerTitle: '' }}
                     component={MainPage}
                 />
@@ -84,7 +86,8 @@ export default function Navigator() {
                 />
             </Stack.Navigator>
         )
-    } else {
+    } 
+    if (!auth.currentUser && !authData) {
         // console.log('login screens')
         return (
             <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loader'>
@@ -97,7 +100,7 @@ export default function Navigator() {
                     component={SplashScreen}
                 />
                 <Stack.Screen
-                    name="index"
+                    name="auth"
                     options={{
                         headerShown: false,
                         headerTitle: ''

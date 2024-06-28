@@ -4,10 +4,13 @@ import { globalStyles, globalTokens } from '../../../src/styles'
 import { Text, Image } from 'react-native-ui-lib';
 import { useNavigation, useRouter } from 'expo-router';
 import { auth } from '../../../src/utils/firebase';
+import { useDispatch } from 'react-redux';
+import { resetAuthentication, setAuthentication } from '../../../src/store/features/isAuthSlice';
 
 
 export default function SplashScreen() {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     // useEffect(() => {
     //     console.warn(auth)
@@ -30,24 +33,26 @@ export default function SplashScreen() {
         const redirectToLogin = () => {
             Alert.alert('Can`t find user');
             //@ts-ignore
-            navigation.replace('index');
+            navigation.navigate('auth');
         };
     
         // Функция для перенаправления на другую страницу
         const redirectToMapPage = () => {
             Alert.alert('Found user');
             //@ts-ignore
-            navigation.replace('index');
+            navigation.replace('map');
         };
     
         // Проверка наличия auth при загрузке страницы
         const authCheckTimer = setTimeout(() => {
-            if (!auth?.currentUser) {
-                redirectToLogin();
-            } else {
+            if (auth.currentUser) {
+                dispatch(setAuthentication(auth.currentUser))
                 redirectToMapPage();
+            } else {
+                redirectToLogin();
+                dispatch(resetAuthentication())
             }
-        }, 5000); // 5000 миллисекунд = 5 секунд
+        }, 3000); // 3000 миллисекунд = 3 секунд
     
         // Если auth появится до истечения таймера, очищаем таймер
         if (auth?.currentUser) {

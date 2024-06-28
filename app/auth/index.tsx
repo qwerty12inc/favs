@@ -14,6 +14,8 @@ import {
 } from "@react-native-google-signin/google-signin";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useDispatch } from 'react-redux';
+import { setAuthentication } from '../../src/store/features/isAuthSlice';
 
 const provider = new GoogleAuthProvider();
 
@@ -37,6 +39,8 @@ export default function WelcomePage() {
         configureGoogleSignIn()
     });
 
+    const dispatch = useDispatch();
+
     const signin = async () => {
         console.log("click")
         const auth = getAuth();
@@ -46,6 +50,7 @@ export default function WelcomePage() {
         signInWithCredential(auth ,googleCredential)
         .then((user) => {
             console.log('signed in:', user);
+            dispatch(setAuthentication(user.user))
         })
         .catch((error) => {
             console.log('error:',error)

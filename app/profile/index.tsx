@@ -12,6 +12,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../src/utils/firebase";
 import Banner from "../../src/components/Banner/Banner";
 import BannerSlider from "../../src/components/Banner/BannerSlider";
+import { useDispatch } from "react-redux";
+import { resetAuthentication } from "../../src/store/features/isAuthSlice";
 
 const settingsIcon = require("../../assets/icon--settings.png");
 const profileDefaultAvatar = require("../../assets/icons/user.png");
@@ -21,12 +23,16 @@ const { width, height } = Dimensions.get("window");
 
 export default function ProfilePage() {
   const { user } = useAuth()
+  const dispatch = useDispatch();
 
   const profileAvatar = user?.photoURL ? { uri: user?.photoURL } : profileDefaultAvatar;
 
   const logout = () => {
     signOut(auth)
-      .then(() => (console.info('logout')))
+      .then(() => {
+        console.info('logout')
+        dispatch(resetAuthentication())
+      })
       .catch((e) => (console.info('logout error: ', e)))
   }
 
