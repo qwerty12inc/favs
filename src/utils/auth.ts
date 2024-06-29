@@ -18,7 +18,7 @@ export default function useAuth()  {
                 setUser(null)
                 console.info('else auth', auth);
                 console.info('else user', user)
-                dispatch(setAuthentication(undefined))
+                dispatch(resetAuthentication())
             }
         });
         return unsub;

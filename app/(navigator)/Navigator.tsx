@@ -25,26 +25,6 @@ export default function Navigator() {
     const Stack = createNativeStackNavigator()
     const navigationState = useRootNavigationState();
 
-    useEffect(() => {
-        console.info('navigationState', navigationState)
-        console.info('authData', authData)
-    }, [authData, navigationState])
-
-    if (authData === null) {
-        return (
-            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loading'>
-                <Stack.Screen
-                    name="loading"
-                    options={{
-                        headerShown: false,
-                        headerTitle: ''
-                    }}
-                    component={SplashScreen}
-                />
-            </Stack.Navigator>
-        )
-    }
-
     if (authData) {
         // console.log('private screens')
         return (
@@ -103,7 +83,8 @@ export default function Navigator() {
             </Stack.Navigator>
         )
     } 
-    if (authData === undefined) {
+    
+    if (authData === null) {
         // console.log('login screens')
         return (
             <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='auth'>
@@ -133,6 +114,21 @@ export default function Navigator() {
                         headerTitle: ''
                     }}
                     component={RegisterPage}
+                />
+            </Stack.Navigator>
+        )
+    }
+
+    if (authData === undefined) {
+        return (
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loading'>
+                <Stack.Screen
+                    name="loading"
+                    options={{
+                        headerShown: false,
+                        headerTitle: ''
+                    }}
+                    component={SplashScreen}
                 />
             </Stack.Navigator>
         )
