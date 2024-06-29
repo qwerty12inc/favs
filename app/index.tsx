@@ -21,7 +21,7 @@ import useAuth from '../src/utils/auth';
 const { width, height } = Dimensions.get('window');
 
 export default function Layout({ children }) {
-    SplashScreen.preventAutoHideAsync();
+    // SplashScreen.preventAutoHideAsync();
     const auth = useAuth();
 
     // const navigation = useNavigation();
@@ -31,41 +31,41 @@ export default function Layout({ children }) {
     const [appIsReady, setAppIsReady] = useState(false);
     const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);
 
-    useEffect(() => {
-        async function prepare() {
-            try {
-                // Pre-load fonts, make any API calls you need to do here
-                await Font.loadAsync({
-                    'Archivo-Medium': require('../assets/fonts/Archivo-Medium.ttf'),
-                    'Archivo-Bold': require('../assets/fonts/Archivo-Bold.ttf'),
-                    'ClashDisplay-Medium': require('../assets/fonts/ClashDisplay-Medium.ttf'),
-                    'ClashDisplay-Bold': require('../assets/fonts/ClashDisplay-Bold.ttf'),
-                });
-            } catch (e) {
-                console.warn(e);
-            } finally {
-                setAppIsReady(true);
-            }
-        }
+    // useEffect(() => {
+    //     async function prepare() {
+    //         try {
+    //             // Pre-load fonts, make any API calls you need to do here
+    //             await Font.loadAsync({
+    //                 'Archivo-Medium': require('../assets/fonts/Archivo-Medium.ttf'),
+    //                 'Archivo-Bold': require('../assets/fonts/Archivo-Bold.ttf'),
+    //                 'ClashDisplay-Medium': require('../assets/fonts/ClashDisplay-Medium.ttf'),
+    //                 'ClashDisplay-Bold': require('../assets/fonts/ClashDisplay-Bold.ttf'),
+    //             });
+    //         } catch (e) {
+    //             console.warn(e);
+    //         } finally {
+    //             setAppIsReady(true);
+    //         }
+    //     }
 
-        prepare();
-    }, []);
+    //     prepare();
+    // }, []);
 
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
+    // const navigation = useNavigation();
+    // const dispatch = useDispatch();
 
-    const onLayoutRootView = useCallback(async () => {
-        if (appIsReady) {
-            await SplashScreen.hideAsync();
-        }
-    }, [appIsReady]);
+    // const onLayoutRootView = useCallback(async () => {
+    //     if (appIsReady) {
+    //         await SplashScreen.hideAsync();
+    //     }
+    // }, [appIsReady]);
 
-    if (!appIsReady && !authData) {
-        return null;
-    } else
+    // if (!appIsReady && !authData) {
+    //     return null;
+    // } else
         return (
 
-            <View style={{ height }} onLayout={onLayoutRootView}>
+            <View style={{ height }} >
                 <Navigator />
             </View>
 
