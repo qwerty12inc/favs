@@ -111,9 +111,7 @@ export default function Layout({ children }) {
         return (
 
             <View style={{ height }} onLayout={onLayoutRootView}>
-                <NavigationContainer independent={true}>
-                    <Navigator />
-                </NavigationContainer>
+                <Navigator />
             </View>
 
         );

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigation, useRouter } from 'expo-router';
-import { StyleSheet, TextInput, Dimensions, Pressable, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, TextInput, Dimensions, Pressable, SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { Avatar, View, Image, SafeAreaSpacerView } from 'react-native-ui-lib';
 import MapBlock from '../../src/components/Map';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ import { FirebaseStorageTypes, firebase } from '@react-native-firebase/storage';
 import FilterList from '../../src/components/FilterList/FilterList';
 import CategoryList from '../../src/components/CategoryList/CategoryList';
 const profileDefaultAvatar = require("../../assets/icons/user.png");
+import { useNavigationState } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -41,9 +42,14 @@ export default function MainPage() {
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const navigationState = useNavigationState(state => state);
+
+  // Получаем текущий стек экранов
+  const currentStack = navigationState?.routeNames.join('; ');
 
     useEffect(() => {
         setPlacesList(filterPlaces)
+        Alert.alert(currentStack)
     }, [])
 
     const onProfilePress = () => {

@@ -1,6 +1,6 @@
 import { Link, useNavigation, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, View, Text, Image } from 'react-native-ui-lib';
 import { globalStyles, globalTokens } from '../../src/styles';
@@ -16,12 +16,15 @@ import {
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch } from 'react-redux';
 import { setAuthentication } from '../../src/store/features/isAuthSlice';
+import { useNavigationState } from '@react-navigation/native';
 
 const provider = new GoogleAuthProvider();
 
 export default function WelcomePage() {
     const navigation = useNavigation();
     const [error, setError] = React.useState<string | null>(null);
+    const navigationState = useNavigationState(state => state);
+    const currentStack = navigationState?.routeNames.join('; ');
     const onLoginPress = () => {
         //@ts-ignore
         navigation.navigate('auth/login/index');
@@ -38,6 +41,10 @@ export default function WelcomePage() {
     useEffect(() => {
         configureGoogleSignIn()
     });
+
+    useEffect(() => {
+        Alert.alert(currentStack);
+    },[]);
 
     const dispatch = useDispatch();
 
