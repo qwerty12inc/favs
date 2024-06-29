@@ -27,7 +27,7 @@ export default function Navigator() {
         Alert.alert('authData: ' + JSON.stringify(authData));
     }, [isLogined, authData, navigationState, navigation]);
 
-    if (authData === null) {
+    if (authData === undefined) {
         return (
             <NavigationContainer independent={true}>
                 <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loading'>

@@ -24,12 +24,12 @@ export default function Layout({ children }) {
     SplashScreen.preventAutoHideAsync();
     const auth = useAuth();
 
-    const authenticated = useSelector((state: IStateInterface) => state.authentication.isLogined);
     // const navigation = useNavigation();
     // const router = useRouter();
     const navigationState = useRootNavigationState();
 
     const [appIsReady, setAppIsReady] = useState(false);
+    const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);
 
     useEffect(() => {
         async function prepare() {
@@ -54,58 +54,13 @@ export default function Layout({ children }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    // Функция для перенаправления на страницу логина
-    const redirectToLogin = () => {
-        // Alert.alert('Can`t find user');
-        //@ts-ignore
-        navigation.navigate('auth');
-    };
-
-    // Функция для перенаправления на другую страницу
-    const redirectToMapPage = () => {
-        // Alert.alert('Found user');
-        //@ts-ignore
-        navigation.replace('map');
-    };
-
-    // Проверка наличия auth при загрузке страницы
-    // const authCheckTimer = setTimeout(() => {
-    //     if (auth) {
-    //         redirectToMapPage();
-    //     } else {
-    //         redirectToLogin();
-    //     }
-    // }, 3000); // 3000 миллисекунд = 3 секунд
-
-    // useEffect(() => {
-
-    //     if (!navigationState.key) return;
-
-    //     if (authenticated) {
-    //         // redirectToMapPage();
-    //     }
-
-    //     if (!authenticated) {
-    //         // redirectToLogin()
-    //     }
-    
-    //     // // Если auth появится до истечения таймера, очищаем таймер
-    //     // if (auth) {
-    //     //     clearTimeout(authCheckTimer);
-    //     //     redirectToMapPage(); // Напрямую перенаправляем на другую страницу
-    //     // }
-    
-    //     // Очистка таймера при размонтировании компонента
-    //     // return () => clearTimeout(authCheckTimer);
-    // }, [navigationState?.key, authenticated]);
-
     const onLayoutRootView = useCallback(async () => {
         if (appIsReady) {
             await SplashScreen.hideAsync();
         }
     }, [appIsReady]);
 
-    if (!appIsReady) {
+    if (!appIsReady && !authData) {
         return null;
     } else
         return (
