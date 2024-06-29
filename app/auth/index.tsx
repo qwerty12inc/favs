@@ -14,9 +14,10 @@ import {
 } from "@react-native-google-signin/google-signin";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthentication } from '../../src/store/features/isAuthSlice';
 import { useNavigationState } from '@react-navigation/native';
+import { IStateInterface } from '../../src/store/store';
 
 const provider = new GoogleAuthProvider();
 
@@ -25,6 +26,8 @@ export default function WelcomePage() {
     const [error, setError] = React.useState<string | null>(null);
     const navigationState = useNavigationState(state => state);
     const currentStack = navigationState?.routeNames.join('; ');
+    const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);
+
     const onLoginPress = () => {
         //@ts-ignore
         navigation.navigate('auth/login/index');
@@ -43,8 +46,15 @@ export default function WelcomePage() {
     });
 
     useEffect(() => {
-        Alert.alert(currentStack);
+        Alert.alert(currentStack, (navigationState?.routeNames.includes('auth') ? "true" : "false") + (navigationState?.routeNames.includes('map') ? "true" : "false"))
     },[]);
+
+    useEffect(() => {
+        if (authData || navigationState?.routeNames.includes('map')) {
+             //@ts-ignore
+            navigation.navigate('map')
+        }
+    }, [authData, navigationState?.routeNames])
 
     const dispatch = useDispatch();
 

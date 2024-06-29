@@ -32,6 +32,7 @@ export default function MainPage() {
     const currentCity = useSelector((state: IStateInterface) => state.cities.currentCity);
     const filterPlaces = useSelector((state: IStateInterface) => state.places.filteredPlaces);
     const filterPlacesAmount = useSelector((state: IStateInterface) => state.places.filteredPlacesAmount);
+    const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);
     const [bottomSheetState, setBottomSheetState] = useState<1 | 0>(0)
     const [searchFocused, setSearchFocused] = useState<boolean>(false)
     const [placesList, setPlacesList] = useState<TMapApiResponse[]>([])
@@ -49,8 +50,15 @@ export default function MainPage() {
 
     useEffect(() => {
         setPlacesList(filterPlaces)
-        Alert.alert(currentStack)
+        Alert.alert(currentStack, (navigationState?.routeNames.includes('map') ? "true" : "false") + (navigationState?.routeNames.includes('auth') ? "true" : "false"))
     }, [])
+
+    useEffect(() => {
+        if (!authData || navigationState?.routeNames.includes('auth')) {
+             //@ts-ignore
+            navigation.navigate('auth')
+        }
+    }, [authData, navigationState?.routeNames])
 
     const onProfilePress = () => {
         //@ts-ignore
