@@ -17,19 +17,35 @@ import { IStateInterface } from '../../src/store/store';
 import SplashScreen from '../auth/splashScreen/SplashScreen';
 import { auth } from '../../src/utils/firebase'
 import CitiesPage from '../cities';
+import { useRootNavigationState } from 'expo-router';
 
 export default function Navigator() {
     const authData = useSelector((state: IStateInterface) => state.authentication.authData);
     // const { user } = useAuth();
     const Stack = createNativeStackNavigator()
+    const navigationState = useRootNavigationState();
 
     useEffect(() => {
-        // console.log('user: ', user)
-    }, [])
+        console.info('navigationState', navigationState)
+        console.info('authData', authData)
+    }, [authData, navigationState])
 
-    console.warn(!!auth.currentUser, authData );
+    if (authData === null) {
+        return (
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loading'>
+                <Stack.Screen
+                    name="loading"
+                    options={{
+                        headerShown: false,
+                        headerTitle: ''
+                    }}
+                    component={SplashScreen}
+                />
+            </Stack.Navigator>
+        )
+    }
 
-    if (auth.currentUser || authData) {
+    if (authData) {
         // console.log('private screens')
         return (
             <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='map'>
@@ -87,18 +103,10 @@ export default function Navigator() {
             </Stack.Navigator>
         )
     } 
-    if (!auth.currentUser && !authData) {
+    if (authData === undefined) {
         // console.log('login screens')
         return (
-            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='loader'>
-                <Stack.Screen
-                    name="loader"
-                    options={{
-                        headerShown: false,
-                        headerTitle: ''
-                    }}
-                    component={SplashScreen}
-                />
+            <Stack.Navigator screenOptions={{ headerShown: true }} initialRouteName='auth'>
                 <Stack.Screen
                     name="auth"
                     options={{

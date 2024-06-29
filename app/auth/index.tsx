@@ -48,13 +48,12 @@ export default function WelcomePage() {
         const googleCredential = GoogleAuthProvider.credential(idToken)
 
         signInWithCredential(auth ,googleCredential)
-        .then((user) => {
-            console.log('signed in:', user);
-            dispatch(setAuthentication(user.user))
-        })
-        .catch((error) => {
-            console.log('error:',error)
-        })
+            .then((user) => {
+                console.log('signed in:', user);
+            })
+            .catch((error) => {
+                console.log('error:',error)
+            })
     }
 
     const onRegisterPress = () => {

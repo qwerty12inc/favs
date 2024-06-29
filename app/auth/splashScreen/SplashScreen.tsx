@@ -9,60 +9,6 @@ import { resetAuthentication, setAuthentication } from '../../../src/store/featu
 
 
 export default function SplashScreen() {
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     console.warn(auth)
-    //     if (!auth?.currentUser) {
-
-    //         let timeout = setInterval
-    //         Alert.alert('Can`t find user')
-    //         // console.log(auth)
-    //         //@ts-ignore
-    //         navigation.replace('index');
-    //     } else {
-    //         Alert.alert('Found user')
-    //         //@ts-ignore
-    //         navigation.replace('index');
-    //     }
-    // },[auth])
-
-    useEffect(() => {
-        // Функция для перенаправления на страницу логина
-        const redirectToLogin = () => {
-            Alert.alert('Can`t find user');
-            //@ts-ignore
-            navigation.navigate('auth');
-        };
-    
-        // Функция для перенаправления на другую страницу
-        const redirectToMapPage = () => {
-            Alert.alert('Found user');
-            //@ts-ignore
-            navigation.replace('map');
-        };
-    
-        // Проверка наличия auth при загрузке страницы
-        const authCheckTimer = setTimeout(() => {
-            if (auth.currentUser) {
-                dispatch(setAuthentication(auth.currentUser))
-                redirectToMapPage();
-            } else {
-                redirectToLogin();
-                dispatch(resetAuthentication())
-            }
-        }, 3000); // 3000 миллисекунд = 3 секунд
-    
-        // Если auth появится до истечения таймера, очищаем таймер
-        if (auth?.currentUser) {
-            clearTimeout(authCheckTimer);
-            redirectToMapPage(); // Напрямую перенаправляем на другую страницу
-        }
-    
-        // Очистка таймера при размонтировании компонента
-        return () => clearTimeout(authCheckTimer);
-    }, [auth, navigation]);
 
     return (
         <SafeAreaView style={styles.container}>

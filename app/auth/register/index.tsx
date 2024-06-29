@@ -67,8 +67,6 @@ export default function RegisterPage() {
             setLoading(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // console.log(userCredential.user)
-                    dispatch(setAuthentication(userCredential.user))
                     Promise.all([
                         updateProfile(auth.currentUser, { displayName: name })
                             .then((userCredential) => {
