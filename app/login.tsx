@@ -1,14 +1,12 @@
-import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { globalStyles, globalTokens } from '../../../src/styles';
-import { Button } from '../../../src/components/Button/Button';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { MaskedInput } from 'react-native-ui-lib';
-import { auth } from '../../../src/utils/firebase';
-import { emailValidator } from '../../../src/utils/validators';
+import { View, Text, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { globalStyles, globalTokens } from '../src/styles';
+import { Button } from '../src/components/Button/Button';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../src/utils/firebase';
+import { emailValidator } from '../src/utils/validators';
 import { debounce } from 'lodash';
-import { useDispatch } from 'react-redux';
-import { setAuthentication } from '../../../src/store/features/isAuthSlice';
+import { Stack, useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,6 +16,7 @@ export default function LoginPage() {
     const [isEmailError, setIsEmailError] = useState<boolean>(null);
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter();
 
     const isFormValid = (isEmailError !== null && !isEmailError)
 
@@ -26,8 +25,6 @@ export default function LoginPage() {
             setEmail(text)
             setIsEmailError(!emailValidator(text))
         }, 2000)
-
-    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (!isFormValid) {
@@ -38,7 +35,8 @@ export default function LoginPage() {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    // console.log(user)
+                    console.log(user)
+                    router.replace('/(auth)');
                     // ...
                 })
                 .catch((error) => {
@@ -54,7 +52,6 @@ export default function LoginPage() {
                             { text: 'OK', onPress: () => console.info('OK Pressed') },
                         ])
                     }
-                    // ..
                 })
                 .finally(() => {
                     setLoading(false)

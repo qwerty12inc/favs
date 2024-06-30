@@ -2,37 +2,29 @@ import { Link, useNavigation, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Avatar, View, Text, Image } from 'react-native-ui-lib';
-import { globalStyles, globalTokens } from '../../src/styles';
-import { Button } from '../../src/components/Button/Button';
+import { View, Text, Image } from 'react-native-ui-lib';
+import { globalStyles, globalTokens } from '../src/styles';
+import { Button } from '../src/components/Button/Button';
 import auth, { signInWithCredential } from "firebase/auth"
-import {auth as firebaseAuth} from '../../src/utils/firebase';
+import {auth as firebaseAuth} from '../src/utils/firebase';
 import {
     GoogleSignin,
     GoogleSigninButton,
-    statusCodes
 } from "@react-native-google-signin/google-signin";
 
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthentication } from '../../src/store/features/isAuthSlice';
+import { setAuthentication } from '../src/store/features/isAuthSlice';
 import { useNavigationState } from '@react-navigation/native';
-import { IStateInterface } from '../../src/store/store';
+import { IStateInterface } from '../src/store/store';
+import useAuth from '../src/utils/auth';
 
 const provider = new GoogleAuthProvider();
 
 export default function WelcomePage() {
-    const navigation = useNavigation();
-    const [error, setError] = React.useState<string | null>(null);
-    const navigationState = useNavigationState(state => state);
-    const currentStack = navigationState?.routeNames.join('; ');
+    const router = useRouter();
+    const auth = useAuth()
     const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);
-
-    const onLoginPress = () => {
-        //@ts-ignore
-        navigation.navigate('auth/login/index');
-    };
-
 
     const configureGoogleSignIn = () => {
         GoogleSignin.configure({
@@ -42,21 +34,14 @@ export default function WelcomePage() {
     };
 
     useEffect(() => {
+        if (authData) {
+            router.replace('/(app)');
+        }
+    }, [authData])
+
+    useEffect(() => {
         configureGoogleSignIn()
     });
-
-    useEffect(() => {
-        Alert.alert(currentStack, (navigationState?.routeNames.includes('auth') ? "true" : "false") + (navigationState?.routeNames.includes('map') ? "true" : "false"))
-    },[]);
-
-    useEffect(() => {
-        if (authData || navigationState?.routeNames.includes('map')) {
-             //@ts-ignore
-            navigation.navigate('map')
-        }
-    }, [authData, navigationState?.routeNames])
-
-    const dispatch = useDispatch();
 
     const signin = async () => {
         console.log("click")
@@ -67,21 +52,25 @@ export default function WelcomePage() {
         signInWithCredential(auth ,googleCredential)
             .then((user) => {
                 console.log('signed in:', user);
+                router.replace('/(app)')
             })
             .catch((error) => {
                 console.log('error:',error)
             })
     }
 
+    const onLoginPress = () => {
+        router.push('login');
+    };
+
     const onRegisterPress = () => {
-        //@ts-ignore
-        navigation.navigate('auth/register/index');
+        router.push('registration');
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <SafeAreaView style={{ display: 'flex', alignItems: 'center' }}>
-                <Image style={styles.kv} source={require('../../assets/favicon.png')} />
+                <Image style={styles.kv} source={require('../assets/favicon.png')} />
                 <Text style={[globalStyles.title]}>Welcome to FAVS!</Text>
                 <Text style={[globalStyles.subtitle, styles.subtitle]}>
                     Create an account and get access to cool places around the Europe

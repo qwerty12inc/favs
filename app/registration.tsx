@@ -1,21 +1,20 @@
-import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, NativeSyntheticEvent, TextInputChangeEventData, Alert } from 'react-native';
+import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useCallback, useState } from 'react';
-import { globalStyles, globalTokens } from '../../../src/styles';
-import { Button } from '../../../src/components/Button/Button';
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { globalStyles, globalTokens } from '../src/styles';
+import { Button } from '../src/components/Button/Button';
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { MaskedInput } from 'react-native-ui-lib';
-import { emailValidator } from '../../../src/utils/validators';
-import { auth } from '../../../src/utils/firebase';
+import { emailValidator } from '../src/utils/validators';
+import { auth } from '../src/utils/firebase';
 import { debounce } from 'lodash';
-import { useNavigation } from 'expo-router';
-import { setAuthentication } from '../../../src/store/features/isAuthSlice';
+import { useNavigation, useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 
 
 const { width, height } = Dimensions.get('window');
 
 export default function RegisterPage() {
-    const navigation = useNavigation();
+    const router = useRouter()
 
     const [name, setName] = useState<string>('');
     const [isNameError, setIsNameError] = useState<boolean>(null);
@@ -58,7 +57,6 @@ export default function RegisterPage() {
             setPasswordConfirm(text)
             setIsPasswordConfirmError(!(text === password));
         }, 2000)
-    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (!isFormValid) {
@@ -67,6 +65,7 @@ export default function RegisterPage() {
             setLoading(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
+                    router.replace('/(auth)');
                     Promise.all([
                         updateProfile(auth.currentUser, { displayName: name })
                             .then((userCredential) => {
@@ -100,7 +99,7 @@ export default function RegisterPage() {
                         Alert.alert("Error", `Email ${email} already registered`, [
                             { text: 'Ok' },
                             //@ts-ignore
-                            { text: 'Log in', onPress: () => navigation.navigate('auth/login/index') },
+                            { text: 'Log in', onPress: () => router.replace('login') },
                         ])
                     } else {
                         Alert.alert("Error", `${errorCode}: ${errorMessage}`, [

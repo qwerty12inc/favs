@@ -1,6 +1,5 @@
 import { View, ImageSourcePropType, StyleSheet, Image, Linking } from 'react-native';
 import React, { useCallback } from 'react';
-import { Link } from 'expo-router';
 import { Card, TextProps, Text } from 'react-native-ui-lib';
 
 type TContentType = TextProps & {

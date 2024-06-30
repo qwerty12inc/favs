@@ -3,10 +3,10 @@ import React from "react";
 import { StyleSheet, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, View, Image } from "react-native-ui-lib";
-import { globalTokens } from "../../../src/styles";
-import { CustomText as Text } from "../../../src/components/Text/CustomText";
+import { globalTokens } from "../../../../src/styles";
+import { CustomText as Text } from "../../../../src/components/Text/CustomText";
 
-const profileIcon = require("../../../assets/link.png");
+const profileIcon = require("./../../../../assets/link.png");
 
 const SETTINGS_OPTIONS: TSettingsProps[] = [
   {

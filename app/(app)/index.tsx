@@ -50,15 +50,8 @@ export default function MainPage() {
 
     useEffect(() => {
         setPlacesList(filterPlaces)
-        Alert.alert(currentStack, (navigationState?.routeNames.includes('map') ? "true" : "false") + (navigationState?.routeNames.includes('auth') ? "true" : "false"))
+        // Alert.alert(currentStack, (navigationState?.routeNames.includes('map') ? "true" : "false") + (navigationState?.routeNames.includes('auth') ? "true" : "false"))
     }, [])
-
-    useEffect(() => {
-        if (!authData || navigationState?.routeNames.includes('auth')) {
-             //@ts-ignore
-            navigation.navigate('auth')
-        }
-    }, [authData, navigationState?.routeNames])
 
     const onProfilePress = () => {
         //@ts-ignore

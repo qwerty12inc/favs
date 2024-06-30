@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 import { NavigationContainer, useNavigation, useNavigationState } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
-import { IStateInterface } from '../../src/store/store';
+import { IStateInterface } from '../../store/store';
 
-import MainPage from '../main';
-import PlacePage from '../places/[id]';
-import ProfilePage from '../profile';
-import ProfileSettingsPage from '../profile/settings';
-import TestPage from '../test';
-import WelcomePage from '../auth';
-import LoginPage from '../auth/login';
-import RegisterPage from '../auth/register';
-import SplashScreen from '../auth/splashScreen/SplashScreen';
-import CitiesPage from '../cities';
+import MainPage from '../../../app/(app)/main';
+import PlacePage from '../../../app/(app)/places/[id]';
+import ProfilePage from '../../../app/(app)/profile';
+import ProfileSettingsPage from '../../../app/(app)/profile/settings';
+import TestPage from '../../../app/(app)/test';
+import WelcomePage from '../../../app/auth/welcome';
+import LoginPage from '../../../app/auth/login';
+import RegisterPage from '../../../app/auth/registration';
+import SplashScreen from '../../../app/auth/splashScreen/SplashScreen';
+import CitiesPage from '../../../app/(app)/cities';
 import { Alert } from 'react-native';
 
 export default function Navigator() {

@@ -1,4 +1,4 @@
-import { Link, useNavigation } from 'expo-router';
+import { NavigationContainer, useNavigation, useNavigationState } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import {
     View,

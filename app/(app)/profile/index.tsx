@@ -2,30 +2,32 @@ import React from "react";
 import { StyleSheet, ScrollView, Pressable, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, View, Text, Image } from "react-native-ui-lib";
-import HistoryList from "../../src/components/HistoryList/HistoryList";
-import { globalStyles, globalTokens } from "../../src/styles";
-import CurrentSubscription from "../../src/components/CurrentSubscription/CurrentSubscription";
-import { CustomText, CustomTitle } from "../../src/components/Text/CustomText";
-import useAuth from "../../src/utils/auth";
-import { Button } from "../../src/components/Button/Button";
+import HistoryList from "../../../src/components/HistoryList/HistoryList";
+import { globalStyles, globalTokens } from "../../../src/styles";
+import CurrentSubscription from "../../../src/components/CurrentSubscription/CurrentSubscription";
+import { CustomText, CustomTitle } from "../../../src/components/Text/CustomText";
+import useAuth from "../../../src/utils/auth";
+import { Button } from "../../../src/components/Button/Button";
 import { signOut } from "firebase/auth";
-import { auth } from "../../src/utils/firebase";
-import Banner from "../../src/components/Banner/Banner";
-import BannerSlider from "../../src/components/Banner/BannerSlider";
-import { useDispatch } from "react-redux";
-import { resetAuthentication } from "../../src/store/features/isAuthSlice";
+import { auth } from "../../../src/utils/firebase";
+import Banner from "../../../src/components/Banner/Banner";
+import BannerSlider from "../../../src/components/Banner/BannerSlider";
+import { useDispatch, useSelector } from "react-redux";
+import { resetAuthentication } from "../../../src/store/features/isAuthSlice";
+import { IStateInterface } from "../../../src/store/store";
 
-const settingsIcon = require("../../assets/icon--settings.png");
-const profileDefaultAvatar = require("../../assets/icons/user.png");
+const profileDefaultAvatar = require("./../../../assets/icons/user.png");
 
 const { width, height } = Dimensions.get("window");
 
 
 export default function ProfilePage() {
-  const { user } = useAuth()
+  // const { user } = useAuth()
+  const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);
+
   const dispatch = useDispatch();
 
-  const profileAvatar = user?.photoURL ? { uri: user?.photoURL } : profileDefaultAvatar;
+  const profileAvatar = authData?.photoURL ? { uri: authData?.photoURL } : profileDefaultAvatar;
 
   const logout = () => {
     signOut(auth)
@@ -48,9 +50,9 @@ export default function ProfilePage() {
             style={{ borderRadius: 125 / 2 }}
           />
           <CustomTitle style={[globalStyles.title, { marginTop: 16 }]}>
-            {user?.displayName ? user?.displayName : "–"}
+            {authData?.displayName ? authData?.displayName : "–"}
           </CustomTitle>
-          <CustomText>{user?.email ? user?.email : "–"}</CustomText>
+          <CustomText>{authData?.email ? authData?.email : "–"}</CustomText>
         </View>
         <View style={{ paddingHorizontal: 16, display: "flex", gap: 8, marginTop: 45 }}>
           <Text Text style={globalStyles.subtitle}>
