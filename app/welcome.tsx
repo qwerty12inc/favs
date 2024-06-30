@@ -33,7 +33,7 @@ export default function WelcomePage() {
 
     useEffect(() => {
         if (authData) {
-            router.replace('/(app)');
+            router.replace('(app)');
         }
     }, [authData])
 
@@ -50,7 +50,6 @@ export default function WelcomePage() {
         signInWithCredential(auth ,googleCredential)
             .then((user) => {
                 console.log('signed in:', user);
-                router.replace('/(app)')
             })
             .catch((error) => {
                 console.log('error:',error)
@@ -58,11 +57,11 @@ export default function WelcomePage() {
     }
 
     const onLoginPress = () => {
-        router.replace('login');
+        router.push('login');
     };
 
     const onRegisterPress = () => {
-        router.replace('registration');
+        router.push('registration');
     };
 
     return (

@@ -19,7 +19,7 @@ export default function CitiesPage() {
 
     const onProfilePress = () => {
         //@ts-ignore
-        router.replace('profile/index');
+        router.push('profile/index');
     };
 
     // useEffect(() => {

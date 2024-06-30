@@ -31,7 +31,7 @@ export default function PlaceItem(props: TProps) {
         // console.log(event.nativeEvent.id);
         dispatch(setCurrentPlace(id))
         //@ts-ignore
-        router.replace('places/[id]', { id: id });
+        router.push('places/[id]', { id: id });
       },[])
 
     return (

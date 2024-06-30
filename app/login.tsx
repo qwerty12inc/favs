@@ -35,8 +35,8 @@ export default function LoginPage() {
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
-                    console.log(user)
-                    router.replace('/(auth)');
+                    console.log(user);
+                    router.replace('/(app)');
                     // ...
                 })
                 .catch((error) => {
