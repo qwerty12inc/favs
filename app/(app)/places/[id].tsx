@@ -34,23 +34,14 @@ import ContactsList from "../../../src/components/ContactsList/ContactsList";
 import OpeningHours from "../../../src/components/OpeningHours/OpeningHours";
 import AddressBlock from "../../../src/components/AddressBlock/AddressBlock";
 import { globalStyles, globalTokens } from "../../../src/styles";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import MapService from "../../../src/http/MapService";
-import { TMapApiResponse } from "../../../src/models/maps";
 import Skeleton from "../../../src/components/Skeleton/Skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { IStateInterface } from "../../../src/store/store";
-import { resetCurrentPlace } from "../../../src/store/features/PlacesSlice";
-import FilterList from "../../../src/components/FilterList/FilterList";
-
-// const dogPhoto = require("../../assets/random_img.jpeg");
 
 const qr = require("../../../assets/qr.png");
 
 const { width, height } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
-
-const secondaryStorageBucket = firebase.app().storage('gs://favs-85f44.appspot.com')
 
 export default function PlacePage() {
   const { id } = useLocalSearchParams();

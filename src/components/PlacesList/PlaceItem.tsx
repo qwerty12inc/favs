@@ -1,4 +1,3 @@
-import { NavigationContainer, useNavigation, useNavigationState } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import {
     View,
@@ -6,13 +5,13 @@ import {
     Dimensions,
     StyleSheet,
     TouchableWithoutFeedback,
-    ImageSourcePropType,
     Pressable,
 } from 'react-native';
 import { Carousel, AnimatedImage, Image } from 'react-native-ui-lib';
 import { CustomTitle as Title, CustomText as Text } from '../Text/CustomText';
 import { setCurrentPlace } from '../../store/features/PlacesSlice';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,14 +24,14 @@ type TProps = {
 };
 
 export default function PlaceItem(props: TProps) {
-    const navigation = useNavigation();
+    const router = useRouter();
     const dispatch = useDispatch();
 
     const handleItemClick = useCallback((id: string) => {
         // console.log(event.nativeEvent.id);
         dispatch(setCurrentPlace(id))
         //@ts-ignore
-        navigation.navigate('places/[id]', { id: id });
+        router.replace('places/[id]', { id: id });
       },[])
 
     return (

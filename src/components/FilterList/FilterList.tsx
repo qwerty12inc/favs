@@ -19,14 +19,16 @@ export default function FilterList() {
     const [index, setIndex] = useState(filters.indexOf(currentFilter))
 
     useEffect(() => {
-      dispatch(setFilters(currentCategory?.labels))
-      dispatch(setSelectedFilter(filters[0]))
+      if (currentCategory?.labels) {
+        dispatch(setFilters(currentCategory?.labels))
+        dispatch(setSelectedFilter('all'))
+      }
 
       return () => {
         dispatch(resetFilters())
         dispatch(resetSelectedFilter())
       }
-    }, [currentCategory])
+    }, [currentCategory?.labels])
 
     useEffect(() => {
       setIndex((prev) => {

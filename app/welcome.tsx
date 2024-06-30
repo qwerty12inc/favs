@@ -14,8 +14,6 @@ import {
 
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthentication } from '../src/store/features/isAuthSlice';
-import { useNavigationState } from '@react-navigation/native';
 import { IStateInterface } from '../src/store/store';
 import useAuth from '../src/utils/auth';
 
@@ -60,11 +58,11 @@ export default function WelcomePage() {
     }
 
     const onLoginPress = () => {
-        router.push('login');
+        router.replace('login');
     };
 
     const onRegisterPress = () => {
-        router.push('registration');
+        router.replace('registration');
     };
 
     return (

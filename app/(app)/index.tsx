@@ -30,6 +30,7 @@ export default function MainPage() {
 
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
     const currentCity = useSelector((state: IStateInterface) => state.cities.currentCity);
+    const filters = useSelector((state: IStateInterface) => state.places.filterList);
     const filterPlaces = useSelector((state: IStateInterface) => state.places.filteredPlaces);
     const filterPlacesAmount = useSelector((state: IStateInterface) => state.places.filteredPlacesAmount);
     const { isLogined, authData } = useSelector((state: IStateInterface) => state.authentication);

@@ -7,7 +7,7 @@ import MapService from '../../../src/http/MapService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCities } from '../../../src/store/features/CitySlice';
 import { IStateInterface } from '../../../src/store/store';
-import { NavigationContainer, useNavigation, useNavigationState } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 const profileDefaultAvatar = require("./../../../assets/icons/user.png");
 
@@ -15,11 +15,11 @@ const profileDefaultAvatar = require("./../../../assets/icons/user.png");
 export default function CitiesPage() {
     const dispatch = useDispatch();
     const cities = useSelector((state: IStateInterface) => state.cities.cities);
-    const navigation = useNavigation();
+    const router = useRouter();
 
     const onProfilePress = () => {
         //@ts-ignore
-        navigation.navigate('profile/index');
+        router.replace('profile/index');
     };
 
     // useEffect(() => {
