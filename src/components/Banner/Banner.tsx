@@ -10,19 +10,25 @@ type TBannerSize = 'large' | 'small'
 type TBanner = {
     title: string,
     description?: string,
-    link: string,
+    link?: string,
     backgroundImage?: ImageSourcePropType
     backgroundColor?: string
     darkBackground?: boolean
     size?: TBannerSize
+    onClick?: () => void
 }
 
 const Banner: React.FC<TBanner> = (props) => {
-    const { title, description, link, backgroundImage, backgroundColor, darkBackground, size = "small" } = props
+    const { title, description, link, backgroundImage, backgroundColor, darkBackground, size = "small", onClick } = props
     navigator = useNavigation();
 
     const handleClick = useCallback(() => {
-        Linking.openURL(link);
+        if (link) { 
+            Linking.openURL(link);
+        }
+        if (onClick) {
+            onClick()
+        }
     }, []);
 
     return (

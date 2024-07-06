@@ -4,12 +4,17 @@ import { auth } from "../utils/firebase";
 import { Region } from "react-native-maps";
 import { TCategory, TCityApiResponse, TMapApiResponse } from "../models/maps";
 
+const API_TOKEN = process.env.EXPO_PUBLIC_API_KEY;
+
+const TOKEN = (auth?.currentUser?.stsTokenManager?.accessToken)
+    ? auth?.currentUser?.stsTokenManager?.accessToken
+    : API_TOKEN
 export default class MapService {
 
     static async getAvalibleCities() :Promise<AxiosResponse<TCityApiResponse[]>> {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: auth.currentUser.stsTokenManager.accessToken
+                Authorization: TOKEN
             },
         }
         return api.get(`/cities`, config)
@@ -20,7 +25,7 @@ export default class MapService {
         // console.log(auth.currentUser.stsTokenManager.accessToken)
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: auth.currentUser.stsTokenManager.accessToken
+                Authorization: TOKEN
             },
             params: {
                 latitude: latitude,
@@ -35,7 +40,7 @@ export default class MapService {
     static async getAllPlaces() :Promise<AxiosResponse<TMapApiResponse[]>> {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: auth.currentUser.stsTokenManager.accessToken
+                Authorization: TOKEN
             },
         }
         return api.get('/places', config)
@@ -44,7 +49,7 @@ export default class MapService {
     static async getPlacesByCity(city: string, category?: TCategory, filter?: string) :Promise<AxiosResponse<TMapApiResponse[]>> {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: auth.currentUser.stsTokenManager.accessToken
+                Authorization: TOKEN
             },
             params: {
                 city: city,
@@ -58,7 +63,7 @@ export default class MapService {
     static async getPlaceInfo(id: string) :Promise<AxiosResponse<TMapApiResponse>> {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: auth.currentUser.stsTokenManager.accessToken
+                Authorization: TOKEN
             },
             params: {
                 id: id
@@ -70,7 +75,7 @@ export default class MapService {
     static async getFiltersList() :Promise<AxiosResponse<string[]>> {
         const config: AxiosRequestConfig = {
             headers: {
-                Authorization: auth.currentUser.stsTokenManager.accessToken
+                Authorization: TOKEN
             },
         }
         return api.get(`/filter`, config)

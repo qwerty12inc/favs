@@ -23,22 +23,22 @@ import {
   Text,
   ScrollBar,
 } from "react-native-ui-lib";
-import MapBlock from "../../../src/components/Map";
+import MapBlock from "../../src/components/Map";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import Product from "../../../src/components/Product";
-import ContactsList from "../../../src/components/ContactsList/ContactsList";
-import OpeningHours from "../../../src/components/OpeningHours/OpeningHours";
-import AddressBlock from "../../../src/components/AddressBlock/AddressBlock";
-import { globalStyles, globalTokens } from "../../../src/styles";
-import Skeleton from "../../../src/components/Skeleton/Skeleton";
+import Product from "../../src/components/Product";
+import ContactsList from "../../src/components/ContactsList/ContactsList";
+import OpeningHours from "../../src/components/OpeningHours/OpeningHours";
+import AddressBlock from "../../src/components/AddressBlock/AddressBlock";
+import { globalStyles, globalTokens } from "../../src/styles";
+import Skeleton from "../../src/components/Skeleton/Skeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { IStateInterface } from "../../../src/store/store";
+import { IStateInterface } from "../../src/store/store";
 
-const qr = require("../../../assets/qr.png");
+const qr = require("../../assets/qr.png");
 
 const { width, height } = Dimensions.get("window");
 const IMG_HEIGHT = 300;

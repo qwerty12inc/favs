@@ -5,8 +5,8 @@ import BottomSheet, {
   BottomSheetVirtualizedList,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PLACES_LIST_MOCK } from "../../../src/components/PlacesList/PlaceList";
-import PlaceItem from "../../../src/components/PlacesList/PlaceItem";
+import { PLACES_LIST_MOCK } from "../../src/components/PlacesList/PlaceList";
+import PlaceItem from "../../src/components/PlacesList/PlaceItem";
 
 const TestPage = () => {
   // hooks

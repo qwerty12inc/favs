@@ -2,14 +2,14 @@ import { Text, Pressable, SafeAreaView } from 'react-native'
 import { Avatar, View, Image } from 'react-native-ui-lib';
 import { StyleSheet } from 'react-native';
 import React, { useEffect } from 'react'
-import CityPicker from '../../../src/components/CityPicker'
-import MapService from '../../../src/http/MapService';
+import CityPicker from '../../src/components/CityPicker'
+import MapService from '../../src/http/MapService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCities } from '../../../src/store/features/CitySlice';
-import { IStateInterface } from '../../../src/store/store';
+import { setCities } from '../../src/store/features/CitySlice';
+import { IStateInterface } from '../../src/store/store';
 import { useRouter } from 'expo-router';
 
-const profileDefaultAvatar = require("./../../../assets/icons/user.png");
+const profileDefaultAvatar = require("./../../assets/icons/user.png");
 
 
 export default function CitiesPage() {

@@ -1,10 +1,10 @@
 import { View, Text, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
-import { globalStyles, globalTokens } from '../src/styles';
-import { Button } from '../src/components/Button/Button';
+import { globalStyles, globalTokens } from '../../src/styles';
+import { Button } from '../../src/components/Button/Button';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../src/utils/firebase';
-import { emailValidator } from '../src/utils/validators';
+import { auth } from '../../src/utils/firebase';
+import { emailValidator } from '../../src/utils/validators';
 import { debounce } from 'lodash';
 import { Stack, useRouter } from 'expo-router';
 

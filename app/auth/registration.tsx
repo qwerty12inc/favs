@@ -1,11 +1,11 @@
 import { View, Text, SafeAreaView, Dimensions, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useCallback, useState } from 'react';
-import { globalStyles, globalTokens } from '../src/styles';
-import { Button } from '../src/components/Button/Button';
+import { globalStyles, globalTokens } from '../../src/styles';
+import { Button } from '../../src/components/Button/Button';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { MaskedInput } from 'react-native-ui-lib';
-import { emailValidator } from '../src/utils/validators';
-import { auth } from '../src/utils/firebase';
+import { emailValidator } from '../../src/utils/validators';
+import { auth } from '../../src/utils/firebase';
 import { debounce } from 'lodash';
 import { useNavigation, useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';

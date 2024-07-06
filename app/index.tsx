@@ -2,26 +2,26 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigation, useRouter } from 'expo-router';
 import { StyleSheet, TextInput, Dimensions, Pressable, SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { Avatar, View, Image, SafeAreaSpacerView } from 'react-native-ui-lib';
-import MapBlock from '../../src/components/Map';
+import MapBlock from '../src/components/Map';
 import { useDispatch, useSelector } from 'react-redux';
-import { IStateInterface } from '../../src/store/store';
-import CityPicker from '../../src/components/CityPicker';
+import { IStateInterface } from '../src/store/store';
+import CityPicker from '../src/components/CityPicker';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import BottomSheet, { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import PlaceItem from '../../src/components/PlacesList/PlaceItem';
-import PlaceList, { PLACES_LIST_MOCK } from '../../src/components/PlacesList/PlaceList';
-import { CustomText as Text, CustomTitle as Title } from '../../src/components/Text/CustomText';
-import Banner from '../../src/components/Banner/Banner';
-import BannerSlider from '../../src/components/Banner/BannerSlider';
-import { globalTokens } from '../../src/styles';
-import { TMapApiResponse } from '../../src/models/maps';
-import { setFilterPlaces } from '../../src/store/features/PlacesSlice';
+import PlaceItem from '../src/components/PlacesList/PlaceItem';
+import PlaceList, { PLACES_LIST_MOCK } from '../src/components/PlacesList/PlaceList';
+import { CustomText as Text, CustomTitle as Title } from '../src/components/Text/CustomText';
+import Banner from '../src/components/Banner/Banner';
+import BannerSlider from '../src/components/Banner/BannerSlider';
+import { globalTokens } from '../src/styles';
+import { TMapApiResponse } from '../src/models/maps';
+import { setFilterPlaces } from '../src/store/features/PlacesSlice';
 import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 import { FirebaseStorageTypes, firebase } from '@react-native-firebase/storage';
-import FilterList from '../../src/components/FilterList/FilterList';
-import CategoryList from '../../src/components/CategoryList/CategoryList';
-const profileDefaultAvatar = require("../../assets/icons/user.png");
+import FilterList from '../src/components/FilterList/FilterList';
+import CategoryList from '../src/components/CategoryList/CategoryList';
+const profileDefaultAvatar = require("../assets/icons/user.png");
 import { useNavigationState } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
@@ -45,9 +45,6 @@ export default function MainPage() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const navigationState = useNavigationState(state => state);
-
-  // Получаем текущий стек экранов
-  const currentStack = navigationState?.routeNames.join('; ');
 
     useEffect(() => {
         setPlacesList(filterPlaces)

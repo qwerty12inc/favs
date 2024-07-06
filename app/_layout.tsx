@@ -36,27 +36,61 @@ export default function RootLayout({ children }) {
         <Provider store={store}>
             <GestureHandlerRootView >
                 <BottomSheetModalProvider>
-                    <Stack screenOptions={{ 
-                        headerShown: false,
-                        headerBackButtonMenuEnabled: true,
-                        headerTransparent: true,
-                    }}>
+                    <Stack 
+                        screenOptions={{ 
+                            headerShown: false,
+                            headerBackButtonMenuEnabled: true,
+                            headerTransparent: true,
+                        }}
+                        initialRouteName='index'
+                    >
                         <Stack.Screen
-                            name="welcome"
+                            name="index"
                             options={{
                                 headerShown: false,
                                 headerTitle: ''
                             }}
                         />
                         <Stack.Screen
-                            name="login"
+                            name="places/[id]"
                             options={{
                                 headerShown: true,
                                 headerTitle: '',
                             }}
                         />
                         <Stack.Screen
-                            name="registration"
+                            name="profile/index"
+                            options={{
+                                headerShown: true,
+                                headerTitle: '',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="profile/settings/index"
+                            options={{
+                                headerShown: true,
+                                headerTitle: 'Settings',
+                                headerStyle: {
+                                    backgroundColor: 'transparent',
+                                },
+                            }}
+                        />
+                        <Stack.Screen
+                            name="auth/welcome"
+                            options={{
+                                headerShown: false,
+                                headerTitle: ''
+                            }}
+                        />
+                        <Stack.Screen
+                            name="auth/login"
+                            options={{
+                                headerShown: true,
+                                headerTitle: '',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="auth/registration"
                             options={{
                                 headerShown: true,
                                 headerTitle: '',

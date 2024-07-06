@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, Image } from 'react-native-ui-lib';
-import { globalStyles, globalTokens } from '../src/styles';
-import { Button } from '../src/components/Button/Button';
+import { globalStyles, globalTokens } from '../../src/styles';
+import { Button } from '../../src/components/Button/Button';
 import auth, { signInWithCredential } from "firebase/auth"
-import {auth as firebaseAuth} from '../src/utils/firebase';
+import {auth as firebaseAuth} from '../../src/utils/firebase';
 import {
     GoogleSignin,
     GoogleSigninButton,
@@ -14,8 +14,8 @@ import {
 
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from 'react-redux';
-import { IStateInterface } from '../src/store/store';
-import useAuth from '../src/utils/auth';
+import { IStateInterface } from '../../src/store/store';
+import useAuth from '../../src/utils/auth';
 
 const provider = new GoogleAuthProvider();
 
@@ -33,7 +33,7 @@ export default function WelcomePage() {
 
     useEffect(() => {
         if (authData) {
-            router.replace('(app)');
+            router.replace('/');
         }
     }, [authData])
 
@@ -67,7 +67,7 @@ export default function WelcomePage() {
     return (
         <SafeAreaView style={styles.container}>
             <SafeAreaView style={{ display: 'flex', alignItems: 'center' }}>
-                <Image style={styles.kv} source={require('../assets/favicon.png')} />
+                <Image style={styles.kv} source={require('../../assets/favicon.png')} />
                 <Text style={[globalStyles.title]}>Welcome to FAVS!</Text>
                 <Text style={[globalStyles.subtitle, styles.subtitle]}>
                     Create an account and get access to cool places around the Europe
