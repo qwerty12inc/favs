@@ -17,8 +17,6 @@ import BannerSlider from '../src/components/Banner/BannerSlider';
 import { globalTokens } from '../src/styles';
 import { TMapApiResponse } from '../src/models/maps';
 import { setFilterPlaces } from '../src/store/features/PlacesSlice';
-import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
-import { FirebaseStorageTypes, firebase } from '@react-native-firebase/storage';
 import FilterList from '../src/components/FilterList/FilterList';
 import CategoryList from '../src/components/CategoryList/CategoryList';
 const profileDefaultAvatar = require("../assets/icons/user.png");

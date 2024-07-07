@@ -17,7 +17,7 @@ const placeIcon = require('../../assets/icons/coffee.png');
 type TMapType = 'general' | 'detailed';
 
 type Props = {
-  initialPosition: LatLng;
+  initialPosition? : LatLng;
   zoom?: number;
   marker?: any;
   type?: TMapType
@@ -126,9 +126,7 @@ const MapBlock: React.FC<Props> = (props) => {
           <Marker
             key={(marker?.Longitude + marker?.Latitude).toString()}
             coordinate={marker}
-          >
-            <Image style={styles.marker} source={placeIcon} />
-          </Marker>
+          />
         }
         {
           (places.length > 0 && type === 'general') &&
@@ -138,9 +136,7 @@ const MapBlock: React.FC<Props> = (props) => {
               coordinate={marker?.coordinates}
               identifier={marker?.id}
               onPress={handleMarkerClick}
-            >
-              <Image style={styles.marker} source={placeIcon} />
-            </Marker>
+            />
           ))
         }
       </MapView>
