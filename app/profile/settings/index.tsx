@@ -112,7 +112,7 @@ export default function ProfileSettingsPage() {
             {SETTINGS_OPTIONS.map((option, index) => {
               return (
                 <SettingsItem
-                  key={index}
+                  key={option.name+''+option.link}
                   name={option.name}
                   link={option.link}
                   icon={option.icon}

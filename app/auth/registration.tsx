@@ -30,7 +30,11 @@ export default function RegisterPage() {
 
     const [loading, setLoading] = useState<boolean>(false)
 
-    const isFormValid = (isEmailError !== null && !isEmailError) && (isNameError !== null && !isNameError) && (isPasswordError !== null && !isPasswordError) && (isPasswordConfirmError !== null && !isPasswordConfirmError)
+    const isFormValid = 
+    (isEmailError !== null && !isEmailError)
+    && (isNameError !== null && !isNameError)
+    && (isPasswordError !== null && !isPasswordError)
+    && (isPasswordConfirmError !== null && !isPasswordConfirmError)
 
     const handleNameChange = (text) => {
         setName(text)

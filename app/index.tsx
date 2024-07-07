@@ -113,15 +113,6 @@ export default function MainPage() {
                     <View style={styles.overlay}>
                         <CategoryList/>
                         <FilterList/>
-                        {/* <SegmentedControl
-                            values={['Coffee', 'Drink', 'Eat']}
-                            selectedIndex={0}
-                            style={{ paddingVertical: 20 }}
-                            fontStyle={{ fontFamily: 'ClashDisplay-Medium' }}
-                        // onChange={(event) => {
-                        //   this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
-                        // }}
-                        /> */}
                     </View>
                 </View>
             </View>
@@ -132,14 +123,6 @@ export default function MainPage() {
                 snapPoints={snapPoints}
             >
                 <Text style={styles.placesCount}>{filterPlacesAmount} places in {currentCity.name}</Text>
-                {/* <TextInput
-                    // value={text}
-                    onChangeText={onInputChange}
-                    placeholder={'Search'}
-                    style={styles.input}
-                    onFocus={onInputFocus}
-                    onBlur={onInputBlur}
-                /> */}
                 <PlaceList searchInProgress={searchFocused} />
             </BottomSheet>
         </SafeAreaView>

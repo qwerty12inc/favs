@@ -17,7 +17,7 @@ const placeIcon = require('../../assets/icons/coffee.png');
 type TMapType = 'general' | 'detailed';
 
 type Props = {
-  // initialPosition: LatLng;
+  initialPosition: LatLng;
   zoom?: number;
   marker?: any;
   type?: TMapType

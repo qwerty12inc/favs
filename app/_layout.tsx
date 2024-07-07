@@ -42,7 +42,6 @@ export default function RootLayout({ children }) {
                             headerBackButtonMenuEnabled: true,
                             headerTransparent: true,
                         }}
-                        initialRouteName='index'
                     >
                         <Stack.Screen
                             name="index"

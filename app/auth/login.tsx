@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get('window');
 export default function LoginPage() {
 
     const [email, setEmail] = useState<string>('');
-    const [isEmailError, setIsEmailError] = useState<boolean>(null);
+    const [isEmailError, setIsEmailError] = useState<boolean | null>(null);
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false)
     const router = useRouter();

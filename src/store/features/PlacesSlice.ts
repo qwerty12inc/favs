@@ -3,17 +3,17 @@ import { TCategory, TMapApiResponse } from '../../models/maps';
 
 export interface IPlaceState {
     filterList: string[],
-    currentFilter: string,
+    currentFilter: string | null,
 
     places: TMapApiResponse[],
     placesAmount: number,
 
     filteredPlaces: TMapApiResponse[],
     filteredPlacesAmount: number,
-    currentPlace: TMapApiResponse,
+    currentPlace: TMapApiResponse | null,
 
     categoriesList: TCategory[],
-    currentCategory: TCategory
+    currentCategory: TCategory | null,
 }
 
 const initialState: IPlaceState = {

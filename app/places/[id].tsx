@@ -46,9 +46,6 @@ const IMG_HEIGHT = 300;
 export default function PlacePage() {
   const { id } = useLocalSearchParams();
   const CurrentPlaceInfo = useSelector((state: IStateInterface) => state.places.currentPlace)
-
-  const [imgArray, setImgArray] = useState([])
-  // const [placeInfo, setPlaceInfo] = useState<TMapApiResponse>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -84,7 +81,6 @@ export default function PlacePage() {
   useEffect(() => {
     if (CurrentPlaceInfo) {
       setIsLoading(false)
-      // console.log(CurrentPlaceInfo.photosUrl)
     }
   },[CurrentPlaceInfo])
 
@@ -286,7 +282,7 @@ export default function PlacePage() {
                   name={item}
                   description={"Lorem ipsum dolor sit amet"}
                   actionFn={() => handleOpenModalRef(index)}
-                  key={index}
+                  key={item+''+index}
                 />
               )
             )}
