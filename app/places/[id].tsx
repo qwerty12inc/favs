@@ -134,8 +134,8 @@ export default function PlacePage() {
                     />
                 }
                 {
-                  (CurrentPlaceInfo?.photosUrl?.length > 0 && !isLoading ) &&
-                  CurrentPlaceInfo?.photosUrl?.map((item) => (
+                  (CurrentPlaceInfo?.googleMapsInfo?.photoRef.length > 0 && !isLoading ) &&
+                  CurrentPlaceInfo?.googleMapsInfo?.photoRef?.map((item) => (
                       <View
                         style={{
                           width: "100%",
@@ -208,17 +208,17 @@ export default function PlacePage() {
                 >
                   <Text style={globalStyles.subtitle}>Address</Text>
                   {
-                    (CurrentPlaceInfo?.googleMapsInfo?.locationURL && CurrentPlaceInfo?.googleMapsInfo?.formattedAddress) &&
+                    (CurrentPlaceInfo?.locationURL && CurrentPlaceInfo?.googleMapsInfo?.formattedAddress) &&
                     <AddressBlock 
                       address={CurrentPlaceInfo?.googleMapsInfo?.formattedAddress}
                       link={CurrentPlaceInfo?.googleMapsInfo?.locationURL}
                     />
                   }
                   {
-                    CurrentPlaceInfo?.googleMapsInfo?.openingInfo && 
+                    CurrentPlaceInfo?.openingInfo && 
                       <View>
                         <Text style={globalStyles.subtitle}>Opening hours</Text>
-                        <OpeningHours openingHours={CurrentPlaceInfo?.googleMapsInfo?.openingInfo} />
+                        <OpeningHours openingHours={CurrentPlaceInfo?.openingInfo} />
                       </View>
                   }
                   {

@@ -41,47 +41,25 @@ export default function PlaceItem(props: TProps) {
         >
             <View>
                 {props.photo &&
-                    <Carousel
-                        containerStyle={{
-                            height: 250,
-                            padding: 0,
-                            margin: 0,
-                        }}
-                        containerMarginHorizontal={0}
-                        pagingEnabled
-                        itemSpacings={0}
-                        pageWidth={width}
-                        pageControlPosition={'over'}
-                        allowAccessibleLayout
-                        style={{ borderRadius: 8 }}
-                    >
-                            <TouchableWithoutFeedback onPress={()=> handleItemClick(props.id)}>
-                                <View
-                                    style={{
-                                        width: '100%',
-                                        padding: 0,
-                                        backgroundColor: 'grey',
-                                    }}
-                                >
-                                    <AnimatedImage
-                                        style={{ height: '100%', width: '100%' }}
-                                        source={{ uri: props.photo }}
-                                        loader={<ActivityIndicator />}
-                                    />
-                                </View>
-                            </TouchableWithoutFeedback>
-                    </Carousel>
-                }
-                {
-                    !props.photo &&
+                    
                     <Image
                         style={{
                             height: 250,
                             padding: 0,
                             margin: 0,
                         }}
-                        source={require('../../../assets/default-fallback-image.png')}
+                        source={{uri: props.photo}}
                     />
+                }
+                {
+                    !props.photo &&
+                        <Image
+                            style={{
+                                height: 250,
+                                padding: 0,
+                                margin: 0,
+                            }}
+                        />
 
                 }
 

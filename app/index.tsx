@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.58,
         shadowRadius: 16.0,
+        backgroundColor: '#fff',
         elevation: 24,
         zIndex: 10,
     },

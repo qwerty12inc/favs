@@ -24,6 +24,8 @@ export type TMapApiResponse = {
     name: string,
     website: string,
     photosUrl?: string[],
+    locationURL?: string,
+    openingInfo: string[],
     imagePreview?: string, // для отображения фотографий после их загрузки из firebase (не api)
 }
 
