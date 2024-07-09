@@ -1,19 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigation, useRouter } from 'expo-router';
-import { StyleSheet, TextInput, Dimensions, Pressable, SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { Avatar, View, Image, SafeAreaSpacerView } from 'react-native-ui-lib';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigation } from 'expo-router';
+import { StyleSheet, Dimensions, Pressable, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Image } from 'react-native-ui-lib';
 import MapBlock from '../src/components/Map';
 import { useDispatch, useSelector } from 'react-redux';
 import { IStateInterface } from '../src/store/store';
 import CityPicker from '../src/components/CityPicker';
-import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import BottomSheet, { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import PlaceItem from '../src/components/PlacesList/PlaceItem';
-import PlaceList, { PLACES_LIST_MOCK } from '../src/components/PlacesList/PlaceList';
-import { CustomText as Text, CustomTitle as Title } from '../src/components/Text/CustomText';
-import Banner from '../src/components/Banner/Banner';
-import BannerSlider from '../src/components/Banner/BannerSlider';
+import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import PlaceList from '../src/components/PlacesList/PlaceList';
+import { CustomText as Text } from '../src/components/Text/CustomText';
 import { globalTokens } from '../src/styles';
 import { TMapApiResponse } from '../src/models/maps';
 import { setFilterPlaces } from '../src/store/features/PlacesSlice';
@@ -85,24 +80,6 @@ export default function MainPage() {
                             source={profileDefaultAvatar}
                         />
                     </Pressable>
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss} accessible={false}>
-                <View style={styles.searchBar_shadow}>
-                    {/* <BannerSlider style={{ background: globalTokens.colors.white }}>
-                        <Banner
-                            title='Support author'
-                            description={`Donate to Author of ${currentCity} places list `}
-                            link={handleDonateLink()}
-                            backgroundColor='#260202'
-                            darkBackground
-                        />
-                        <Banner
-                            title='What is Favs?'
-                            description='Learn more'
-                            link='https://favs.website'
-                        />
-                    </BannerSlider> */}
                 </View>
             </TouchableWithoutFeedback>
             <View style={{flex: 1}} accessible={false}>
@@ -195,7 +172,6 @@ const styles = StyleSheet.create({
     searchBar_shadow: {
         position: "absolute",
         zIndex: 20,
-        // backgroundColor: 'white',
         paddingBottom: 16,
         shadowColor: '#000',
         shadowOffset: {
