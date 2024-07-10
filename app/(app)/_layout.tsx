@@ -18,7 +18,7 @@ export default function AppLayout() {
   if (authData === null) {
     return <Redirect href="/welcome" />;
   } else {
-    Alert.alert('Logined', 'its private screen alert')
+    // Alert.alert('Logined', 'its private screen alert')
     return (
         <Stack 
             screenOptions={{ 

@@ -1,27 +1,22 @@
-import { StyleSheet, Text, SafeAreaView, Dimensions } from "react-native";
-import { Avatar, View, Picker, ModalProps, Image } from "react-native-ui-lib";
-import MapView, { Details, LatLng, Marker, MarkerPressEvent, Region } from "react-native-maps";
+import { StyleSheet, View, Dimensions } from "react-native";
+import MapView, { Marker, MarkerPressEvent, Region } from "react-native-maps";
 import React, { useCallback, useEffect, useState } from "react";
 import MapService from "../http/MapService";
-import { TMapApiResponse } from "../models/maps";
 import { useNavigation } from "expo-router";
-import { debounce } from 'lodash';
-import { UseSelector, useDispatch, useSelector } from "react-redux";
-import { patchPlaces, resetPlaces, setCurrentPlace, setPlaces } from "../store/features/PlacesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPlaces, setCurrentPlace, setPlaces } from "../store/features/PlacesSlice";
 import { IStateInterface } from "../store/store";
-import { PLACES_LIST_MOCK } from "./PlacesList/PlaceList";
-import storage, { firebase } from '@react-native-firebase/storage';
+import { Image } from "react-native-ui-lib";
 const placeIcon = require('../../assets/icons/coffee.png');
-
 
 type TMapType = 'general' | 'detailed';
 
 type Props = {
-  // initialPosition: LatLng;
+  initialPosition?: { latitude: number; longitude: number };
   zoom?: number;
-  marker?: any;
+  marker?: { latitude: number; longitude: number };
   type?: TMapType
-}
+};
 
 const MapBlock: React.FC<Props> = (props) => {
   const navigation = useNavigation();
@@ -29,7 +24,7 @@ const MapBlock: React.FC<Props> = (props) => {
   const places = useSelector((state: IStateInterface) => state.places.places);
   const currentCity = useSelector((state: IStateInterface) => state.cities.currentCity);
 
-  const { zoom, marker, type = 'general' } = props
+  const { zoom, marker, type = 'general' } = props;
 
   const { width, height } = Dimensions.get("window");
 
@@ -38,73 +33,48 @@ const MapBlock: React.FC<Props> = (props) => {
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
   const [region, setRegion] = useState<Region>({
-    latitude: null,
-    longitude: null,
+    latitude: currentCity?.center?.latitude || 0,
+    longitude: currentCity?.center?.longitude || 0,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
 
-  const [loading, setLoading] = useState(false)
-  const currentFilter = useSelector((state: IStateInterface) => state.places.currentFilter)
-  const currentCategory = useSelector((state: IStateInterface) => state.places.currentCategory)
+  const [loading, setLoading] = useState(false);
+  const currentFilter = useSelector((state: IStateInterface) => state.places.currentFilter);
+  const currentCategory = useSelector((state: IStateInterface) => state.places.currentCategory);
 
   useEffect(() => {
-    setRegion((prev) => {
-      return {
-        ...prev,
-        latitude: currentCity?.center?.latitude,
-        longitude: currentCity?.center?.longitude,
-      };
-    });
-    if (type === 'general') {
-    // dispatch(setPlaces(PLACES_LIST_MOCK))
-    setLoading(true)
-    MapService.getPlacesByCity(currentCity?.name, currentCategory, currentFilter === 'all' ? null : currentFilter)
-      .then((res) => res.data)
-      .then((data) => {
+    setRegion((prev) => ({
+      ...prev,
+      latitude: currentCity?.center?.latitude || 0,
+      longitude: currentCity?.center?.longitude || 0,
+    }));
 
-        // console.log(data)
-        // setMapMarkers(data)
-        dispatch(setPlaces(data));
-        // console.log(places[2].imagePreview);
-      })
-      .catch((err) => {
-        if (err.response.status === '404') {
-          dispatch(resetPlaces())
-        }
-        console.log('err: ', err);
-        console.log('err code: ', err.response.status);
-      })
-      .finally(() => setLoading(false));
+    if (type === 'general' && currentCity?.name && currentCategory?.name && currentFilter) {
+      setLoading(true);
+      MapService.getPlacesByCity(currentCity.name, currentCategory, currentFilter === 'all' ? null : currentFilter)
+        .then((res) => res.data)
+        .then((data) => {
+          dispatch(setPlaces(data));
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 404) {
+            dispatch(resetPlaces());
+          }
+          console.error('Error fetching places:', err);
+        })
+        .finally(() => setLoading(false));
     }
-  }, [currentCategory, currentFilter, currentCity]);
-
-  // const handleRegionChange =
-  //   debounce((region: Region, details: Details) => {
-  //     MapService.getPlaceByRegion(region)
-  //       .then((res) => res.data)
-  //       .then((data) => {
-  //         // console.log(data)
-  //         setMapMarkers(data)
-  //       })
-  //       .catch((err) => {
-  //         if (err.response.status === 404) {
-  //           console.log('404!');
-  //           dispatch(resetPlaces())
-  //         }
-  //         console.log('err: ', err);
-  //         console.log('err code: ', err.response.status);
-  //       });
-  //     // console.log(region, details)
-  //   }, 500)
-
+  }, [currentCategory, currentFilter, currentCity, type]);
 
   const handleMarkerClick = useCallback((event: MarkerPressEvent) => {
-    console.log(event.nativeEvent.id);
-    dispatch(setCurrentPlace(event.nativeEvent.id))
-    //@ts-ignore
-    navigation.navigate('places/[id]', { id: event.nativeEvent.id });
-  },[])
+    const placeId = event.nativeEvent.id;
+    if (placeId) {
+      dispatch(setCurrentPlace(placeId));
+      //@ts-ignore
+      navigation.navigate('places/[id]', { id: placeId });
+    }
+  }, [dispatch, navigation]);
 
   return (
     <View style={styles.mapContainer}>
@@ -113,36 +83,28 @@ const MapBlock: React.FC<Props> = (props) => {
         region={region}
         showsMyLocationButton={true}
         showsCompass={true}
-        //   onPress={e => this.onMapPress(e)}
-        onMarkerPress={type === 'general' && handleMarkerClick}
+        onMarkerPress={type === 'general' ? handleMarkerClick : undefined}
         mapPadding={{ top: 15, right: 15, bottom: 25, left: 15 }}
-        // onRegionChange={type === 'general' && handleRegionChange}
-        // onRegionChangeComplete={() => console.log('complete')}
-        // scrollEnabled={type === 'general'}
-        // zoomEnabled={type === 'general'}
-      // onMapReady={() => setRegion(region)}
+        onMapReady={() => setRegion(region)}
       >
-        {(marker && type === 'detailed') &&
+        {(marker && type === 'detailed') && (
           <Marker
-            key={(marker?.Longitude + marker?.Latitude).toString()}
+            key={(marker.longitude + marker.latitude).toString()}
             coordinate={marker}
           >
             <Image style={styles.marker} source={placeIcon} />
           </Marker>
-        }
-        {
-          (places.length > 0 && type === 'general') &&
-          places.map((marker) => (
-            <Marker
-              key={marker?.id}
-              coordinate={marker?.coordinates}
-              identifier={marker?.id}
-              onPress={handleMarkerClick}
-            >
-              <Image style={styles.marker} source={placeIcon} />
-            </Marker>
-          ))
-        }
+        )}
+        {places.length > 0 && type === 'general' && places.map((place) => (
+          <Marker
+            key={place.id}
+            coordinate={place.coordinates}
+            identifier={place.id}
+            onPress={handleMarkerClick}
+          >
+            <Image style={styles.marker} source={placeIcon} />
+          </Marker>
+        ))}
       </MapView>
     </View>
   );
@@ -151,19 +113,14 @@ const MapBlock: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   mapContainer: {
     ...StyleSheet.absoluteFillObject,
-    //   width: "100%",
-    //   height: "100%",
-    //   justifyContent: 'flex-end',
-    //   alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  marker: {
+    marker: {
     width: 25,
     height: 30
   }
 });
 
-
-export default MapBlock
+export default MapBlock;

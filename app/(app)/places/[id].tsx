@@ -138,8 +138,8 @@ export default function PlacePage() {
                     />
                 }
                 {
-                  (CurrentPlaceInfo?.photosUrl?.length > 0 && !isLoading ) &&
-                  CurrentPlaceInfo?.photosUrl?.map((item) => (
+                  (CurrentPlaceInfo?.googleMapsInfo.photoRef?.length > 0 && !isLoading ) &&
+                  CurrentPlaceInfo?.googleMapsInfo.photoRef?.map((item) => (
                       <View
                         style={{
                           width: "100%",
